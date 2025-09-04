@@ -30,12 +30,14 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MessageSquare, MoreHorizontal, Trash2, UserX } from 'lucide-react';
+import { MessageSquare, MoreHorizontal, Trash2, UserX, UserCheck } from 'lucide-react';
 import Link from 'next/link';
+import { useToast } from '@/hooks/use-toast';
 
-const users = [
+
+const initialUsers = [
     { 
-        id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', status: 'Contributor', totalContributions: 'GH₵5,250', withdrawals: 'GH₵10,000', loanBalance: 'GH₵0', joinDate: '2022-01-15',
+        id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', status: 'Contributor', previousStatus: 'Contributor', totalContributions: 'GH₵5,250', withdrawals: 'GH₵10,000', loanBalance: 'GH₵0', joinDate: '2022-01-15',
         transactions: [
             { date: '2024-07-15', activity: 'Contribution', amount: 'GH₵250.00', status: 'Approved' },
             { date: '2024-07-05', activity: 'Withdrawal', amount: 'GH₵10,000.00', status: 'Approved' },
@@ -43,30 +45,33 @@ const users = [
         ]
     },
     { 
-        id: 2, name: 'Ama Badu', avatar: 'https://picsum.photos/100/100?random=1', status: 'Member', totalContributions: 'GH₵4,800', withdrawals: 'GH₵3,000', loanBalance: 'GH₵0', joinDate: '2022-01-20',
+        id: 2, name: 'Ama Badu', avatar: 'https://picsum.photos/100/100?random=1', status: 'Member', previousStatus: 'Member', totalContributions: 'GH₵4,800', withdrawals: 'GH₵3,000', loanBalance: 'GH₵0', joinDate: '2022-01-20',
         transactions: [
             { date: '2024-07-14', activity: 'Contribution', amount: 'GH₵250.00', status: 'Approved' },
         ] 
     },
     { 
-        id: 3, name: 'Yaw Mensah', avatar: 'https://picsum.photos/100/100?random=3', status: 'Loan', totalContributions: 'GH₵4,800', withdrawals: 'GH₵5,000', loanBalance: 'GH₵1,200', joinDate: '2022-02-10',
+        id: 3, name: 'Yaw Mensah', avatar: 'https://picsum.photos/100/100?random=3', status: 'Loan', previousStatus: 'Loan', totalContributions: 'GH₵4,800', withdrawals: 'GH₵5,000', loanBalance: 'GH₵1,200', joinDate: '2022-02-10',
         transactions: [
             { date: '2024-07-10', activity: 'Loan Disbursement', amount: 'GH₵1,200.00', status: 'Approved' },
             { date: '2024-06-16', activity: 'Contribution', amount: 'GH₵250.00', status: 'Approved' },
         ]
     },
     { 
-        id: 4, name: 'Adwoa Boateng', avatar: 'https://picsum.photos/100/100?random=4', status: 'Suspended', totalContributions: 'GH₵5,100', withdrawals: 'GH₵2,500', loanBalance: 'GH₵0', joinDate: '2022-03-01',
+        id: 4, name: 'Adwoa Boateng', avatar: 'https://picsum.photos/100/100?random=4', status: 'Suspended', previousStatus: 'Member', totalContributions: 'GH₵5,100', withdrawals: 'GH₵2,500', loanBalance: 'GH₵0', joinDate: '2022-03-01',
         transactions: [
             { date: '2024-07-01', activity: 'Account Suspended', amount: '-', status: 'Suspended' },
         ]
     },
 ];
 
-type User = typeof users[0];
+type User = typeof initialUsers[0];
 
 export default function UsersPage() {
+    const { toast } = useToast();
+    const [users, setUsers] = useState<User[]>(initialUsers);
     const [selectedUser, setSelectedUser] = useState<User | null>(users[0]);
+    const [suspensionDays, setSuspensionDays] = useState('');
 
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
@@ -86,6 +91,46 @@ export default function UsersPage() {
             default: return 'bg-gray-100 text-gray-800';
         }
     }
+
+    const handleSelectUser = (user: User) => {
+        setSelectedUser(user);
+        setSuspensionDays(''); // Reset suspension days when user changes
+    };
+
+    const handleToggleSuspend = () => {
+        if (!selectedUser) return;
+
+        const isSuspending = selectedUser.status !== 'Suspended';
+        const days = parseInt(suspensionDays, 10);
+        if (isSuspending && (isNaN(days) || days <= 0)) {
+            toast({
+                variant: "destructive",
+                title: "Invalid Duration",
+                description: "Please enter a valid number of days for the suspension.",
+            });
+            return;
+        }
+
+        const updatedUsers = users.map(u => {
+            if (u.id === selectedUser.id) {
+                const newStatus = isSuspending ? 'Suspended' : u.previousStatus;
+                const newPreviousStatus = isSuspending ? u.status : u.previousStatus;
+                return { ...u, status: newStatus, previousStatus: newPreviousStatus };
+            }
+            return u;
+        });
+
+        const updatedSelectedUser = updatedUsers.find(u => u.id === selectedUser.id) || null;
+        
+        setUsers(updatedUsers);
+        setSelectedUser(updatedSelectedUser);
+        setSuspensionDays('');
+
+        toast({
+            title: `User ${isSuspending ? 'Suspended' : 'Unsuspended'}`,
+            description: `${selectedUser.name} has been ${isSuspending ? `suspended for ${days} day(s)` : 'unsuspended'}.`,
+        });
+    };
 
     return (
         <div className="flex flex-col gap-6">
@@ -118,7 +163,7 @@ export default function UsersPage() {
                     <CardContent className="p-0">
                         <div className="flex flex-col">
                             {users.map(user => (
-                                <button key={user.id} onClick={() => setSelectedUser(user)} className={`flex items-center gap-3 p-4 w-full text-left hover:bg-muted ${selectedUser?.id === user.id ? 'bg-muted' : ''}`}>
+                                <button key={user.id} onClick={() => handleSelectUser(user)} className={`flex items-center gap-3 p-4 w-full text-left hover:bg-muted ${selectedUser?.id === user.id ? 'bg-muted' : ''}`}>
                                     <Avatar className="h-10 w-10">
                                         <AvatarImage src={user.avatar} data-ai-hint="member avatar" />
                                         <AvatarFallback>{user.name.substring(0,2)}</AvatarFallback>
@@ -154,8 +199,20 @@ export default function UsersPage() {
                             <div className="flex flex-wrap gap-2 pt-4">
                                 <Button variant="destructive"><Trash2/> Delete User</Button>
                                 <div className="flex gap-2">
-                                <Button variant="outline"><UserX/> Suspend</Button>
-                                <Input type="number" placeholder="Days" className="w-24" />
+                                    <Button variant="outline" onClick={handleToggleSuspend}>
+                                        {selectedUser.status === 'Suspended' ? <UserCheck/> : <UserX/>}
+                                        {selectedUser.status === 'Suspended' ? 'Unsuspend' : 'Suspend'}
+                                    </Button>
+                                    {selectedUser.status !== 'Suspended' && (
+                                        <Input 
+                                            type="number" 
+                                            placeholder="Days" 
+                                            className="w-24" 
+                                            value={suspensionDays}
+                                            onChange={(e) => setSuspensionDays(e.target.value)}
+                                            min="1"
+                                        />
+                                    )}
                                 </div>
                             </div>
                         </CardHeader>
@@ -191,4 +248,5 @@ export default function UsersPage() {
             </div>
         </div>
     );
-}
+
+    
