@@ -1,4 +1,7 @@
-import {defineNextHandler} from '@genkit-ai/next';
-import '@/ai/flows/fraud-detection';
+import { appRoute } from "@genkit-ai/next";
+import { simpleFlow } from "@/genkit/flows";
 
-export const POST = defineNextHandler();
+// Bind your flow to Next.js API routes
+export const GET = appRoute(simpleFlow);
+export const POST = appRoute(simpleFlow);
+
