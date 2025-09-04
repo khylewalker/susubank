@@ -110,17 +110,17 @@ export default function UsersPage() {
                 {selectedUser && (
                     <Card className="lg:col-span-2">
                         <CardHeader>
-                            <div className="flex items-start justify-between">
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                                 <div>
                                     <CardTitle className="font-headline text-2xl">{selectedUser.name}</CardTitle>
                                     <CardDescription>ID: {selectedUser.id} &bull; Joined: {selectedUser.joinDate}</CardDescription>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 shrink-0">
                                     <Button variant="outline"><MessageSquare/> Message</Button>
                                     <Button variant="outline"><MoreHorizontal/></Button>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-4">
                                 <div><p className="text-sm text-muted-foreground">Total Contributions</p><p className="font-bold text-lg">{selectedUser.totalContributions}</p></div>
                                 <div><p className="text-sm text-muted-foreground">Withdrawals</p><p className="font-bold text-lg">{selectedUser.withdrawals}</p></div>
                                 <div><p className="text-sm text-muted-foreground">Loan Balance</p><p className="font-bold text-lg">{selectedUser.loanBalance}</p></div>
@@ -142,14 +142,16 @@ export default function UsersPage() {
                                     <TabsTrigger value="settings">Settings</TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="overview" className="mt-4">
-                                    <Table>
-                                        <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
-                                        <TableBody>
-                                            <TableRow><TableCell>2024-07-15</TableCell><TableCell>Contribution</TableCell><TableCell>$250.00</TableCell><TableCell><Badge className="bg-green-100 text-green-800">Approved</Badge></TableCell></TableRow>
-                                            <TableRow><TableCell>2024-07-05</TableCell><TableCell>Withdrawal</TableCell><TableCell>$10,000.00</TableCell><TableCell><Badge className="bg-green-100 text-green-800">Approved</Badge></TableCell></TableRow>
-                                            <TableRow><TableCell>2024-06-25</TableCell><TableCell>Loan Request</TableCell><TableCell>$1,200.00</TableCell><TableCell><Badge className="bg-red-100 text-red-800">Rejected</Badge></TableCell></TableRow>
-                                        </TableBody>
-                                    </Table>
+                                    <div className="w-full overflow-x-auto">
+                                      <Table>
+                                          <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
+                                          <TableBody>
+                                              <TableRow><TableCell>2024-07-15</TableCell><TableCell>Contribution</TableCell><TableCell>$250.00</TableCell><TableCell><Badge className="bg-green-100 text-green-800">Approved</Badge></TableCell></TableRow>
+                                              <TableRow><TableCell>2024-07-05</TableCell><TableCell>Withdrawal</TableCell><TableCell>$10,000.00</TableCell><TableCell><Badge className="bg-green-100 text-green-800">Approved</Badge></TableCell></TableRow>
+                                              <TableRow><TableCell>2024-06-25</TableCell><TableCell>Loan Request</TableCell><TableCell>$1,200.00</TableCell><TableCell><Badge className="bg-red-100 text-red-800">Rejected</Badge></TableCell></TableRow>
+                                          </TableBody>
+                                      </Table>
+                                    </div>
                                 </TabsContent>
                             </Tabs>
                         </CardContent>
@@ -171,9 +173,9 @@ export default function UsersPage() {
                     <CardHeader><CardTitle className="font-headline">Bulk User Actions</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
                         <p className="text-sm text-muted-foreground">Select users from the directory to perform bulk actions.</p>
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2">
                             <Button>Notify Selected</Button>
-                            <Button variant="outline">Approve KYC for Selected</Button>
+                            <Button variant="outline">Delete Selected</Button>
                         </div>
                     </CardContent>
                 </Card>

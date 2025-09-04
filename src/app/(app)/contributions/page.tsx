@@ -110,7 +110,7 @@ export default function ContributionsPage() {
                 <Filter className="h-5 w-5 text-muted-foreground" />
             </div>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <Select>
                 <SelectTrigger><SelectValue placeholder="All Members" /></SelectTrigger>
                 <SelectContent>
@@ -132,7 +132,7 @@ export default function ContributionsPage() {
                     <SelectItem value="processing">Processing</SelectItem>
                 </SelectContent>
             </Select>
-             <Button>Apply Filters</Button>
+             <Button className="sm:col-span-2 md:col-span-3 lg:col-span-2">Apply Filters</Button>
         </CardContent>
        </Card>
 
@@ -189,28 +189,30 @@ export default function ContributionsPage() {
             <CardTitle className="font-headline">Contribution History</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Reference</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Date</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {contributionHistory.map(item => (
-                        <TableRow key={item.ref}>
-                            <TableCell className="font-medium">{item.ref}</TableCell>
-                            <TableCell>{item.amount}</TableCell>
-                            <TableCell>
-                                <Badge variant={item.status === 'Completed' ? 'default' : 'secondary'} className={item.status === 'Completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}>{item.status}</Badge>
-                            </TableCell>
-                            <TableCell>{item.date}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            <div className="w-full overflow-x-auto">
+              <Table>
+                  <TableHeader>
+                      <TableRow>
+                          <TableHead>Reference</TableHead>
+                          <TableHead>Amount</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Date</TableHead>
+                      </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                      {contributionHistory.map(item => (
+                          <TableRow key={item.ref}>
+                              <TableCell className="font-medium">{item.ref}</TableCell>
+                              <TableCell>{item.amount}</TableCell>
+                              <TableCell>
+                                  <Badge variant={item.status === 'Completed' ? 'default' : 'secondary'} className={item.status === 'Completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}>{item.status}</Badge>
+                              </TableCell>
+                              <TableCell>{item.date}</TableCell>
+                          </TableRow>
+                      ))}
+                  </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -220,30 +222,32 @@ export default function ContributionsPage() {
             <CardTitle className="font-headline">All Contributions</CardTitle>
         </CardHeader>
         <CardContent>
-             <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Description</TableHead>
-                        <TableHead>Member</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Date</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {allContributions.map((item, i) => (
-                        <TableRow key={i}>
-                            <TableCell className="font-medium">{item.desc}</TableCell>
-                            <TableCell>{item.member}</TableCell>
-                            <TableCell>
-                                <Badge className="bg-blue-100 text-blue-800">{item.type}</Badge>
-                            </TableCell>
-                            <TableCell>{item.amount}</TableCell>
-                            <TableCell>{item.date}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            <div className="w-full overflow-x-auto">
+              <Table>
+                  <TableHeader>
+                      <TableRow>
+                          <TableHead>Description</TableHead>
+                          <TableHead>Member</TableHead>
+                          <TableHead className="hidden sm:table-cell">Type</TableHead>
+                          <TableHead>Amount</TableHead>
+                          <TableHead className="hidden md:table-cell">Date</TableHead>
+                      </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                      {allContributions.map((item, i) => (
+                          <TableRow key={i}>
+                              <TableCell className="font-medium">{item.desc}</TableCell>
+                              <TableCell>{item.member}</TableCell>
+                              <TableCell className="hidden sm:table-cell">
+                                  <Badge className="bg-blue-100 text-blue-800">{item.type}</Badge>
+                              </TableCell>
+                              <TableCell>{item.amount}</TableCell>
+                              <TableCell className="hidden md:table-cell">{item.date}</TableCell>
+                          </TableRow>
+                      ))}
+                  </TableBody>
+              </Table>
+            </div>
         </CardContent>
        </Card>
     </div>

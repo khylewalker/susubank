@@ -107,7 +107,7 @@ export default function WithdrawalsPage() {
                 <Filter className="h-5 w-5 text-muted-foreground" />
             </div>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <Select>
                 <SelectTrigger><SelectValue placeholder="All Members" /></SelectTrigger>
             </Select>
@@ -165,28 +165,30 @@ export default function WithdrawalsPage() {
             <CardTitle className="font-headline">Pending Approvals</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Reference</TableHead>
-                        <TableHead>Amount</TableHead>
-                         <TableHead>Member</TableHead>
-                        <TableHead>Status</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {pendingApprovals.map(item => (
-                        <TableRow key={item.ref}>
-                            <TableCell className="font-medium">{item.ref}</TableCell>
-                            <TableCell>{item.amount}</TableCell>
-                            <TableCell>{item.member}</TableCell>
-                            <TableCell>
-                                <Badge variant="secondary" className="bg-orange-100 text-orange-800">{item.status}</Badge>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            <div className="w-full overflow-x-auto">
+              <Table>
+                  <TableHeader>
+                      <TableRow>
+                          <TableHead>Reference</TableHead>
+                          <TableHead>Amount</TableHead>
+                          <TableHead>Member</TableHead>
+                          <TableHead>Status</TableHead>
+                      </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                      {pendingApprovals.map(item => (
+                          <TableRow key={item.ref}>
+                              <TableCell className="font-medium">{item.ref}</TableCell>
+                              <TableCell>{item.amount}</TableCell>
+                              <TableCell>{item.member}</TableCell>
+                              <TableCell>
+                                  <Badge variant="secondary" className="bg-orange-100 text-orange-800">{item.status}</Badge>
+                              </TableCell>
+                          </TableRow>
+                      ))}
+                  </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -196,30 +198,32 @@ export default function WithdrawalsPage() {
             <CardTitle className="font-headline">Withdrawal History</CardTitle>
         </CardHeader>
         <CardContent>
-             <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Description</TableHead>
-                        <TableHead>Member</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Date</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {withdrawalHistory.map((item, i) => (
-                        <TableRow key={i}>
-                            <TableCell className="font-medium">{item.desc}</TableCell>
-                            <TableCell>{item.member}</TableCell>
-                            <TableCell>
-                                <Badge className="bg-red-100 text-red-800">{item.type}</Badge>
-                            </TableCell>
-                            <TableCell>{item.amount}</TableCell>
-                            <TableCell>{item.date}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            <div className="w-full overflow-x-auto">
+              <Table>
+                  <TableHeader>
+                      <TableRow>
+                          <TableHead>Description</TableHead>
+                          <TableHead>Member</TableHead>
+                          <TableHead className="hidden sm:table-cell">Type</TableHead>
+                          <TableHead>Amount</TableHead>
+                          <TableHead className="hidden md:table-cell">Date</TableHead>
+                      </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                      {withdrawalHistory.map((item, i) => (
+                          <TableRow key={i}>
+                              <TableCell className="font-medium">{item.desc}</TableCell>
+                              <TableCell>{item.member}</TableCell>
+                              <TableCell className="hidden sm:table-cell">
+                                  <Badge className="bg-red-100 text-red-800">{item.type}</Badge>
+                              </TableCell>
+                              <TableCell>{item.amount}</TableCell>
+                              <TableCell className="hidden md:table-cell">{item.date}</TableCell>
+                          </TableRow>
+                      ))}
+                  </TableBody>
+              </Table>
+            </div>
         </CardContent>
        </Card>
     </div>

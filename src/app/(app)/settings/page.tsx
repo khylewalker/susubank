@@ -51,14 +51,16 @@ export default function SettingsPage() {
         </div>
       </header>
       
-      <Tabs defaultValue="general">
-        <TabsList>
-            <TabsTrigger value="general">General</TabsTrigger>
-            <TabsTrigger value="members">Members & Roles</TabsTrigger>
-            <TabsTrigger value="payments">Payments</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="compliance">Compliance</TabsTrigger>
-        </TabsList>
+      <Tabs defaultValue="general" className="w-full">
+        <div className="w-full overflow-x-auto">
+          <TabsList>
+              <TabsTrigger value="general">General</TabsTrigger>
+              <TabsTrigger value="members">Members & Roles</TabsTrigger>
+              <TabsTrigger value="payments">Payments</TabsTrigger>
+              <TabsTrigger value="notifications">Notifications</TabsTrigger>
+              <TabsTrigger value="compliance">Compliance</TabsTrigger>
+          </TabsList>
+        </div>
         <TabsContent value="general" className="mt-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <Card className="lg:col-span-2">
@@ -159,14 +161,14 @@ export default function SettingsPage() {
                             <h4 className="font-semibold">Archive Cycle</h4>
                             <p className="text-sm text-muted-foreground">Archive the current contribution cycle data. This will not delete the data but will hide it from the main views.</p>
                         </div>
-                        <Button variant="outline" className="border-destructive text-destructive hover:bg-destructive/10 hover:text-destructive">Archive Cycle</Button>
+                        <Button variant="outline" className="border-destructive text-destructive hover:bg-destructive/10 hover:text-destructive self-start">Archive Cycle</Button>
                     </CardContent>
                      <CardContent className="flex flex-col md:flex-row gap-4 border-t pt-6">
                         <div className="flex-1">
                             <h4 className="font-semibold">Delete Group</h4>
                             <p className="text-sm text-muted-foreground">Permanently delete the entire group, including all members, transactions, and settings. This cannot be undone.</p>
                         </div>
-                        <Button variant="destructive">Delete Group</Button>
+                        <Button variant="destructive" className="self-start">Delete Group</Button>
                     </CardContent>
                 </Card>
             </div>

@@ -109,7 +109,7 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:grid-cols-4">
         <Card className="flex flex-row items-center justify-between p-4">
             <div>
                 <CardDescription>Active Members</CardDescription>
@@ -145,44 +145,46 @@ export default function DashboardPage() {
             <CardTitle className="font-headline">Members</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Member</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Contributed</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {members.map((member) => (
-                  <TableRow key={member.name}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar>
-                          <AvatarImage src={member.avatar} data-ai-hint="member avatar" />
-                          <AvatarFallback>{member.name.substring(0, 2)}</AvatarFallback>
-                        </Avatar>
-                        <span className="font-medium">{member.name}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>{member.role}</TableCell>
-                    <TableCell>{member.contributed}</TableCell>
-                    <TableCell>
-                      <Badge variant={member.status === "Active" ? "default" : "secondary"} className={member.status === "Active" ? "bg-green-500/20 text-green-700" : "bg-yellow-500/20 text-yellow-700"}>
-                        {member.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
+            <div className="w-full overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Member</TableHead>
+                    <TableHead className="hidden sm:table-cell">Role</TableHead>
+                    <TableHead>Contributed</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {members.map((member) => (
+                    <TableRow key={member.name}>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <Avatar>
+                            <AvatarImage src={member.avatar} data-ai-hint="member avatar" />
+                            <AvatarFallback>{member.name.substring(0, 2)}</AvatarFallback>
+                          </Avatar>
+                          <span className="font-medium">{member.name}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell">{member.role}</TableCell>
+                      <TableCell>{member.contributed}</TableCell>
+                      <TableCell>
+                        <Badge variant={member.status === "Active" ? "default" : "secondary"} className={member.status === "Active" ? "bg-green-500/20 text-green-700" : "bg-yellow-500/20 text-yellow-700"}>
+                          {member.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="icon">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>

@@ -103,12 +103,12 @@ export default function TransactionsPage() {
       </div>
 
        <Card>
-        <CardContent className="grid grid-cols-1 md:grid-cols-5 gap-4 pt-6">
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 pt-6">
             <Select><SelectTrigger><SelectValue placeholder="All Types" /></SelectTrigger></Select>
             <Select><SelectTrigger><SelectValue placeholder="All Members" /></SelectTrigger></Select>
             <Select><SelectTrigger><SelectValue placeholder="Any Status" /></SelectTrigger></Select>
             <Button variant="outline" className="justify-start text-left font-normal"><Calendar className="mr-2 h-4 w-4" />Date range</Button>
-             <Button>Apply</Button>
+             <Button className="lg:col-span-1 sm:col-span-2 md:col-span-3">Apply</Button>
         </CardContent>
        </Card>
 
@@ -118,41 +118,43 @@ export default function TransactionsPage() {
                     <CardTitle className="font-headline">All Transactions</CardTitle>
                 </CardHeader>
                 <CardContent>
-                     <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Reference</TableHead>
-                                <TableHead>Member</TableHead>
-                                <TableHead>Type</TableHead>
-                                <TableHead>Amount</TableHead>
-                                <TableHead>Date</TableHead>
-                                <TableHead>Status</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {transactionsData.map((tx) => (
-                                <TableRow key={tx.ref} onClick={() => setSelectedTransaction(tx)} className={`cursor-pointer ${selectedTransaction?.ref === tx.ref ? 'bg-primary/10' : ''}`}>
-                                    <TableCell className="font-medium">{tx.ref}</TableCell>
-                                    <TableCell>
-                                        <div className="flex items-center gap-2">
-                                            <Avatar className="h-8 w-8">
-                                                <AvatarImage src={tx.avatar} data-ai-hint="member avatar" />
-                                                <AvatarFallback>{tx.member.substring(0,2)}</AvatarFallback>
-                                            </Avatar>
-                                            <div>
-                                                <p className="font-medium">{tx.member}</p>
-                                                <p className="text-xs text-muted-foreground">{tx.email}</p>
-                                            </div>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell><Badge className={getTypeBadge(tx.type)}>{tx.type}</Badge></TableCell>
-                                    <TableCell>{tx.amount}</TableCell>
-                                    <TableCell>{tx.date}</TableCell>
-                                    <TableCell><Badge className={getStatusBadge(tx.status)}>{tx.status}</Badge></TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                    <div className="w-full overflow-x-auto">
+                      <Table>
+                          <TableHeader>
+                              <TableRow>
+                                  <TableHead>Reference</TableHead>
+                                  <TableHead>Member</TableHead>
+                                  <TableHead className="hidden sm:table-cell">Type</TableHead>
+                                  <TableHead>Amount</TableHead>
+                                  <TableHead className="hidden md:table-cell">Date</TableHead>
+                                  <TableHead>Status</TableHead>
+                              </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                              {transactionsData.map((tx) => (
+                                  <TableRow key={tx.ref} onClick={() => setSelectedTransaction(tx)} className={`cursor-pointer ${selectedTransaction?.ref === tx.ref ? 'bg-primary/10' : ''}`}>
+                                      <TableCell className="font-medium">{tx.ref}</TableCell>
+                                      <TableCell>
+                                          <div className="flex items-center gap-2">
+                                              <Avatar className="h-8 w-8">
+                                                  <AvatarImage src={tx.avatar} data-ai-hint="member avatar" />
+                                                  <AvatarFallback>{tx.member.substring(0,2)}</AvatarFallback>
+                                              </Avatar>
+                                              <div>
+                                                  <p className="font-medium">{tx.member}</p>
+                                                  <p className="text-xs text-muted-foreground hidden sm:block">{tx.email}</p>
+                                              </div>
+                                          </div>
+                                      </TableCell>
+                                      <TableCell className="hidden sm:table-cell"><Badge className={getTypeBadge(tx.type)}>{tx.type}</Badge></TableCell>
+                                      <TableCell>{tx.amount}</TableCell>
+                                      <TableCell className="hidden md:table-cell">{tx.date}</TableCell>
+                                      <TableCell><Badge className={getStatusBadge(tx.status)}>{tx.status}</Badge></TableCell>
+                                  </TableRow>
+                              ))}
+                          </TableBody>
+                      </Table>
+                    </div>
                 </CardContent>
             </Card>
 
