@@ -50,7 +50,6 @@ const formSchema = z.object({
   idType: z.string().min(1, { message: "Government ID type is required." }),
   idNumber: z.string().min(1, { message: "ID number is required." }),
   group: z.string().min(1, { message: "Please select a group to join." }),
-  role: z.string().min(1, { message: "Please select a role." }),
   initialContribution: z.string().optional(),
   terms: z.boolean().refine((val) => val === true, {
     message: "You must accept the terms.",
@@ -71,7 +70,6 @@ export default function CreateMemberPage() {
             idType: "",
             idNumber: "",
             group: "",
-            role: "",
             initialContribution: "",
             terms: false,
         },
@@ -216,7 +214,7 @@ export default function CreateMemberPage() {
                                     )}
                                 />
                             </div>
-                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                             <div className="grid grid-cols-1">
                                 <FormField
                                     control={form.control}
                                     name="group"
@@ -235,24 +233,6 @@ export default function CreateMemberPage() {
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="role"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Role</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl><SelectTrigger><SelectValue placeholder="Select Role" /></SelectTrigger></FormControl>
-                                                <SelectContent>
-                                                    <SelectItem value="member">Member</SelectItem>
-                                                    <SelectItem value="admin">Admin</SelectItem>
-                                                    <SelectItem value="contributor">Contributor</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
                             </div>
                              <div className="grid grid-cols-1">
                                 <FormField
@@ -261,7 +241,7 @@ export default function CreateMemberPage() {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Initial Contribution</FormLabel>
-                                            <FormControl><Input type="number" placeholder="250.00" {...field} /></FormControl>
+                                            <FormControl><Input type="number" min="30" placeholder="30.00" {...field} /></FormControl>
                                             <FormMessage />
                                         </FormItem>
                                     )}
