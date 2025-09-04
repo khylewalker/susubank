@@ -89,41 +89,6 @@ export default function SettingsPage() {
         </div>
         <TabsContent value="general" className="mt-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <Card className="lg:col-span-2">
-                    <CardHeader>
-                        <CardTitle className="font-headline">Organization</CardTitle>
-                    </CardHeader>
-                    <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                            <Label htmlFor="group-name">Group name</Label>
-                            <Input id="group-name" defaultValue="Accra Fintech Collective" />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="currency">Currency</Label>
-                            <Select defaultValue="GHS">
-                                <SelectTrigger><SelectValue/></SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="GHS">GHS (Ghana Cedi)</SelectItem>
-                                    <SelectItem value="USD">USD (US Dollar)</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                         <div className="space-y-2">
-                            <Label htmlFor="cadence">Contribution cadence</Label>
-                            <Select defaultValue="monthly">
-                                <SelectTrigger><SelectValue/></SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="monthly">Monthly</SelectItem>
-                                    <SelectItem value="weekly">Weekly</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                         <div className="space-y-2">
-                            <Label htmlFor="contribution-amount">Default contribution amount</Label>
-                            <Input id="contribution-amount" defaultValue="250.00" />
-                        </div>
-                    </CardContent>
-                </Card>
                 <Card>
                      <CardHeader>
                         <CardTitle className="font-headline">Preferences</CardTitle>
