@@ -58,7 +58,22 @@ const Step1 = ({ nextStep, formData, setFormData }: any) => (
         </div>
         <div className="space-y-2">
             <Label htmlFor="maxMembers">Maximum Members</Label>
-            <Input id="maxMembers" type="number" placeholder="6" min="3" max="6" value={formData.maxMembers} onChange={(e) => setFormData({...formData, maxMembers: e.target.value})} />
+            <Input 
+              id="maxMembers" 
+              type="number" 
+              placeholder="6" 
+              min="3" 
+              max="6" 
+              value={formData.maxMembers} 
+              onChange={(e) => {
+                const value = parseInt(e.target.value, 10);
+                if (value > 6) {
+                  setFormData({...formData, maxMembers: '6'});
+                } else {
+                  setFormData({...formData, maxMembers: e.target.value});
+                }
+              }} 
+            />
         </div>
     </div>
      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
