@@ -22,7 +22,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 // Mock user data for demonstration
 const mockUsers = [
-  { email: "admin@susu.bank", password: "password123", status: "approved", firstLogin: false, name: "Admin" },
+  { email: "admin@susu.bank", password: "mkisdeadmin", status: "approved", firstLogin: false, name: "Admin" },
   { email: "new@susu.bank", password: "password123", status: "pending", firstLogin: true, name: "New User" },
   { email: "first.timer@susu.bank", password: "password123", status: "approved", firstLogin: true, name: "First Timer" },
   { email: "approved@susu.bank", password: "password123", status: "approved", firstLogin: false, name: "Approved User" },
@@ -110,7 +110,7 @@ export default function SignInPage() {
       <CardContent>
          {accountApproved && (
           <Alert className="mb-4 border-green-500 bg-green-50 text-green-800">
-            <AlertDescription>Your account has been approved! You may now log in.</AlertDescription>
+            <AlertDescription>Congratulations! Account Has Been Approved</AlertDescription>
           </Alert>
         )}
         <form onSubmit={handleLogin} className="space-y-4">
