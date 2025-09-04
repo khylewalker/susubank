@@ -100,7 +100,7 @@ const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => {
   const addMember = () => {
     setFormData({
       ...formData,
-      members: [...formData.members, { fullName: "", email: "", phone: "" }],
+      members: [...formData.members, { fullName: "", email: "", phone: "", idType: "", idNumber: "", residence: "", sourceOfIncome: "" }],
     });
   };
 
@@ -127,6 +127,31 @@ const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => {
             <Label htmlFor={`phone-${index}`}>Phone</Label>
             <Input id={`phone-${index}`} placeholder="+233 24 123 4567" value={member.phone} onChange={(e) => handleMemberChange(index, 'phone', e.target.value)} />
           </div>
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <Label htmlFor={`idType-${index}`}>ID Type</Label>
+                    <Select value={member.idType} onValueChange={(value) => handleMemberChange(index, 'idType', value)}>
+                        <SelectTrigger><SelectValue placeholder="Select ID Type" /></SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="ghana_card">Ghana Card</SelectItem>
+                            <SelectItem value="passport">Passport</SelectItem>
+                            <SelectItem value="drivers_license">Driver's License</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor={`idNumber-${index}`}>ID Number</Label>
+                    <Input id={`idNumber-${index}`} placeholder="GHA-123456789-0" value={member.idNumber} onChange={(e) => handleMemberChange(index, 'idNumber', e.target.value)} />
+                </div>
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor={`residence-${index}`}>Residence</Label>
+                <Input id={`residence-${index}`} placeholder="Accra, Ghana" value={member.residence} onChange={(e) => handleMemberChange(index, 'residence', e.target.value)} />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor={`sourceOfIncome-${index}`}>Source of Income</Label>
+                <Input id={`sourceOfIncome-${index}`} placeholder="e.g., Salary, Business" value={member.sourceOfIncome} onChange={(e) => handleMemberChange(index, 'sourceOfIncome', e.target.value)} />
+            </div>
            {formData.members.length > 1 && (
             <Button size="icon" variant="destructive" className="absolute top-2 right-2 h-7 w-7" onClick={() => removeMember(index)}>
                 <Trash2 className="h-4 w-4" />
@@ -232,7 +257,7 @@ export default function CreateGroupPage() {
         contributionAmount: "",
         payoutMethod: "",
         expectedDuration: "",
-        members: [{ fullName: "", email: "", phone: "" }],
+        members: [{ fullName: "", email: "", phone: "", idType: "", idNumber: "", residence: "", sourceOfIncome: "" }],
         contributionDay: "",
         gracePeriod: "",
         minMembers: "",
@@ -252,7 +277,7 @@ export default function CreateGroupPage() {
             }
         } else if (stepNumber === 2) {
              for (const member of formData.members) {
-                if (!member.fullName || !member.email || !member.phone) {
+                if (!member.fullName || !member.email || !member.phone || !member.idType || !member.idNumber || !member.residence || !member.sourceOfIncome) {
                     return false;
                 }
             }
