@@ -75,7 +75,6 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
                 <TableHead className="hidden lg:table-cell">Destination</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
             </TableRow></TableHeader>
             <TableBody>
                 {requests.map(req => (
@@ -88,14 +87,6 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
                         <TableCell className="hidden lg:table-cell">{req.destination}</TableCell>
                         <TableCell>{req.date}</TableCell>
                         <TableCell><Badge className={getStatusColor(req.status)}>{req.status}</Badge></TableCell>
-                        <TableCell className="text-right">
-                            {req.status === 'Pending' && (
-                                <div className="flex gap-2 justify-end">
-                                    <Button size="icon" variant="outline" className="text-green-600 border-green-600 hover:bg-green-100 hover:text-green-700" onClick={() => onUpdateRequest(req.id, 'Approved')}><Check className="h-4 w-4"/></Button>
-                                    <Button size="icon" variant="outline" className="text-red-600 border-red-600 hover:bg-red-100 hover:text-red-700" onClick={() => onUpdateRequest(req.id, 'Rejected')}><X className="h-4 w-4"/></Button>
-                                </div>
-                            )}
-                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>
