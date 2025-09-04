@@ -42,7 +42,7 @@ const userRequests = [
     { id: 'REQ-004', member: 'Ama Badu', type: 'Dispute', details: 'Incorrect contribution amount', date: '2024-07-17', status: 'Rejected' },
 ];
 
-export default function UserRequestsPage() {
+const RequestsTable = ({ requests }: { requests: typeof userRequests }) => {
     
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
@@ -63,6 +63,40 @@ export default function UserRequestsPage() {
         }
     }
 
+    return (
+        <Table>
+            <TableHeader><TableRow>
+                <TableHead>Request ID</TableHead><TableHead>Member</TableHead><TableHead>Type</TableHead>
+                <TableHead>Details</TableHead><TableHead>Date</TableHead><TableHead>Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+            </TableRow></TableHeader>
+            <TableBody>
+                {requests.map(req => (
+                    <TableRow key={req.id}>
+                        <TableCell className="font-mono text-xs">{req.id}</TableCell>
+                        <TableCell>{req.member}</TableCell>
+                        <TableCell><Badge className={getTypeColor(req.type)}>{req.type}</Badge></TableCell>
+                        <TableCell>{req.details}</TableCell>
+                        <TableCell>{req.date}</TableCell>
+                        <TableCell><Badge className={getStatusColor(req.status)}>{req.status}</Badge></TableCell>
+                        <TableCell className="text-right">
+                            {req.status === 'Pending' && (
+                                <div className="flex gap-2 justify-end">
+                                    <Button size="icon" variant="outline" className="text-green-600 border-green-600 hover:bg-green-100 hover:text-green-700"><Check className="h-4 w-4"/></Button>
+                                    <Button size="icon" variant="outline" className="text-red-600 border-red-600 hover:bg-red-100 hover:text-red-700"><X className="h-4 w-4"/></Button>
+                                </div>
+                            )}
+                        </TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    );
+};
+
+
+export default function UserRequestsPage() {
+    
     return (
         <div className="flex flex-col gap-6">
              <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -86,47 +120,32 @@ export default function UserRequestsPage() {
                 <Card><CardHeader><CardDescription>Rejected Today</CardDescription><CardTitle className="text-2xl font-bold">1</CardTitle></CardHeader></Card>
             </div>
 
-            <Card>
-                <CardHeader>
-                    <Tabs defaultValue="all">
+            <Tabs defaultValue="all">
+                <Card>
+                    <CardHeader>
                         <TabsList>
                             <TabsTrigger value="all">All Requests</TabsTrigger>
                             <TabsTrigger value="pending">Pending</TabsTrigger>
                             <TabsTrigger value="approved">Approved</TabsTrigger>
                             <TabsTrigger value="rejected">Rejected</TabsTrigger>
                         </TabsList>
-                    </Tabs>
-                </CardHeader>
-                <CardContent>
-                    <Table>
-                        <TableHeader><TableRow>
-                            <TableHead>Request ID</TableHead><TableHead>Member</TableHead><TableHead>Type</TableHead>
-                            <TableHead>Details</TableHead><TableHead>Date</TableHead><TableHead>Status</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
-                        </TableRow></TableHeader>
-                        <TableBody>
-                            {userRequests.map(req => (
-                                <TableRow key={req.id}>
-                                    <TableCell className="font-mono text-xs">{req.id}</TableCell>
-                                    <TableCell>{req.member}</TableCell>
-                                    <TableCell><Badge className={getTypeColor(req.type)}>{req.type}</Badge></TableCell>
-                                    <TableCell>{req.details}</TableCell>
-                                    <TableCell>{req.date}</TableCell>
-                                    <TableCell><Badge className={getStatusColor(req.status)}>{req.status}</Badge></TableCell>
-                                    <TableCell className="text-right">
-                                        {req.status === 'Pending' && (
-                                            <div className="flex gap-2 justify-end">
-                                                <Button size="icon" variant="outline" className="text-green-600 border-green-600 hover:bg-green-100 hover:text-green-700"><Check className="h-4 w-4"/></Button>
-                                                <Button size="icon" variant="outline" className="text-red-600 border-red-600 hover:bg-red-100 hover:text-red-700"><X className="h-4 w-4"/></Button>
-                                            </div>
-                                        )}
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
+                    </CardHeader>
+                    <CardContent>
+                        <TabsContent value="all">
+                            <RequestsTable requests={userRequests} />
+                        </TabsContent>
+                        <TabsContent value="pending">
+                            <RequestsTable requests={userRequests.filter(r => r.status === 'Pending')} />
+                        </TabsContent>
+                        <TabsContent value="approved">
+                            <RequestsTable requests={userRequests.filter(r => r.status === 'Approved')} />
+                        </TabsContent>
+                        <TabsContent value="rejected">
+                            <RequestsTable requests={userRequests.filter(r => r.status === 'Rejected')} />
+                        </TabsContent>
+                    </CardContent>
+                </Card>
+            </Tabs>
         </div>
     );
 }
