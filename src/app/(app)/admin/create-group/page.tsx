@@ -47,7 +47,12 @@ const Step1 = ({ nextStep, formData, setFormData }: any) => (
             <Label htmlFor="rotationFrequency">Rotation Frequency</Label>
             <Select value={formData.rotationFrequency} onValueChange={(value) => setFormData({...formData, rotationFrequency: value})}>
                 <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
-                <SelectContent><SelectItem value="monthly">Monthly</SelectItem><SelectItem value="weekly">Weekly</SelectItem></SelectContent>
+                <SelectContent>
+                    <SelectItem value="weekly">Weekly</SelectItem>
+                    <SelectItem value="bi-weekly">Bi-weekly</SelectItem>
+                    <SelectItem value="monthly">Monthly</SelectItem>
+                    <SelectItem value="quarterly">Quarterly</SelectItem>
+                </SelectContent>
             </Select>
         </div>
         <div className="space-y-2">
@@ -64,7 +69,11 @@ const Step1 = ({ nextStep, formData, setFormData }: any) => (
             <Label htmlFor="payoutMethod">Payout Order Method</Label>
             <Select value={formData.payoutMethod} onValueChange={(value) => setFormData({...formData, payoutMethod: value})}>
                 <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
-                <SelectContent><SelectItem value="lottery">Lottery</SelectItem><SelectItem value="first-come">First Come, First Served</SelectItem></SelectContent>
+                <SelectContent>
+                    <SelectItem value="random">Random Selection</SelectItem>
+                    <SelectItem value="sequential">Sequential Order</SelectItem>
+                    <SelectItem value="preference">Preference-based</SelectItem>
+                </SelectContent>
             </Select>
         </div>
     </div>
