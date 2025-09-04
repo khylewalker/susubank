@@ -107,7 +107,7 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="text-base font-medium">Total Withdrawals</CardTitle>
+            <CardTitle className="text-base font-medium">All Group Withdrawals</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold">GH₵40,150.00</p>
