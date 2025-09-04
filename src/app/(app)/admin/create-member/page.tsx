@@ -37,14 +37,14 @@ export default function CreateMemberPage() {
                     <BreadcrumbSeparator />
                         <BreadcrumbItem><BreadcrumbPage>Admin</BreadcrumbPage></BreadcrumbItem>
                         <BreadcrumbSeparator />
-                    <BreadcrumbItem><BreadcrumbPage>Create Member</BreadcrumbPage></BreadcrumbItem>
+                    <BreadcrumbItem><BreadcrumbPage>Add New Member</BreadcrumbPage></BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <h1 className="text-3xl font-bold font-headline mt-2">Create Member</h1>
+                <h1 className="text-3xl font-bold font-headline mt-2">Add New Member</h1>
             </header>
             <Card>
                 <CardHeader>
-                    <CardTitle className="font-headline">Create a New Member</CardTitle>
+                    <CardTitle className="font-headline">Add a New Member</CardTitle>
                     <CardDescription>Enter the details below to add a new member to the group.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">

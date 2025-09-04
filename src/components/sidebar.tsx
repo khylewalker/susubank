@@ -37,7 +37,7 @@ const navItems = [
 
 const adminNavItems = [
     { href: "/admin/users", label: "Users", icon: Users },
-    { href: "/admin/create-member", label: "Create Member", icon: UserPlus },
+    { href: "/admin/create-member", label: "Add New Member", icon: UserPlus },
     { href: "/admin/requests", label: "User Requests", icon: BellRing },
 ];
 
