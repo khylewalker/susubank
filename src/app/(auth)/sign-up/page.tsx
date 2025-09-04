@@ -104,7 +104,7 @@ export default function SignUpPage() {
         </form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
-        <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="w-full flex justify-end items-center gap-4">
           <Button variant="outline" asChild>
             <Link href="/sign-in">Back</Link>
           </Button>
