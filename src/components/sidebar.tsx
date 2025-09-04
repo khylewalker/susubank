@@ -24,6 +24,7 @@ import {
   LogOut,
   BellRing,
   UserPlus,
+  PlusCircle,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -40,6 +41,7 @@ const navItems = [
 const adminNavItems = [
     { href: "/admin/users", label: "Users", icon: Users },
     { href: "/admin/create-member", label: "Add New Member", icon: UserPlus },
+    { href: "/admin/create-group", label: "Create Group", icon: PlusCircle },
     { href: "/admin/requests", label: "User Requests", icon: BellRing, badge: "2" },
     { href: "/admin/login-activity", label: "Login Activity", icon: ShieldCheck },
 ];

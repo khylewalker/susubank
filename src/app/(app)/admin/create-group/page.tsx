@@ -1,0 +1,204 @@
+
+"use client";
+
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
+
+const Step1 = ({ nextStep, formData, setFormData }: any) => (
+  <div className="space-y-4">
+    <div className="space-y-2">
+      <Label htmlFor="groupName">Group Name</Label>
+      <Input id="groupName" placeholder="e.g., Accra Innovators" value={formData.groupName} onChange={(e) => setFormData({...formData, groupName: e.target.value})} />
+    </div>
+    <div className="space-y-2">
+      <Label htmlFor="groupDescription">Group Description</Label>
+      <Textarea id="groupDescription" placeholder="A brief description of the group's purpose." value={formData.groupDescription} onChange={(e) => setFormData({...formData, groupDescription: e.target.value})} />
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+            <Label htmlFor="rotationFrequency">Rotation Frequency</Label>
+            <Select value={formData.rotationFrequency} onValueChange={(value) => setFormData({...formData, rotationFrequency: value})}>
+                <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectContent><SelectItem value="monthly">Monthly</SelectItem><SelectItem value="weekly">Weekly</SelectItem></SelectContent>
+            </Select>
+        </div>
+        <div className="space-y-2">
+            <Label htmlFor="maxMembers">Maximum Members</Label>
+            <Input id="maxMembers" type="number" placeholder="12" value={formData.maxMembers} onChange={(e) => setFormData({...formData, maxMembers: e.target.value})} />
+        </div>
+    </div>
+     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+            <Label htmlFor="contributionAmount">Contribution Amount (GH₵)</Label>
+            <Input id="contributionAmount" type="number" placeholder="250.00" value={formData.contributionAmount} onChange={(e) => setFormData({...formData, contributionAmount: e.target.value})} />
+        </div>
+        <div className="space-y-2">
+            <Label htmlFor="payoutMethod">Payout Order Method</Label>
+            <Select value={formData.payoutMethod} onValueChange={(value) => setFormData({...formData, payoutMethod: value})}>
+                <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectContent><SelectItem value="lottery">Lottery</SelectItem><SelectItem value="first-come">First Come, First Served</SelectItem></SelectContent>
+            </Select>
+        </div>
+    </div>
+    <div className="flex justify-end pt-4">
+      <Button onClick={nextStep}>Next</Button>
+    </div>
+  </div>
+);
+
+const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => (
+  <div className="space-y-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+            <Label htmlFor="contributionDay">Days from cycle start to contribute</Label>
+            <Input id="contributionDay" type="number" placeholder="5" value={formData.contributionDay} onChange={(e) => setFormData({...formData, contributionDay: e.target.value})} />
+        </div>
+        <div className="space-y-2">
+            <Label htmlFor="gracePeriod">Grace Period (days)</Label>
+            <Input id="gracePeriod" type="number" placeholder="2" value={formData.gracePeriod} onChange={(e) => setFormData({...formData, gracePeriod: e.target.value})} />
+        </div>
+    </div>
+     <div className="space-y-2">
+        <Label htmlFor="latePenalty">Late Payment Penalty</Label>
+        <Select value={formData.latePenalty} onValueChange={(value) => setFormData({...formData, latePenalty: value})}>
+            <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+            <SelectContent><SelectItem value="none">None</SelectItem><SelectItem value="fixed">Fixed Amount (e.g., GH₵10)</SelectItem><SelectItem value="percentage">Percentage (e.g., 1%)</SelectItem></SelectContent>
+        </Select>
+    </div>
+     <div className="space-y-2">
+        <Label htmlFor="startDate">Contribution Start Date</Label>
+        <Input id="startDate" type="date" value={formData.startDate} onChange={(e) => setFormData({...formData, startDate: e.target.value})} />
+    </div>
+    <div className="flex justify-between pt-4">
+      <Button variant="outline" onClick={prevStep}>Back</Button>
+      <Button onClick={nextStep}>Next</Button>
+    </div>
+  </div>
+);
+
+const Step3 = ({ prevStep, formData, submitForm }: any) => (
+  <div className="space-y-6">
+    <div className="space-y-4">
+        <div>
+            <h3 className="font-semibold">Group Details</h3>
+            <Separator className="my-2" />
+            <div className="grid grid-cols-2 gap-4 text-sm">
+                <p className="text-muted-foreground">Group Name</p><p className="font-medium">{formData.groupName}</p>
+                <p className="text-muted-foreground">Description</p><p className="font-medium">{formData.groupDescription}</p>
+                <p className="text-muted-foreground">Frequency</p><p className="font-medium">{formData.rotationFrequency}</p>
+                <p className="text-muted-foreground">Max Members</p><p className="font-medium">{formData.maxMembers}</p>
+                <p className="text-muted-foreground">Contribution</p><p className="font-medium">GH₵{formData.contributionAmount}</p>
+                <p className="text-muted-foreground">Payout Method</p><p className="font-medium">{formData.payoutMethod}</p>
+            </div>
+        </div>
+         <div>
+            <h3 className="font-semibold">Payment Rules</h3>
+            <Separator className="my-2" />
+            <div className="grid grid-cols-2 gap-4 text-sm">
+                <p className="text-muted-foreground">Contribution Deadline</p><p className="font-medium">{formData.contributionDay} days after cycle start</p>
+                <p className="text-muted-foreground">Grace Period</p><p className="font-medium">{formData.gracePeriod} days</p>
+                <p className="text-muted-foreground">Late Penalty</p><p className="font-medium">{formData.latePenalty}</p>
+                <p className="text-muted-foreground">Start Date</p><p className="font-medium">{formData.startDate}</p>
+            </div>
+        </div>
+    </div>
+    <div className="flex justify-between pt-4">
+      <Button variant="outline" onClick={prevStep}>Back</Button>
+      <Button onClick={submitForm}>Create Group</Button>
+    </div>
+  </div>
+);
+
+export default function CreateGroupPage() {
+    const { toast } = useToast();
+    const [step, setStep] = useState(1);
+    const [formData, setFormData] = useState({
+        groupName: "",
+        groupDescription: "",
+        rotationFrequency: "",
+        maxMembers: "",
+        contributionAmount: "",
+        payoutMethod: "",
+        contributionDay: "",
+        gracePeriod: "",
+        latePenalty: "",
+        startDate: "",
+    });
+
+    const nextStep = () => setStep(prev => prev + 1);
+    const prevStep = () => setStep(prev => prev - 1);
+
+    const submitForm = () => {
+        console.log("Form Submitted", formData);
+        toast({
+            title: "Group Created",
+            description: `${formData.groupName} has been successfully created.`,
+        });
+        // Here you would typically send the data to your backend
+    };
+
+    const progress = (step / 3) * 100;
+
+    const stepTitles = ["Group Details", "Payment Rules", "Preview"];
+    const stepDescriptions = ["Enter the basic details for your new group.", "Set the rules for contributions and payments.", "Review the details before creating the group."];
+
+    return (
+        <div className="flex flex-col gap-6">
+            <header>
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem><BreadcrumbPage>Admin</BreadcrumbPage></BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem><BreadcrumbPage>Create Group</BreadcrumbPage></BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
+                <h1 className="text-3xl font-bold font-headline mt-2">Create a New Group</h1>
+            </header>
+            <Card>
+                <CardHeader>
+                    <div className="flex justify-between items-center mb-2">
+                        <CardTitle className="font-headline">{stepTitles[step - 1]}</CardTitle>
+                        <span className="text-sm text-muted-foreground">Step {step} of 3</span>
+                    </div>
+                    <CardDescription>{stepDescriptions[step - 1]}</CardDescription>
+                    <Progress value={progress} className="mt-4" />
+                </CardHeader>
+                <CardContent>
+                    {step === 1 && <Step1 nextStep={nextStep} formData={formData} setFormData={setFormData} />}
+                    {step === 2 && <Step2 nextStep={nextStep} prevStep={prevStep} formData={formData} setFormData={setFormData} />}
+                    {step === 3 && <Step3 prevStep={prevStep} formData={formData} submitForm={submitForm} />}
+                </CardContent>
+            </Card>
+        </div>
+    );
+}
