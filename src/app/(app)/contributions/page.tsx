@@ -1,4 +1,7 @@
 
+"use client";
+
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -33,18 +36,26 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { PlusCircle, Filter } from "lucide-react";
+import { PlusCircle, Filter, Users, ArrowRight } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const contributionHistory: any[] = [
-];
-
-const allContributions: any[] = [
-];
-
+const contributionHistory: any[] = [];
+const allContributions: any[] = [];
+const groupsData: any[] = [];
 
 export default function ContributionsPage() {
   const isAdmin = true; // This would be replaced with actual role-based logic
+  const [selectedGroup, setSelectedGroup] = useState<(typeof groupsData)[0] | null>(null);
+
 
   return (
     <div className="flex flex-col gap-6">
@@ -70,7 +81,7 @@ export default function ContributionsPage() {
         )}
       </header>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader>
             <CardTitle className="font-headline">This Cycle Total</CardTitle>
@@ -89,15 +100,21 @@ export default function ContributionsPage() {
             <p className="text-sm text-muted-foreground">Cycle Total: GH₵0.00</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-headline">Next Due</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">GH₵0.00</p>
-            <p className="text-sm text-muted-foreground">Due on August 15, 2024</p>
-          </CardContent>
-        </Card>
+        {groupsData.slice(0, 2).map(group => (
+            <Card key={group.id} className="cursor-pointer" onClick={() => setSelectedGroup(group)}>
+                <CardHeader>
+                    <CardTitle className="font-headline flex items-center justify-between">
+                        {group.name} Contributions <Users className="h-5 w-5 text-muted-foreground" />
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-2xl font-bold">GH₵{group.totalContributions}</p>
+                    <p className="text-sm text-muted-foreground hover:underline flex items-center gap-1">
+                        View Members <ArrowRight className="h-4 w-4" />
+                    </p>
+                </CardContent>
+            </Card>
+        ))}
       </div>
 
        <Card>
@@ -247,6 +264,50 @@ export default function ContributionsPage() {
             </div>
         </CardContent>
        </Card>
+        {selectedGroup && (
+            <Dialog open={!!selectedGroup} onOpenChange={(isOpen) => !isOpen && setSelectedGroup(null)}>
+                <DialogContent className="max-w-lg">
+                    <DialogHeader>
+                        <DialogTitle className="font-headline">{selectedGroup.name} - Member Contributions</DialogTitle>
+                        <DialogDescription>
+                            Total Contributions for this group: GH₵{selectedGroup.totalContributions}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Member</TableHead>
+                                    <TableHead className="text-right">Amount</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {selectedGroup.members.length > 0 ? (
+                                    selectedGroup.members.map(member => (
+                                        <TableRow key={member.id}>
+                                            <TableCell>
+                                                <div className="flex items-center gap-3">
+                                                    <Avatar className="h-9 w-9">
+                                                        <AvatarImage src={member.avatar} data-ai-hint="member avatar" />
+                                                        <AvatarFallback>{member.name.substring(0,2)}</AvatarFallback>
+                                                    </Avatar>
+                                                    <Link href={`/members/${member.id}`} className="font-medium hover:underline">{member.name}</Link>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-right">GH₵{member.contribution}</TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={2} className="text-center">No contributions for this group yet.</TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </div>
+                </DialogContent>
+            </Dialog>
+        )}
     </div>
   );
 }
