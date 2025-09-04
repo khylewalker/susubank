@@ -41,6 +41,7 @@ const adminNavItems = [
     { href: "/admin/users", label: "Users", icon: Users },
     { href: "/admin/create-member", label: "Add New Member", icon: UserPlus },
     { href: "/admin/requests", label: "User Requests", icon: BellRing, badge: "2" },
+    { href: "/admin/login-activity", label: "Login Activity", icon: ShieldCheck },
 ];
 
 export function AppSidebar() {
