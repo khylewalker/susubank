@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -18,33 +18,81 @@ import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/logo";
 import { ShieldCheck, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+// Mock user data for demonstration
+const mockUsers = [
+  { email: "admin@susu.bank", password: "password123", status: "approved", firstLogin: false, name: "Admin" },
+  { email: "new@susu.bank", password: "password123", status: "pending", firstLogin: true, name: "New User" },
+  { email: "first.timer@susu.bank", password: "password123", status: "approved", firstLogin: true, name: "First Timer" },
+  { email: "approved@susu.bank", password: "password123", status: "approved", firstLogin: false, name: "Approved User" },
+];
 
 export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [accountApproved, setAccountApproved] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+
+  // Check on load if the user was previously pending and is now approved
+  useEffect(() => {
+    const lastLoginAttemptEmail = localStorage.getItem('lastLoginAttemptEmail');
+    const user = mockUsers.find(u => u.email === lastLoginAttemptEmail);
+
+    if (user && user.status === 'approved') {
+       const previouslyPending = localStorage.getItem(`status_${user.email}`) === 'pending';
+       if(previouslyPending) {
+         setAccountApproved(true);
+         localStorage.removeItem('lastLoginAttemptEmail');
+         localStorage.setItem(`status_${user.email}`, 'approved');
+       }
+    }
+  }, []);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setAccountApproved(false); // Hide approval message on new login attempt
 
     // Simulate API call
     setTimeout(() => {
-      if (email === "admin@susu.bank" && password === "password123") {
-        toast({
-          title: "Success",
-          description: "Login successful!",
-        });
-        router.push("/"); // Redirect to dashboard
-      } else {
+      const user = mockUsers.find(u => u.email === email);
+      
+      if (!user || user.password !== password) {
         toast({
           variant: "destructive",
           title: "Error",
           description: "Wrong credentials. Please try again.",
         });
+      } else if (user.status === 'pending') {
+        localStorage.setItem('lastLoginAttemptEmail', user.email);
+        localStorage.setItem(`status_${user.email}`, 'pending');
+        toast({
+          variant: "destructive",
+          title: "Login Failed",
+          description: "Cannot Login At The Moment, Please Wait For Admin's Approval",
+          duration: 5000,
+        });
+      } else if (user.status === 'approved') {
+        const welcomeMessage = user.firstLogin ? `Welcome, ${user.name}!` : `Welcome back, ${user.name}!`;
+        toast({
+          title: "Success",
+          description: welcomeMessage,
+        });
+        
+        // In a real app, you would update the user's `firstLogin` status in the database.
+        if(user.firstLogin) {
+            const userIndex = mockUsers.findIndex(u => u.email === user.email);
+            if(userIndex !== -1) mockUsers[userIndex].firstLogin = false;
+        }
+
+        localStorage.removeItem('lastLoginAttemptEmail');
+        localStorage.removeItem(`status_${user.email}`);
+
+        router.push("/"); // Redirect to dashboard
       }
       setIsLoading(false);
     }, 1000);
@@ -60,6 +108,11 @@ export default function SignInPage() {
         <CardDescription>Securely sign in to your account.</CardDescription>
       </CardHeader>
       <CardContent>
+         {accountApproved && (
+          <Alert className="mb-4 border-green-500 bg-green-50 text-green-800">
+            <AlertDescription>Your account has been approved! You may now log in.</AlertDescription>
+          </Alert>
+        )}
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email/Number</Label>
