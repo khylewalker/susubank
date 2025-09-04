@@ -115,33 +115,6 @@ export default function SettingsPage() {
                         </div>
                     </CardContent>
                 </Card>
-                <Card className="lg:col-span-3">
-                    <CardHeader>
-                        <CardTitle className="font-headline">Payments & Compliance</CardTitle>
-                    </CardHeader>
-                     <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                        <div className="space-y-2">
-                            <Label htmlFor="primary-method">Primary method</Label>
-                            <Select defaultValue="momo"><SelectTrigger><SelectValue/></SelectTrigger></Select>
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="backup-method">Backup method</Label>
-                            <Select defaultValue="bank"><SelectTrigger><SelectValue/></SelectTrigger></Select>
-                        </div>
-                         <div className="space-y-2">
-                            <Label htmlFor="settlement-account">Settlement account</Label>
-                            <Select defaultValue="gcb"><SelectTrigger><SelectValue/></SelectTrigger></Select>
-                        </div>
-                         <div className="flex items-center justify-between">
-                            <Label htmlFor="kyc">KYC required</Label>
-                            <Switch id="kyc" defaultChecked />
-                        </div>
-                         <div className="space-y-2">
-                            <Label htmlFor="retention">Data retention</Label>
-                             <Select defaultValue="7y"><SelectTrigger><SelectValue/></SelectTrigger></Select>
-                        </div>
-                    </CardContent>
-                </Card>
 
                  <Card className="lg:col-span-3 border-destructive">
                     <CardHeader>
