@@ -95,6 +95,10 @@ const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => (
             <Input id="gracePeriod" type="number" placeholder="2" value={formData.gracePeriod} onChange={(e) => setFormData({...formData, gracePeriod: e.target.value})} />
         </div>
     </div>
+    <div className="space-y-2">
+        <Label htmlFor="minMembers">Minimum members needed to keep group active</Label>
+        <Input id="minMembers" type="number" placeholder="3" value={formData.minMembers} onChange={(e) => setFormData({...formData, minMembers: e.target.value})} />
+    </div>
      <div className="space-y-2">
         <Label htmlFor="latePenalty">Late Payment Penalty</Label>
         <Select value={formData.latePenalty} onValueChange={(value) => setFormData({...formData, latePenalty: value})}>
@@ -134,6 +138,7 @@ const Step3 = ({ prevStep, formData, submitForm }: any) => (
             <div className="grid grid-cols-2 gap-4 text-sm">
                 <p className="text-muted-foreground">Contribution Deadline</p><p className="font-medium">{formData.contributionDay} days after cycle start</p>
                 <p className="text-muted-foreground">Grace Period</p><p className="font-medium">{formData.gracePeriod} days</p>
+                <p className="text-muted-foreground">Min Members Active</p><p className="font-medium">{formData.minMembers}</p>
                 <p className="text-muted-foreground">Late Penalty</p><p className="font-medium">{formData.latePenalty}</p>
                 <p className="text-muted-foreground">Start Date</p><p className="font-medium">{formData.startDate}</p>
             </div>
@@ -158,6 +163,7 @@ export default function CreateGroupPage() {
         payoutMethod: "",
         contributionDay: "",
         gracePeriod: "",
+        minMembers: "",
         latePenalty: "",
         startDate: "",
     });
