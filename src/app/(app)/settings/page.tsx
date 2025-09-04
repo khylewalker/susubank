@@ -81,8 +81,6 @@ export default function SettingsPage() {
         <div className="w-full overflow-x-auto">
           <TabsList>
               <TabsTrigger value="general">General</TabsTrigger>
-              <TabsTrigger value="members">Members & Roles</TabsTrigger>
-              <TabsTrigger value="payments">Payments</TabsTrigger>
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
               <TabsTrigger value="compliance">Compliance</TabsTrigger>
           </TabsList>
