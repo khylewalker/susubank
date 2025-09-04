@@ -26,9 +26,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const loginActivity = [
-    { id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', role: 'Admin', residence: 'Accra, Ghana', timestamp: '2024-07-22 10:00 AM', status: 'Active', group: 'Group A', email: 'k.adu@email.com', phone: '+233 24 123 4567' },
-    { id: 5, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', role: 'Admin', residence: 'Accra, Ghana', timestamp: '2024-07-21 07:55 PM', status: 'Logged Out', group: 'Group A', email: 'k.adu@email.com', phone: '+233 24 123 4567' },
+const loginActivity: any[] = [
 ];
 
 export default function LoginActivityPage() {

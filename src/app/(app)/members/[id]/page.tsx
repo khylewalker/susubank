@@ -27,10 +27,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-const recentActivity = [
-    { activity: "Contribution added", details: "Manual entry by admin", time: "2 days ago" },
-    { activity: "Withdrawal approved", details: "Request #W-REF-0042", time: "15 days ago" },
-    { activity: "Withdrawal requested", details: "For Business Investment", time: "16 days ago" },
+const recentActivity: any[] = [
 ];
 
 export default function MemberOverviewPage({ params }: { params: { id: string } }) {
@@ -76,7 +73,7 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
                 <Card>
                     <CardHeader><CardTitle className="text-base font-medium">Financial Snapshot</CardTitle></CardHeader>
                     <CardContent className="space-y-2">
-                        <div><p className="text-sm text-muted-foreground">Total Saved</p><p className="font-medium">GH₵5,250.00</p></div>
+                        <div><p className="text-sm text-muted-foreground">Total Saved</p><p className="font-medium">GH₵0.00</p></div>
                         <div><p className="text-sm text-muted-foreground">Loans Outstanding</p><p className="font-medium">GH₵0.00</p></div>
                     </CardContent>
                 </Card>
@@ -92,7 +89,7 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
             <Card>
                 <CardHeader><CardTitle className="text-base font-medium">Last Contribution</CardTitle></CardHeader>
                 <CardContent>
-                    <p className="text-2xl font-bold">GH₵250.00</p>
+                    <p className="text-2xl font-bold">GH₵0.00</p>
                     <p className="text-sm text-muted-foreground">on July 15, 2024</p>
                 </CardContent>
             </Card>

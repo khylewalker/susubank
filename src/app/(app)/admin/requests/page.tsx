@@ -31,12 +31,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Check, X, CheckCheck, XCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
-const initialUserRequests = [
-    { id: 'REQ-003', member: 'Kofi Adu', group: 'Group A', type: 'KYC Update', details: 'New Passport Uploaded', destination: '-', date: '2024-07-18', status: 'Approved' },
+const initialUserRequests: any[] = [
 ];
 
 
-type UserRequest = typeof initialUserRequests[0];
+type UserRequest = (typeof initialUserRequests)[0];
 
 const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[], onUpdateRequest: (id: string, status: 'Approved' | 'Rejected') => void }) => {
     
@@ -143,8 +142,8 @@ export default function UserRequestsPage() {
             
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 <Card><CardHeader><CardDescription>Pending Requests</CardDescription><CardTitle className="text-2xl font-bold">{userRequests.filter(r => r.status === 'Pending').length}</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>Approved Today</CardDescription><CardTitle className="text-2xl font-bold">5</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>Rejected Today</CardDescription><CardTitle className="text-2xl font-bold">1</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Approved Today</CardDescription><CardTitle className="text-2xl font-bold">0</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Rejected Today</CardDescription><CardTitle className="text-2xl font-bold">0</CardTitle></CardHeader></Card>
                 <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">{userRequests.filter(r => r.type === 'New Member' && r.status === 'Pending').length}</CardTitle></CardHeader></Card>
             </div>
 

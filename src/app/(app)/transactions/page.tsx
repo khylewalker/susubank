@@ -38,22 +38,16 @@ import { Copy, Calendar } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from '@/components/ui/separator';
 
-const transactionsData = [
-    { ref: 'REF-00125', member: 'Kofi Adu', email: 'k.adu@email.com', avatar: 'https://picsum.photos/100/100?random=2', type: 'Contribution', amount: 'GH₵250.00', date: '2024-07-15', status: 'Settled', method: 'Bank Transfer', category: 'Monthly Dues', cycle: 'July 2024' },
-    { ref: 'FEE-0023', member: 'System', email: 'system', avatar: '', type: 'Fee', amount: 'GH₵5.00', date: '2024-07-12', status: 'Settled', method: 'N/A', category: 'Service Fee', cycle: 'July 2024' },
+const transactionsData: any[] = [
 ];
 
-const historyData = [
-    { event: 'Payment received', time: '1 hour ago'},
-    { event: 'Status changed to Settled', time: '1 hour ago'},
-    { event: 'Receipt uploaded', time: '2 hours ago'},
-    { event: 'Transaction created', time: '4 hours ago'},
+const historyData: any[] = [
 ]
 
-type Transaction = typeof transactionsData[0];
+type Transaction = (typeof transactionsData)[0];
 
 export default function TransactionsPage() {
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(transactionsData[0]);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
 
   const getStatusBadge = (status: string) => {
       switch(status) {
@@ -94,10 +88,10 @@ export default function TransactionsPage() {
       </header>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <Card><CardHeader><CardDescription>Total Volume</CardDescription><CardTitle className="text-2xl font-bold">GH₵125,430.00</CardTitle></CardHeader></Card>
-        <Card><CardHeader><CardDescription>Contributions</CardDescription><CardTitle className="text-2xl font-bold">GH₵85,200.00</CardTitle></CardHeader></Card>
-        <Card><CardHeader><CardDescription>Withdrawals</CardDescription><CardTitle className="text-2xl font-bold">GH₵40,150.00</CardTitle></CardHeader></Card>
-        <Card><CardHeader><CardDescription>Fees & Adjustments</CardDescription><CardTitle className="text-2xl font-bold">GH₵80.00</CardTitle></CardHeader></Card>
+        <Card><CardHeader><CardDescription>Total Volume</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
+        <Card><CardHeader><CardDescription>Contributions</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
+        <Card><CardHeader><CardDescription>Withdrawals</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
+        <Card><CardHeader><CardDescription>Fees & Adjustments</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
       </div>
 
        <Card>

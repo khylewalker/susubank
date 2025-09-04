@@ -35,23 +35,15 @@ import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 
 
-const initialUsers = [
-    { 
-        id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', status: 'Contributor', previousStatus: 'Contributor', totalContributions: 'GH₵5,250', withdrawals: 'GH₵10,000', loanBalance: 'GH₵0', joinDate: '2022-01-15',
-        transactions: [
-            { date: '2024-07-15', activity: 'Contribution', amount: 'GH₵250.00', status: 'Approved' },
-            { date: '2024-07-05', activity: 'Withdrawal', amount: 'GH₵10,000.00', status: 'Approved' },
-            { date: '2024-06-25', activity: 'Loan Request', amount: 'GH₵1,200.00', status: 'Rejected' },
-        ]
-    },
+const initialUsers: any[] = [
 ];
 
-type User = typeof initialUsers[0];
+type User = (typeof initialUsers)[0];
 
 export default function UsersPage() {
     const { toast } = useToast();
     const [users, setUsers] = useState<User[]>(initialUsers);
-    const [selectedUser, setSelectedUser] = useState<User | null>(users[0]);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [suspensionDays, setSuspensionDays] = useState('');
 
     const getStatusColor = (status: string) => {
@@ -131,10 +123,10 @@ export default function UsersPage() {
             </header>
             
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <Card><CardHeader><CardDescription>Total Members</CardDescription><CardTitle className="text-2xl font-bold">48</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>Active Groups</CardDescription><CardTitle className="text-2xl font-bold">3</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>Monthly Deposits</CardDescription><CardTitle className="text-2xl font-bold">GH₵20,150</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>Loan Outstanding</CardDescription><CardTitle className="text-2xl font-bold">GH₵12,400</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Total Members</CardDescription><CardTitle className="text-2xl font-bold">0</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Active Groups</CardDescription><CardTitle className="text-2xl font-bold">0</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Monthly Deposits</CardDescription><CardTitle className="text-2xl font-bold">GH₵0</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Loan Outstanding</CardDescription><CardTitle className="text-2xl font-bold">GH₵0</CardTitle></CardHeader></Card>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

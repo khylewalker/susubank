@@ -36,11 +36,10 @@ import {
 import { PlusCircle, Filter } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
-const pendingApprovals = [
+const pendingApprovals: any[] = [
 ];
 
-const withdrawalHistory = [
-    { desc: 'Business Investment', member: 'Kofi Adu', type: 'Withdrawal', amount: 'GH₵10,000.00', date: '2024-07-05' },
+const withdrawalHistory: any[] = [
 ];
 
 
@@ -77,7 +76,7 @@ export default function WithdrawalsPage() {
             <CardTitle className="font-headline">Available Pool</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">GH₵36,550.00</p>
+            <p className="text-2xl font-bold">GH₵0.00</p>
             <p className="text-sm text-muted-foreground">Total funds available for withdrawal</p>
           </CardContent>
         </Card>
@@ -95,7 +94,7 @@ export default function WithdrawalsPage() {
             <CardTitle className="font-headline">My Last Withdrawal</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">GH₵10,000.00</p>
+            <p className="text-2xl font-bold">GH₵0.00</p>
             <p className="text-sm text-muted-foreground">On July 5, 2024</p>
           </CardContent>
         </Card>
