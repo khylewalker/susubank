@@ -32,11 +32,6 @@ import { Check, X, CheckCheck, XCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 const initialUserRequests: any[] = [
-    { id: 'REQ-001', member: 'Yaw Mensah', group: 'Group A', type: 'Withdrawal', details: 'GH₵5,000.00 for Business', destination: 'MTN MoMo: *** *** 6789', date: '2024-07-20', status: 'Pending' },
-    { id: 'REQ-002', member: 'Adwoa Boateng', group: 'Group C', type: 'Loan', details: 'GH₵1,200.00 for School Fees', destination: '-', date: '2024-07-19', status: 'Pending' },
-    { id: 'REQ-003', member: 'Kofi Adu', group: 'Group A', type: 'KYC Update', details: 'New Passport Uploaded', destination: '-', date: '2024-07-18', status: 'Approved' },
-    { id: 'REQ-004', member: 'Ama Badu', group: 'Group B', type: 'Dispute', details: 'Incorrect contribution amount', destination: '-', date: '2024-07-17', status: 'Rejected' },
-    { id: 'REQ-005', member: 'Esi Williams', group: 'N/A', type: 'New Member', details: 'Wants to join Group A', destination: '-', date: '2024-07-21', status: 'Pending' },
 ];
 
 
