@@ -1,4 +1,4 @@
-import {nextHandler} from '@genkit-ai/next';
+import {defineNextHandler} from '@genkit-ai/next';
 import '@/ai/flows/fraud-detection';
 
-export const POST = nextHandler();
+export const POST = defineNextHandler();
