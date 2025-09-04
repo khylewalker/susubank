@@ -1,4 +1,7 @@
 
+"use client";
+
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -33,8 +36,17 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { PlusCircle, Filter } from "lucide-react";
+import { PlusCircle, Filter, Users, ArrowRight } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const pendingApprovals: any[] = [
 ];
@@ -42,9 +54,20 @@ const pendingApprovals: any[] = [
 const withdrawalHistory: any[] = [
 ];
 
+const groupsData = [
+    { id: 'group-a', name: 'Group A', totalWithdrawals: '12,500.00', members: [
+        { id: 'user-1', name: 'Ama Badu', avatar: 'https://picsum.photos/100/100?random=1', withdrawal: '5,000.00' },
+        { id: 'user-2', name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', withdrawal: '7,500.00' },
+    ]},
+    { id: 'group-b', name: 'Group B', totalWithdrawals: '8,200.00', members: [
+        { id: 'user-3', name: 'Yaw Mensah', avatar: 'https://picsum.photos/100/100?random=3', withdrawal: '8,200.00' },
+    ]},
+    { id: 'group-c', name: 'Group C', totalWithdrawals: '0.00', members: []},
+];
 
 export default function WithdrawalsPage() {
   const isAdmin = true; // This would be replaced with actual role-based logic
+  const [selectedGroup, setSelectedGroup] = useState<(typeof groupsData)[0] | null>(null);
 
   return (
     <div className="flex flex-col gap-6">
@@ -70,7 +93,7 @@ export default function WithdrawalsPage() {
         )}
       </header>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader>
             <CardTitle className="font-headline">Available Pool</CardTitle>
@@ -89,15 +112,21 @@ export default function WithdrawalsPage() {
             <p className="text-sm text-muted-foreground">Totaling GH₵0.00</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-headline">My Last Withdrawal</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">GH₵0.00</p>
-            <p className="text-sm text-muted-foreground">On July 5, 2024</p>
-          </CardContent>
-        </Card>
+         {groupsData.slice(0, 2).map(group => (
+            <Card key={group.id} className="cursor-pointer" onClick={() => setSelectedGroup(group)}>
+                <CardHeader>
+                    <CardTitle className="font-headline flex items-center justify-between">
+                        {group.name} Withdrawals <Users className="h-5 w-5 text-muted-foreground" />
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-2xl font-bold">GH₵{group.totalWithdrawals}</p>
+                    <p className="text-sm text-muted-foreground hover:underline flex items-center gap-1">
+                        View Members <ArrowRight className="h-4 w-4" />
+                    </p>
+                </CardContent>
+            </Card>
+        ))}
       </div>
 
        <Card>
@@ -228,6 +257,50 @@ export default function WithdrawalsPage() {
             </div>
         </CardContent>
        </Card>
+        {selectedGroup && (
+            <Dialog open={!!selectedGroup} onOpenChange={(isOpen) => !isOpen && setSelectedGroup(null)}>
+                <DialogContent className="max-w-lg">
+                    <DialogHeader>
+                        <DialogTitle className="font-headline">{selectedGroup.name} - Member Withdrawals</DialogTitle>
+                        <DialogDescription>
+                            Total Withdrawals for this group: GH₵{selectedGroup.totalWithdrawals}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Member</TableHead>
+                                    <TableHead className="text-right">Amount</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {selectedGroup.members.length > 0 ? (
+                                    selectedGroup.members.map(member => (
+                                        <TableRow key={member.id}>
+                                            <TableCell>
+                                                <div className="flex items-center gap-3">
+                                                    <Avatar className="h-9 w-9">
+                                                        <AvatarImage src={member.avatar} data-ai-hint="member avatar" />
+                                                        <AvatarFallback>{member.name.substring(0,2)}</AvatarFallback>
+                                                    </Avatar>
+                                                    <Link href={`/members/${member.id}`} className="font-medium hover:underline">{member.name}</Link>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-right">GH₵{member.withdrawal}</TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={2} className="text-center">No withdrawals for this group yet.</TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </div>
+                </DialogContent>
+            </Dialog>
+        )}
     </div>
   );
 }
