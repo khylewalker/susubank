@@ -10,8 +10,6 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -40,11 +38,35 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { Save, Undo2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
+const defaultSettings = {
+  reminders: true,
+  twoFactorAuth: true,
+  language: "en-us",
+};
+
 export default function SettingsPage() {
   const { toast } = useToast();
+  const [settings, setSettings] = useState(defaultSettings);
+
+  const handleReset = () => {
+    setSettings(defaultSettings);
+    toast({
+      title: "Settings Reset",
+      description: "Your settings have been reset to their default values.",
+    });
+  };
+
+  const handleSave = () => {
+    console.log("Settings saved:", settings);
+    toast({
+      title: "Settings Saved",
+      description: "Your changes have been successfully saved.",
+    });
+  };
 
   const handleDeleteGroup = () => {
     toast({
@@ -72,8 +94,8 @@ export default function SettingsPage() {
           <h1 className="text-3xl font-bold font-headline mt-2">Settings</h1>
         </div>
         <div className="flex items-center gap-4">
-            <Button variant="outline"><Undo2 /> Reset</Button>
-            <Button><Save /> Save Changes</Button>
+            <Button variant="outline" onClick={handleReset}><Undo2 /> Reset</Button>
+            <Button onClick={handleSave}><Save /> Save Changes</Button>
         </div>
       </header>
       
@@ -94,15 +116,26 @@ export default function SettingsPage() {
                     <CardContent className="space-y-4">
                         <div className="flex items-center justify-between">
                             <Label htmlFor="reminders">Reminders</Label>
-                            <Switch id="reminders" defaultChecked />
+                            <Switch 
+                              id="reminders" 
+                              checked={settings.reminders}
+                              onCheckedChange={(checked) => setSettings(s => ({...s, reminders: checked}))}
+                            />
                         </div>
                         <div className="flex items-center justify-between">
                             <Label htmlFor="2fa">Two-factor authentication</Label>
-                            <Switch id="2fa" defaultChecked />
+                            <Switch 
+                              id="2fa" 
+                              checked={settings.twoFactorAuth}
+                              onCheckedChange={(checked) => setSettings(s => ({...s, twoFactorAuth: checked}))}
+                            />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="language">Language</Label>
-                            <Select defaultValue="en-us">
+                            <Select 
+                              value={settings.language}
+                              onValueChange={(value) => setSettings(s => ({...s, language: value}))}
+                            >
                                 <SelectTrigger><SelectValue/></SelectTrigger>
                                 <SelectContent>
                                      <SelectItem value="en-us">English (US)</SelectItem>
@@ -153,6 +186,30 @@ export default function SettingsPage() {
                     </CardContent>
                 </Card>
             </div>
+        </TabsContent>
+        <TabsContent value="notifications">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline">Notification Settings</CardTitle>
+                    <CardDescription>Manage how you receive notifications from SusuBank.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    {/* Placeholder for notification settings */}
+                     <p className="text-sm text-muted-foreground">Notification settings will be available here.</p>
+                </CardContent>
+            </Card>
+        </TabsContent>
+         <TabsContent value="compliance">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline">Compliance & Legal</CardTitle>
+                    <CardDescription>Review compliance documents and legal information.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    {/* Placeholder for compliance settings */}
+                    <p className="text-sm text-muted-foreground">Compliance and legal information will be available here.</p>
+                </CardContent>
+            </Card>
         </TabsContent>
       </Tabs>
     </div>
