@@ -28,13 +28,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MoreVertical } from "lucide-react";
 
 const members = [
-  {
-    name: "Kofi Adu",
-    avatar: "https://picsum.photos/100/100?random=2",
-    role: "Admin",
-    contributed: "GH₵5,250.00",
-    status: "Active",
-  },
 ];
 
 export default function DashboardPage() {
