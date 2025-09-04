@@ -27,11 +27,11 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const loginActivity = [
-    { id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', role: 'Admin', ip: '192.168.1.1', timestamp: '2024-07-22 10:00 AM', status: 'Active', group: 'Group A', email: 'k.adu@email.com', phone: '+233 24 123 4567' },
-    { id: 2, name: 'Ama Badu', avatar: 'https://picsum.photos/100/100?random=1', role: 'Member', ip: '10.0.0.5', timestamp: '2024-07-22 09:45 AM', status: 'Logged Out', group: 'Group B', email: 'a.badu@email.com', phone: '+233 24 234 5678' },
-    { id: 3, name: 'Yaw Mensah', avatar: 'https://picsum.photos/100/100?random=3', role: 'Member', ip: '172.16.0.10', timestamp: '2024-07-22 09:30 AM', status: 'Failed', group: 'Group A', email: 'y.mensah@email.com', phone: '+233 24 345 6789' },
-    { id: 4, name: 'Adwoa Boateng', avatar: 'https://picsum.photos/100/100?random=4', role: 'Member', ip: '203.0.113.25', timestamp: '2024-07-21 08:00 PM', status: 'Logged Out', group: 'Group C', email: 'a.boateng@email.com', phone: '+233 24 456 7890' },
-    { id: 5, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', role: 'Admin', ip: '192.168.1.1', timestamp: '2024-07-21 07:55 PM', status: 'Logged Out', group: 'Group A', email: 'k.adu@email.com', phone: '+233 24 123 4567' },
+    { id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', role: 'Admin', residence: 'Accra, Ghana', timestamp: '2024-07-22 10:00 AM', status: 'Active', group: 'Group A', email: 'k.adu@email.com', phone: '+233 24 123 4567' },
+    { id: 2, name: 'Ama Badu', avatar: 'https://picsum.photos/100/100?random=1', role: 'Member', residence: 'Kumasi, Ghana', timestamp: '2024-07-22 09:45 AM', status: 'Logged Out', group: 'Group B', email: 'a.badu@email.com', phone: '+233 24 234 5678' },
+    { id: 3, name: 'Yaw Mensah', avatar: 'https://picsum.photos/100/100?random=3', role: 'Member', residence: 'Accra, Ghana', timestamp: '2024-07-22 09:30 AM', status: 'Failed', group: 'Group A', email: 'y.mensah@email.com', phone: '+233 24 345 6789' },
+    { id: 4, name: 'Adwoa Boateng', avatar: 'https://picsum.photos/100/100?random=4', role: 'Member', residence: 'Tema, Ghana', timestamp: '2024-07-21 08:00 PM', status: 'Logged Out', group: 'Group C', email: 'a.boateng@email.com', phone: '+233 24 456 7890' },
+    { id: 5, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', role: 'Admin', residence: 'Accra, Ghana', timestamp: '2024-07-21 07:55 PM', status: 'Logged Out', group: 'Group A', email: 'k.adu@email.com', phone: '+233 24 123 4567' },
 ];
 
 export default function LoginActivityPage() {
@@ -80,7 +80,7 @@ export default function LoginActivityPage() {
                                 <TableHead>Member</TableHead>
                                 <TableHead className="hidden md:table-cell">Group</TableHead>
                                 <TableHead className="hidden lg:table-cell">Phone</TableHead>
-                                <TableHead className="hidden sm:table-cell">IP Address</TableHead>
+                                <TableHead className="hidden sm:table-cell">Residence</TableHead>
                                 <TableHead>Timestamp</TableHead>
                                 <TableHead>Status</TableHead>
                             </TableRow>
@@ -102,7 +102,7 @@ export default function LoginActivityPage() {
                                     </TableCell>
                                     <TableCell className="hidden md:table-cell">{log.group}</TableCell>
                                     <TableCell className="hidden lg:table-cell">{log.phone}</TableCell>
-                                    <TableCell className="font-mono text-xs hidden sm:table-cell">{log.ip}</TableCell>
+                                    <TableCell className="text-xs hidden sm:table-cell">{log.residence}</TableCell>
                                     <TableCell>{log.timestamp}</TableCell>
                                     <TableCell><Badge className={getStatusColor(log.status)}>{log.status}</Badge></TableCell>
                                 </TableRow>
