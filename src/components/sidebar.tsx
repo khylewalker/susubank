@@ -20,6 +20,7 @@ import {
   Users,
   ShieldCheck,
   LogOut,
+  BellRing,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -34,8 +35,8 @@ const navItems = [
 ];
 
 const adminNavItems = [
-    { href: "/admin/users", label: "Users Directory", icon: Users },
-    { href: "/admin/transactions", label: "Admin Transactions", icon: ShieldCheck },
+    { href: "/admin/users", label: "Users", icon: Users },
+    { href: "/admin/requests", label: "User Requests", icon: BellRing },
 ];
 
 export function AppSidebar() {

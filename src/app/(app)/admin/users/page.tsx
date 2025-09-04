@@ -37,7 +37,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MessageSquare, MoreHorizontal, ShieldCheck, UserX } from 'lucide-react';
+import { MessageSquare, MoreHorizontal, Trash2, UserX } from 'lucide-react';
 
 const users = [
     { id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', status: 'Contributor', totalContributions: '$5,250', withdrawals: '$10,000', loanBalance: '$0', joinDate: '2022-01-15' },
@@ -48,7 +48,7 @@ const users = [
 
 type User = typeof users[0];
 
-export default function UsersDirectoryPage() {
+export default function UsersPage() {
     const [selectedUser, setSelectedUser] = useState<User | null>(users[0]);
 
     const getStatusColor = (status: string) => {
@@ -71,14 +71,10 @@ export default function UsersDirectoryPage() {
                         <BreadcrumbSeparator />
                          <BreadcrumbItem><BreadcrumbPage>Admin</BreadcrumbPage></BreadcrumbItem>
                          <BreadcrumbSeparator />
-                        <BreadcrumbItem><BreadcrumbPage>Users Directory</BreadcrumbPage></BreadcrumbItem>
+                        <BreadcrumbItem><BreadcrumbPage>Users</BreadcrumbPage></BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
-                    <h1 className="text-3xl font-bold font-headline mt-2">Users Directory</h1>
-                </div>
-                <div className="flex items-center gap-4">
-                    <Select><SelectTrigger className="w-40"><SelectValue placeholder="All roles" /></SelectTrigger></Select>
-                    <Select><SelectTrigger className="w-40"><SelectValue placeholder="Any Status" /></SelectTrigger></Select>
+                    <h1 className="text-3xl font-bold font-headline mt-2">Users</h1>
                 </div>
             </header>
             
@@ -129,9 +125,12 @@ export default function UsersDirectoryPage() {
                                 <div><p className="text-sm text-muted-foreground">Withdrawals</p><p className="font-bold text-lg">{selectedUser.withdrawals}</p></div>
                                 <div><p className="text-sm text-muted-foreground">Loan Balance</p><p className="font-bold text-lg">{selectedUser.loanBalance}</p></div>
                             </div>
-                            <div className="flex gap-2 pt-4">
-                                <Button className="bg-green-600 hover:bg-green-700 text-white"><ShieldCheck/> Verify KYC</Button>
-                                <Button variant="outline"><UserX/> Suspend</Button>
+                            <div className="flex flex-wrap gap-2 pt-4">
+                                <Button variant="destructive"><Trash2/> Delete User</Button>
+                                <div className="flex gap-2">
+                                  <Button variant="outline"><UserX/> Suspend</Button>
+                                  <Input type="number" placeholder="Days" className="w-24" />
+                                </div>
                             </div>
                         </CardHeader>
                         <CardContent>
