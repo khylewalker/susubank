@@ -222,23 +222,56 @@ export default function UsersPage() {
                                     <TabsTrigger value="contributions">Contributions</TabsTrigger>
                                     <TabsTrigger value="withdrawals">Withdrawals</TabsTrigger>
                                     <TabsTrigger value="loans">Loans</TabsTrigger>
-                                    <TabsTrigger value="settings">Settings</TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="contributions" className="mt-4">
                                     <div className="w-full overflow-x-auto">
-                                    <Table>
-                                        <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
-                                        <TableBody>
-                                            {selectedUser.transactions.map((tx, i) => (
-                                                <TableRow key={i}>
-                                                    <TableCell>{tx.date}</TableCell>
-                                                    <TableCell>{tx.activity}</TableCell>
-                                                    <TableCell>{tx.amount}</TableCell>
-                                                    <TableCell><Badge className={getTransactionStatusColor(tx.status)}>{tx.status}</Badge></TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
+                                        <Table>
+                                            <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
+                                            <TableBody>
+                                                {selectedUser.transactions.filter(tx => tx.activity.toLowerCase().includes('contribution')).map((tx, i) => (
+                                                    <TableRow key={i}>
+                                                        <TableCell>{tx.date}</TableCell>
+                                                        <TableCell>{tx.activity}</TableCell>
+                                                        <TableCell>{tx.amount}</TableCell>
+                                                        <TableCell><Badge className={getTransactionStatusColor(tx.status)}>{tx.status}</Badge></TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </TabsContent>
+                                 <TabsContent value="withdrawals" className="mt-4">
+                                    <div className="w-full overflow-x-auto">
+                                        <Table>
+                                            <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
+                                            <TableBody>
+                                                {selectedUser.transactions.filter(tx => tx.activity.toLowerCase().includes('withdrawal')).map((tx, i) => (
+                                                    <TableRow key={i}>
+                                                        <TableCell>{tx.date}</TableCell>
+                                                        <TableCell>{tx.activity}</TableCell>
+                                                        <TableCell>{tx.amount}</TableCell>
+                                                        <TableCell><Badge className={getTransactionStatusColor(tx.status)}>{tx.status}</Badge></TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </TabsContent>
+                                <TabsContent value="loans" className="mt-4">
+                                    <div className="w-full overflow-x-auto">
+                                        <Table>
+                                            <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
+                                            <TableBody>
+                                                {selectedUser.transactions.filter(tx => tx.activity.toLowerCase().includes('loan')).map((tx, i) => (
+                                                    <TableRow key={i}>
+                                                        <TableCell>{tx.date}</TableCell>
+                                                        <TableCell>{tx.activity}</TableCell>
+                                                        <TableCell>{tx.amount}</TableCell>
+                                                        <TableCell><Badge className={getTransactionStatusColor(tx.status)}>{tx.status}</Badge></TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
                                     </div>
                                 </TabsContent>
                             </Tabs>
@@ -248,5 +281,7 @@ export default function UsersPage() {
             </div>
         </div>
     );
+
+    
 
     
