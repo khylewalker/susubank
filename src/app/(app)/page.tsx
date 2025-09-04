@@ -27,24 +27,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MoreVertical } from "lucide-react";
 
-const members = [
+const members: any[] = [
 ];
 
-const groupsData = [
-    {
-        id: "group-a",
-        name: "Group A",
-        totalContributions: 12500,
-        totalWithdrawals: 5000,
-        members: [],
-    },
-    {
-        id: "group-b",
-        name: "Group B",
-        totalContributions: 8200,
-        totalWithdrawals: 2100,
-        members: [],
-    },
+const groupsData: any[] = [
 ];
 
 export default function DashboardPage() {
