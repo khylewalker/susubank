@@ -83,34 +83,34 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline">Total Registered Users</CardTitle>
+            <CardTitle className="font-headline text-base">Total Registered Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">48</p>
+            <p className="text-2xl font-bold">48</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline">Total Registered Groups</CardTitle>
+            <CardTitle className="font-headline text-base">Total Registered Groups</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">3</p>
+            <p className="text-2xl font-bold">3</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline">Total Contributions</CardTitle>
+            <CardTitle className="font-headline text-base">Total Contributions</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">GH₵85,200.00</p>
+            <p className="text-2xl font-bold">GH₵85,200.00</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline">Total Withdrawals</CardTitle>
+            <CardTitle className="font-headline text-base">Total Withdrawals</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">GH₵40,150.00</p>
+            <p className="text-2xl font-bold">GH₵40,150.00</p>
           </CardContent>
         </Card>
       </div>
