@@ -29,31 +29,10 @@ import { MoreVertical } from "lucide-react";
 
 const members = [
   {
-    name: "Ama Badu",
-    avatar: "https://picsum.photos/100/100?random=1",
-    role: "Admin",
-    contributed: "GH₵5,250.00",
-    status: "Active",
-  },
-  {
     name: "Kofi Adu",
     avatar: "https://picsum.photos/100/100?random=2",
-    role: "Member",
-    contributed: "GH₵4,800.00",
-    status: "Active",
-  },
-  {
-    name: "Yaw Mensah",
-    avatar: "https://picsum.photos/100/100?random=3",
-    role: "Member",
-    contributed: "GH₵4,800.00",
-    status: "On-hold",
-  },
-  {
-    name: "Adwoa Boateng",
-    avatar: "https://picsum.photos/100/100?random=4",
-    role: "Member",
-    contributed: "GH₵5,100.00",
+    role: "Admin",
+    contributed: "GH₵5,250.00",
     status: "Active",
   },
 ];
@@ -86,7 +65,7 @@ export default function DashboardPage() {
             <CardTitle className="text-base font-medium">Total Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">48</p>
+            <p className="text-2xl font-bold">1</p>
           </CardContent>
         </Card>
         <Card>

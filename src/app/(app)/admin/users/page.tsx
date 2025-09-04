@@ -44,25 +44,6 @@ const initialUsers = [
             { date: '2024-06-25', activity: 'Loan Request', amount: 'GH₵1,200.00', status: 'Rejected' },
         ]
     },
-    { 
-        id: 2, name: 'Ama Badu', avatar: 'https://picsum.photos/100/100?random=1', status: 'Member', previousStatus: 'Member', totalContributions: 'GH₵4,800', withdrawals: 'GH₵3,000', loanBalance: 'GH₵0', joinDate: '2022-01-20',
-        transactions: [
-            { date: '2024-07-14', activity: 'Contribution', amount: 'GH₵250.00', status: 'Approved' },
-        ] 
-    },
-    { 
-        id: 3, name: 'Yaw Mensah', avatar: 'https://picsum.photos/100/100?random=3', status: 'Loan', previousStatus: 'Loan', totalContributions: 'GH₵4,800', withdrawals: 'GH₵5,000', loanBalance: 'GH₵1,200', joinDate: '2022-02-10',
-        transactions: [
-            { date: '2024-07-10', activity: 'Loan Disbursement', amount: 'GH₵1,200.00', status: 'Approved' },
-            { date: '2024-06-16', activity: 'Contribution', amount: 'GH₵250.00', status: 'Approved' },
-        ]
-    },
-    { 
-        id: 4, name: 'Adwoa Boateng', avatar: 'https://picsum.photos/100/100?random=4', status: 'Suspended', previousStatus: 'Member', totalContributions: 'GH₵5,100', withdrawals: 'GH₵2,500', loanBalance: 'GH₵0', joinDate: '2022-03-01',
-        transactions: [
-            { date: '2024-07-01', activity: 'Account Suspended', amount: '-', status: 'Suspended' },
-        ]
-    },
 ];
 
 type User = typeof initialUsers[0];

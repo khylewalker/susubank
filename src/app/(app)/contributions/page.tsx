@@ -45,9 +45,7 @@ const contributionHistory = [
 
 const allContributions = [
     { desc: 'July Contribution', member: 'Kofi Adu', type: 'Contribution', amount: 'GH₵250.00', date: '2024-07-15' },
-    { desc: 'July Contribution', member: 'Ama Badu', type: 'Contribution', amount: 'GH₵250.00', date: '2024-07-14' },
     { desc: 'June Contribution', member: 'Kofi Adu', type: 'Contribution', amount: 'GH₵250.00', date: '2024-06-15' },
-    { desc: 'June Contribution', member: 'Yaw Mensah', type: 'Contribution', amount: 'GH₵250.00', date: '2024-06-16' },
 ];
 
 

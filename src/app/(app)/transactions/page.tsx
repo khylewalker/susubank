@@ -40,8 +40,6 @@ import { Separator } from '@/components/ui/separator';
 
 const transactionsData = [
     { ref: 'REF-00125', member: 'Kofi Adu', email: 'k.adu@email.com', avatar: 'https://picsum.photos/100/100?random=2', type: 'Contribution', amount: 'GH₵250.00', date: '2024-07-15', status: 'Settled', method: 'Bank Transfer', category: 'Monthly Dues', cycle: 'July 2024' },
-    { ref: 'W-REF-0045', member: 'Yaw Mensah', email: 'y.mensah@email.com', avatar: 'https://picsum.photos/100/100?random=3', type: 'Withdrawal', amount: 'GH₵5,000.00', date: '2024-07-14', status: 'Pending', method: 'Mobile Money', category: 'Loan', cycle: 'July 2024' },
-    { ref: 'REF-00124', member: 'Ama Badu', email: 'a.badu@email.com', avatar: 'https://picsum.photos/100/100?random=1', type: 'Contribution', amount: 'GH₵250.00', date: '2024-07-14', status: 'Settled', method: 'Bank Transfer', category: 'Monthly Dues', cycle: 'July 2024' },
     { ref: 'FEE-0023', member: 'System', email: 'system', avatar: '', type: 'Fee', amount: 'GH₵5.00', date: '2024-07-12', status: 'Settled', method: 'N/A', category: 'Service Fee', cycle: 'July 2024' },
 ];
 

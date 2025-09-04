@@ -37,14 +37,10 @@ import { PlusCircle, Filter } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
 const pendingApprovals = [
-    { ref: 'W-REF-0045', amount: 'GH₵5,000.00', member: 'Yaw Mensah', status: 'Awaiting' },
-    { ref: 'W-REF-0044', amount: 'GH₵2,500.00', member: 'Adwoa Boateng', status: 'Needs 1 more' },
-    { ref: 'W-REF-0043', amount: 'GH₵1,000.00', member: 'Esi Williams', status: 'Awaiting' },
 ];
 
 const withdrawalHistory = [
     { desc: 'Business Investment', member: 'Kofi Adu', type: 'Withdrawal', amount: 'GH₵10,000.00', date: '2024-07-05' },
-    { desc: 'Family Emergency', member: 'Ama Badu', type: 'Withdrawal', amount: 'GH₵3,000.00', date: '2024-06-20' },
 ];
 
 
@@ -90,8 +86,8 @@ export default function WithdrawalsPage() {
             <CardTitle className="font-headline">Pending Requests</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">3</p>
-            <p className="text-sm text-muted-foreground">Totaling GH₵8,500.00</p>
+            <p className="text-2xl font-bold">0</p>
+            <p className="text-sm text-muted-foreground">Totaling GH₵0.00</p>
           </CardContent>
         </Card>
         <Card>

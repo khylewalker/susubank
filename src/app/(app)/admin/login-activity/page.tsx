@@ -28,9 +28,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const loginActivity = [
     { id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', role: 'Admin', residence: 'Accra, Ghana', timestamp: '2024-07-22 10:00 AM', status: 'Active', group: 'Group A', email: 'k.adu@email.com', phone: '+233 24 123 4567' },
-    { id: 2, name: 'Ama Badu', avatar: 'https://picsum.photos/100/100?random=1', role: 'Member', residence: 'Kumasi, Ghana', timestamp: '2024-07-22 09:45 AM', status: 'Logged Out', group: 'Group B', email: 'a.badu@email.com', phone: '+233 24 234 5678' },
-    { id: 3, name: 'Yaw Mensah', avatar: 'https://picsum.photos/100/100?random=3', role: 'Member', residence: 'Accra, Ghana', timestamp: '2024-07-22 09:30 AM', status: 'Failed', group: 'Group A', email: 'y.mensah@email.com', phone: '+233 24 345 6789' },
-    { id: 4, name: 'Adwoa Boateng', avatar: 'https://picsum.photos/100/100?random=4', role: 'Member', residence: 'Tema, Ghana', timestamp: '2024-07-21 08:00 PM', status: 'Logged Out', group: 'Group C', email: 'a.boateng@email.com', phone: '+233 24 456 7890' },
     { id: 5, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', role: 'Admin', residence: 'Accra, Ghana', timestamp: '2024-07-21 07:55 PM', status: 'Logged Out', group: 'Group A', email: 'k.adu@email.com', phone: '+233 24 123 4567' },
 ];
 
