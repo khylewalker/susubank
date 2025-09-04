@@ -1,6 +1,9 @@
 
 "use client";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   Card,
   CardContent,
@@ -27,8 +30,60 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
+
+const formSchema = z.object({
+  fullName: z.string().min(1, { message: "Full name is required." }),
+  email: z.string().email({ message: "Invalid email address." }),
+  phone: z.string().min(1, { message: "Phone number is required." }),
+  dob: z.string().min(1, { message: "Date of birth is required." }),
+  nationality: z.string().min(1, { message: "Please select a nationality." }),
+  address: z.string().min(1, { message: "Residential address is required." }),
+  idType: z.string().min(1, { message: "Government ID type is required." }),
+  idNumber: z.string().min(1, { message: "ID number is required." }),
+  role: z.string().min(1, { message: "Please select a role." }),
+  initialContribution: z.string().optional(),
+  terms: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms.",
+  }),
+});
 
 export default function CreateMemberPage() {
+    const { toast } = useToast();
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            fullName: "",
+            email: "",
+            phone: "",
+            dob: "",
+            nationality: "",
+            address: "",
+            idType: "",
+            idNumber: "",
+            role: "",
+            initialContribution: "",
+            terms: false,
+        },
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log(values);
+        toast({
+            title: "Member Created",
+            description: `${values.fullName} has been added to the group.`,
+        });
+        form.reset();
+    }
+
     return (
         <div className="flex flex-col gap-6">
             <header>
@@ -48,77 +103,160 @@ export default function CreateMemberPage() {
                     <CardTitle className="font-headline">Add a New Member</CardTitle>
                     <CardDescription>Enter the details below to add a new member to the group.</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="full-name">Full Name</Label>
-                        <Input id="full-name" placeholder="As shown on government ID" required />
-                    </div>
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input id="email" type="email" placeholder="a.badu@email.com" />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="phone">Phone</Label>
-                            <Input id="phone" placeholder="+233 24 123 4567" />
-                        </div>
-                    </div>
-                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div className="space-y-2">
-                            <Label htmlFor="dob">Date of Birth</Label>
-                            <Input id="dob" type="date" required />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="nationality">Nationality</Label>
-                            <Select>
-                                <SelectTrigger id="nationality"><SelectValue placeholder="Select" /></SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="ghana">Ghana</SelectItem>
-                                    <SelectItem value="nigeria">Nigeria</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="address">Residential Address</Label>
-                        <Input id="address" placeholder="123 Main St, Anytown" required />
-                    </div>
-                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div className="space-y-2">
-                            <Label htmlFor="id-type">Government ID Type</Label>
-                            <Input id="id-type" placeholder="Passport, Ghana Card, etc." required />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="id-number">ID Number</Label>
-                            <Input id="id-number" placeholder="GHA-123456789-0" required />
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div className="space-y-2">
-                            <Label htmlFor="role">Role</Label>
-                            <Select>
-                                <SelectTrigger id="role"><SelectValue placeholder="Select Role" /></SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="member">Member</SelectItem>
-                                    <SelectItem value="admin">Admin</SelectItem>
-                                    <SelectItem value="contributor">Contributor</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="initialContribution">Initial Contribution</Label>
-                            <Input id="initialContribution" type="number" placeholder="250.00" />
-                        </div>
-                    </div>
-                    <div className="flex items-start space-x-2 pt-2">
-                        <Checkbox id="terms" required />
-                        <div className="grid gap-1.5 leading-none">
-                            <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                I confirm this information is correct and the member agrees to the terms.
-                            </label>
-                        </div>
-                    </div>
-                    <Button>Create Member</Button>
+                <CardContent>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="fullName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Full Name</FormLabel>
+                                        <FormControl><Input placeholder="As shown on government ID" {...field} /></FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <FormField
+                                    control={form.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Email</FormLabel>
+                                            <FormControl><Input type="email" placeholder="a.badu@email.com" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                 <FormField
+                                    control={form.control}
+                                    name="phone"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Phone</FormLabel>
+                                            <FormControl><Input placeholder="+233 24 123 4567" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <FormField
+                                    control={form.control}
+                                    name="dob"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Date of Birth</FormLabel>
+                                            <FormControl><Input type="date" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="nationality"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Nationality</FormLabel>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl><SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger></FormControl>
+                                                <SelectContent>
+                                                    <SelectItem value="ghana">Ghana</SelectItem>
+                                                    <SelectItem value="nigeria">Nigeria</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <FormField
+                                control={form.control}
+                                name="address"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Residential Address</FormLabel>
+                                        <FormControl><Input placeholder="123 Main St, Anytown" {...field} /></FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <FormField
+                                    control={form.control}
+                                    name="idType"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Government ID Type</FormLabel>
+                                            <FormControl><Input placeholder="Passport, Ghana Card, etc." {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="idNumber"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>ID Number</FormLabel>
+                                            <FormControl><Input placeholder="GHA-123456789-0" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <FormField
+                                    control={form.control}
+                                    name="role"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Role</FormLabel>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl><SelectTrigger><SelectValue placeholder="Select Role" /></SelectTrigger></FormControl>
+                                                <SelectContent>
+                                                    <SelectItem value="member">Member</SelectItem>
+                                                    <SelectItem value="admin">Admin</SelectItem>
+                                                    <SelectItem value="contributor">Contributor</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="initialContribution"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Initial Contribution</FormLabel>
+                                            <FormControl><Input type="number" placeholder="250.00" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <FormField
+                                control={form.control}
+                                name="terms"
+                                render={({ field }) => (
+                                    <FormItem className="flex items-start space-x-2 pt-2">
+                                        <FormControl>
+                                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                                        </FormControl>
+                                        <div className="grid gap-1.5 leading-none">
+                                            <Label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                                 I confirm this information is correct and the member agrees to the terms.
+                                            </Label>
+                                             <FormMessage />
+                                        </div>
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit">Create Member</Button>
+                        </form>
+                    </Form>
                 </CardContent>
             </Card>
         </div>
