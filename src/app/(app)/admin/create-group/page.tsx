@@ -77,6 +77,12 @@ const Step1 = ({ nextStep, formData, setFormData }: any) => (
             </Select>
         </div>
     </div>
+     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+            <Label htmlFor="expectedDuration">Expected Duration (Months)</Label>
+            <Input id="expectedDuration" type="number" placeholder="12" min="1" value={formData.expectedDuration} onChange={(e) => setFormData({...formData, expectedDuration: e.target.value})} />
+        </div>
+    </div>
     <div className="flex justify-end pt-4">
       <Button onClick={nextStep}>Next</Button>
     </div>
@@ -130,6 +136,7 @@ const Step3 = ({ prevStep, formData, submitForm }: any) => (
                 <p className="text-muted-foreground">Max Members</p><p className="font-medium">{formData.maxMembers}</p>
                 <p className="text-muted-foreground">Contribution</p><p className="font-medium">GH₵{formData.contributionAmount}</p>
                 <p className="text-muted-foreground">Payout Method</p><p className="font-medium">{formData.payoutMethod}</p>
+                <p className="text-muted-foreground">Expected Duration</p><p className="font-medium">{formData.expectedDuration} months</p>
             </div>
         </div>
          <div>
@@ -161,6 +168,7 @@ export default function CreateGroupPage() {
         maxMembers: "",
         contributionAmount: "",
         payoutMethod: "",
+        expectedDuration: "",
         contributionDay: "",
         gracePeriod: "",
         minMembers: "",
