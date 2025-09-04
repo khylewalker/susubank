@@ -109,7 +109,7 @@ export default function SignUpPage() {
             <Link href="/sign-in">Back</Link>
           </Button>
           <Button asChild>
-            <Link href="/">Create Account</Link>
+            <Link href="/dashboard">Create Account</Link>
           </Button>
         </div>
          <p className="text-xs text-muted-foreground">Final step: Review & submit</p>

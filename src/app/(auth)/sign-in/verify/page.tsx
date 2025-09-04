@@ -62,7 +62,7 @@ export default function VerifyPage() {
           </Link>
         </div>
         <Button asChild className="w-full">
-           <Link href="/">Continue</Link>
+           <Link href="/dashboard">Continue</Link>
         </Button>
       </CardFooter>
     </Card>

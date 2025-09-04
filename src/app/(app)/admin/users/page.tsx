@@ -111,7 +111,7 @@ export default function UsersPage() {
                 <div>
                     <Breadcrumb>
                         <BreadcrumbList>
-                        <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+                        <BreadcrumbItem><BreadcrumbLink href="/dashboard">Home</BreadcrumbLink></BreadcrumbItem>
                         <BreadcrumbSeparator />
                          <BreadcrumbItem><BreadcrumbPage>Admin</BreadcrumbPage></BreadcrumbItem>
                          <BreadcrumbSeparator />

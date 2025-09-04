@@ -45,7 +45,7 @@ const initialUserRequests: any[] = [
 const pendingRequestsCount = initialUserRequests.filter(req => req.status === 'Pending').length;
 
 const navItems = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/contributions", label: "Contributions", icon: ReceiptText },
   { href: "/withdrawals", label: "Withdrawals", icon: ArrowLeftRight },
   { href: "/transactions", label: "Transactions", icon: History },

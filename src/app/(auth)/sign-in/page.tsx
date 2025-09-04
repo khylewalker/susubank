@@ -92,7 +92,7 @@ export default function SignInPage() {
         localStorage.removeItem('lastLoginAttemptEmail');
         localStorage.removeItem(`status_${user.email}`);
 
-        router.push("/"); // Redirect to dashboard
+        router.push("/dashboard"); // Redirect to dashboard
       }
       setIsLoading(false);
     }, 1000);
