@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Check, X } from 'lucide-react';
+import { Check, X, CheckCheck, XCircle } from 'lucide-react';
 
 const userRequests = [
     { id: 'REQ-001', member: 'Yaw Mensah', type: 'Withdrawal', details: 'GH₵5,000.00 for Business', date: '2024-07-20', status: 'Pending' },
@@ -126,13 +126,18 @@ export default function UserRequestsPage() {
 
             <Tabs defaultValue="all">
                 <Card>
-                    <CardHeader>
+                    <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <TabsList>
                             <TabsTrigger value="all">All Requests</TabsTrigger>
                             <TabsTrigger value="pending">Pending</TabsTrigger>
                             <TabsTrigger value="approved">Approved</TabsTrigger>
                             <TabsTrigger value="rejected">Rejected</TabsTrigger>
+                             <TabsTrigger value="new-member">New Member</TabsTrigger>
                         </TabsList>
+                        <div className="flex gap-2 shrink-0">
+                            <Button variant="outline"><CheckCheck /> Approve All</Button>
+                            <Button variant="destructive"><XCircle /> Reject All</Button>
+                        </div>
                     </CardHeader>
                     <CardContent>
                         <TabsContent value="all">
@@ -146,6 +151,9 @@ export default function UserRequestsPage() {
                         </TabsContent>
                         <TabsContent value="rejected">
                             <RequestsTable requests={userRequests.filter(r => r.status === 'Rejected')} />
+                        </TabsContent>
+                         <TabsContent value="new-member">
+                            <RequestsTable requests={userRequests.filter(r => r.type === 'New Member')} />
                         </TabsContent>
                     </CardContent>
                 </Card>
