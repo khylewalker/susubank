@@ -30,7 +30,27 @@ import { MoreVertical } from "lucide-react";
 const members = [
 ];
 
+const groupsData = [
+    {
+        id: "group-a",
+        name: "Group A",
+        totalContributions: 12500,
+        totalWithdrawals: 5000,
+        members: [],
+    },
+    {
+        id: "group-b",
+        name: "Group B",
+        totalContributions: 8200,
+        totalWithdrawals: 2100,
+        members: [],
+    },
+];
+
 export default function DashboardPage() {
+  const totalContributions = groupsData.reduce((acc, group) => acc + group.totalContributions, 0);
+  const totalWithdrawals = groupsData.reduce((acc, group) => acc + group.totalWithdrawals, 0);
+
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -66,8 +86,8 @@ export default function DashboardPage() {
             <CardTitle className="text-base font-medium">Total Groups Created</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">3</p>
-            <p className="text-xs text-muted-foreground">2 active, 1 inactive</p>
+            <p className="text-2xl font-bold">{groupsData.length}</p>
+            <p className="text-xs text-muted-foreground">{groupsData.length} active</p>
           </CardContent>
         </Card>
         <Card>
@@ -75,7 +95,7 @@ export default function DashboardPage() {
             <CardTitle className="text-base font-medium">All Group Contributions</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">GH₵85,200.00</p>
+            <p className="text-2xl font-bold">GH₵{totalContributions.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
           </CardContent>
         </Card>
         <Card>
@@ -83,7 +103,7 @@ export default function DashboardPage() {
             <CardTitle className="text-base font-medium">All Group Withdrawals</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">GH₵40,150.00</p>
+            <p className="text-2xl font-bold">GH₵{totalWithdrawals.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
           </CardContent>
         </Card>
       </div>
