@@ -32,12 +32,13 @@ import { Check, X, CheckCheck, XCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 const initialUserRequests = [
-    { id: 'REQ-001', member: 'Yaw Mensah', type: 'Withdrawal', details: 'GH₵5,000.00 for Business', date: '2024-07-20', status: 'Pending' },
-    { id: 'REQ-002', member: 'Adwoa Boateng', type: 'Loan', details: 'GH₵1,200.00 for School Fees', date: '2024-07-19', status: 'Pending' },
-    { id: 'REQ-003', member: 'Kofi Adu', type: 'KYC Update', details: 'New Passport Uploaded', date: '2024-07-18', status: 'Approved' },
-    { id: 'REQ-004', member: 'Ama Badu', type: 'Dispute', details: 'Incorrect contribution amount', date: '2024-07-17', status: 'Rejected' },
-    { id: 'REQ-005', member: 'Esi Williams', type: 'New Member', details: 'Wants to join Group A', date: '2024-07-21', status: 'Pending' },
+    { id: 'REQ-001', member: 'Yaw Mensah', group: 'Group A', type: 'Withdrawal', details: 'GH₵5,000.00 for Business', destination: 'MTN MoMo: *** *** 6789', date: '2024-07-20', status: 'Pending' },
+    { id: 'REQ-002', member: 'Adwoa Boateng', group: 'Group C', type: 'Loan', details: 'GH₵1,200.00 for School Fees', destination: '-', date: '2024-07-19', status: 'Pending' },
+    { id: 'REQ-003', member: 'Kofi Adu', group: 'Group A', type: 'KYC Update', details: 'New Passport Uploaded', destination: '-', date: '2024-07-18', status: 'Approved' },
+    { id: 'REQ-004', member: 'Ama Badu', group: 'Group B', type: 'Dispute', details: 'Incorrect contribution amount', destination: '-', date: '2024-07-17', status: 'Rejected' },
+    { id: 'REQ-005', member: 'Esi Williams', group: 'N/A', type: 'New Member', details: 'Wants to join Group A', destination: '-', date: '2024-07-21', status: 'Pending' },
 ];
+
 
 type UserRequest = typeof initialUserRequests[0];
 
@@ -66,8 +67,14 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
     return (
         <Table>
             <TableHeader><TableRow>
-                <TableHead>Request ID</TableHead><TableHead>Member</TableHead><TableHead>Type</TableHead>
-                <TableHead>Details</TableHead><TableHead>Date</TableHead><TableHead>Status</TableHead>
+                <TableHead>Request ID</TableHead>
+                <TableHead>Member</TableHead>
+                <TableHead className="hidden md:table-cell">Group</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Details</TableHead>
+                <TableHead className="hidden lg:table-cell">Destination</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
             </TableRow></TableHeader>
             <TableBody>
@@ -75,8 +82,10 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
                     <TableRow key={req.id}>
                         <TableCell className="font-mono text-xs">{req.id}</TableCell>
                         <TableCell>{req.member}</TableCell>
+                        <TableCell className="hidden md:table-cell">{req.group}</TableCell>
                         <TableCell><Badge className={getTypeColor(req.type)}>{req.type}</Badge></TableCell>
                         <TableCell>{req.details}</TableCell>
+                        <TableCell className="hidden lg:table-cell">{req.destination}</TableCell>
                         <TableCell>{req.date}</TableCell>
                         <TableCell><Badge className={getStatusColor(req.status)}>{req.status}</Badge></TableCell>
                         <TableCell className="text-right">
