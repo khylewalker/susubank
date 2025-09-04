@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -9,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarFooter,
   SidebarGroup,
+  SidebarMenuBadge,
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/logo";
 import {
@@ -38,7 +40,7 @@ const navItems = [
 const adminNavItems = [
     { href: "/admin/users", label: "Users", icon: Users },
     { href: "/admin/create-member", label: "Add New Member", icon: UserPlus },
-    { href: "/admin/requests", label: "User Requests", icon: BellRing },
+    { href: "/admin/requests", label: "User Requests", icon: BellRing, badge: "2" },
 ];
 
 export function AppSidebar() {
@@ -81,6 +83,7 @@ export function AppSidebar() {
                 <Link href={item.href}>
                   <item.icon />
                   <span>{item.label}</span>
+                  {item.badge && <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>}
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

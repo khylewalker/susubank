@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -30,12 +31,36 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MessageSquare, MoreHorizontal, Trash2, UserX } from 'lucide-react';
+import Link from 'next/link';
 
 const users = [
-    { id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', status: 'Contributor', totalContributions: '$5,250', withdrawals: '$10,000', loanBalance: '$0', joinDate: '2022-01-15' },
-    { id: 2, name: 'Ama Badu', avatar: 'https://picsum.photos/100/100?random=1', status: 'Member', totalContributions: '$4,800', withdrawals: '$3,000', loanBalance: '$0', joinDate: '2022-01-20' },
-    { id: 3, name: 'Yaw Mensah', avatar: 'https://picsum.photos/100/100?random=3', status: 'Loan', totalContributions: '$4,800', withdrawals: '$5,000', loanBalance: '$1,200', joinDate: '2022-02-10' },
-    { id: 4, name: 'Adwoa Boateng', avatar: 'https://picsum.photos/100/100?random=4', status: 'Suspended', totalContributions: '$5,100', withdrawals: '$2,500', loanBalance: '$0', joinDate: '2022-03-01' },
+    { 
+        id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', status: 'Contributor', totalContributions: '$5,250', withdrawals: '$10,000', loanBalance: '$0', joinDate: '2022-01-15',
+        transactions: [
+            { date: '2024-07-15', activity: 'Contribution', amount: '$250.00', status: 'Approved' },
+            { date: '2024-07-05', activity: 'Withdrawal', amount: '$10,000.00', status: 'Approved' },
+            { date: '2024-06-25', activity: 'Loan Request', amount: '$1,200.00', status: 'Rejected' },
+        ]
+    },
+    { 
+        id: 2, name: 'Ama Badu', avatar: 'https://picsum.photos/100/100?random=1', status: 'Member', totalContributions: '$4,800', withdrawals: '$3,000', loanBalance: '$0', joinDate: '2022-01-20',
+        transactions: [
+            { date: '2024-07-14', activity: 'Contribution', amount: '$250.00', status: 'Approved' },
+        ] 
+    },
+    { 
+        id: 3, name: 'Yaw Mensah', avatar: 'https://picsum.photos/100/100?random=3', status: 'Loan', totalContributions: '$4,800', withdrawals: '$5,000', loanBalance: '$1,200', joinDate: '2022-02-10',
+        transactions: [
+            { date: '2024-07-10', activity: 'Loan Disbursement', amount: '$1,200.00', status: 'Approved' },
+            { date: '2024-06-16', activity: 'Contribution', amount: '$250.00', status: 'Approved' },
+        ]
+    },
+    { 
+        id: 4, name: 'Adwoa Boateng', avatar: 'https://picsum.photos/100/100?random=4', status: 'Suspended', totalContributions: '$5,100', withdrawals: '$2,500', loanBalance: '$0', joinDate: '2022-03-01',
+        transactions: [
+            { date: '2024-07-01', activity: 'Account Suspended', amount: '-', status: 'Suspended' },
+        ]
+    },
 ];
 
 type User = typeof users[0];
@@ -48,6 +73,15 @@ export default function UsersPage() {
             case 'contributor': return 'bg-blue-100 text-blue-800';
             case 'member': return 'bg-green-100 text-green-800';
             case 'loan': return 'bg-yellow-100 text-yellow-800';
+            case 'suspended': return 'bg-red-100 text-red-800';
+            default: return 'bg-gray-100 text-gray-800';
+        }
+    }
+    
+     const getTransactionStatusColor = (status: string) => {
+        switch (status.toLowerCase()) {
+            case 'approved': return 'bg-green-100 text-green-800';
+            case 'rejected': return 'bg-red-100 text-red-800';
             case 'suspended': return 'bg-red-100 text-red-800';
             default: return 'bg-gray-100 text-gray-800';
         }
@@ -104,7 +138,7 @@ export default function UsersPage() {
                         <CardHeader>
                             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                                 <div>
-                                    <CardTitle className="font-headline text-2xl">{selectedUser.name}</CardTitle>
+                                    <Link href={`/members/${selectedUser.id}`}><CardTitle className="font-headline text-2xl hover:underline">{selectedUser.name}</CardTitle></Link>
                                     <CardDescription>ID: {selectedUser.id} &bull; Joined: {selectedUser.joinDate}</CardDescription>
                                 </div>
                                 <div className="flex items-center gap-2 shrink-0">
@@ -138,9 +172,14 @@ export default function UsersPage() {
                                     <Table>
                                         <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
                                         <TableBody>
-                                            <TableRow><TableCell>2024-07-15</TableCell><TableCell>Contribution</TableCell><TableCell>$250.00</TableCell><TableCell><Badge className="bg-green-100 text-green-800">Approved</Badge></TableCell></TableRow>
-                                            <TableRow><TableCell>2024-07-05</TableCell><TableCell>Withdrawal</TableCell><TableCell>$10,000.00</TableCell><TableCell><Badge className="bg-green-100 text-green-800">Approved</Badge></TableCell></TableRow>
-                                            <TableRow><TableCell>2024-06-25</TableCell><TableCell>Loan Request</TableCell><TableCell>$1,200.00</TableCell><TableCell><Badge className="bg-red-100 text-red-800">Rejected</Badge></TableCell></TableRow>
+                                            {selectedUser.transactions.map((tx, i) => (
+                                                <TableRow key={i}>
+                                                    <TableCell>{tx.date}</TableCell>
+                                                    <TableCell>{tx.activity}</TableCell>
+                                                    <TableCell>{tx.amount}</TableCell>
+                                                    <TableCell><Badge className={getTransactionStatusColor(tx.status)}>{tx.status}</Badge></TableCell>
+                                                </TableRow>
+                                            ))}
                                         </TableBody>
                                     </Table>
                                     </div>
