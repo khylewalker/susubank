@@ -86,7 +86,7 @@ export default function DashboardPage() {
             <CardTitle className="font-headline">Total Registered Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">48</p>
+            <p className="text-3xl font-bold">48</p>
           </CardContent>
         </Card>
         <Card>
@@ -94,7 +94,7 @@ export default function DashboardPage() {
             <CardTitle className="font-headline">Total Registered Groups</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">3</p>
+            <p className="text-3xl font-bold">3</p>
           </CardContent>
         </Card>
         <Card>
@@ -102,7 +102,7 @@ export default function DashboardPage() {
             <CardTitle className="font-headline">Total Contributions</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">GH₵85,200.00</p>
+            <p className="text-3xl font-bold">GH₵85,200.00</p>
           </CardContent>
         </Card>
         <Card>
@@ -110,7 +110,7 @@ export default function DashboardPage() {
             <CardTitle className="font-headline">Total Withdrawals</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">GH₵40,150.00</p>
+            <p className="text-3xl font-bold">GH₵40,150.00</p>
           </CardContent>
         </Card>
       </div>
