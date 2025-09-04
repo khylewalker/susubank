@@ -191,7 +191,15 @@ export default function CreateMemberPage() {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Government ID Type</FormLabel>
-                                            <FormControl><Input placeholder="Passport, Ghana Card, etc." {...field} /></FormControl>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl><SelectTrigger><SelectValue placeholder="Select ID Type" /></SelectTrigger></FormControl>
+                                                <SelectContent>
+                                                    <SelectItem value="ghana_card">Ghana Card</SelectItem>
+                                                    <SelectItem value="passport">Passport</SelectItem>
+                                                    <SelectItem value="drivers_license">Driver's License</SelectItem>
+                                                    <SelectItem value="voters_id">Voter's ID</SelectItem>
+                                                </SelectContent>
+                                            </Select>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -202,7 +210,7 @@ export default function CreateMemberPage() {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>ID Number</FormLabel>
-                                            <FormControl><Input placeholder="GHA-123456789-0" {...field} /></FormControl>
+                                            <FormControl><Input placeholder="Enter ID Number" {...field} /></FormControl>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -285,3 +293,4 @@ export default function CreateMemberPage() {
     );
 
     
+}
