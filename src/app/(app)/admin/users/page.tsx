@@ -92,7 +92,6 @@ export default function UsersDirectoryPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <Card className="lg:col-span-1 h-fit">
                     <CardHeader>
-                        <Input placeholder="Search members..." />
                     </CardHeader>
                     <CardContent className="p-0">
                         <div className="flex flex-col">

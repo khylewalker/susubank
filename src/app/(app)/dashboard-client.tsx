@@ -42,10 +42,6 @@ export default function DashboardClient() {
 
   return (
     <>
-      <Button onClick={onCheck} disabled={isLoading}>
-        {isLoading ? "Checking..." : "Run Fraud Check"}
-      </Button>
-
       {fraudResult && (
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogContent>

@@ -35,7 +35,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, PlusCircle, Download, MoreHorizontal, Calendar } from 'lucide-react';
+import { PlusCircle, Download, MoreHorizontal, Calendar } from 'lucide-react';
 
 const adminTransactions = [
     { time: '2024-07-20 10:05 AM', type: 'Deposit', member: 'Kofi Adu', ref: 'REF-00125', amount: '$250.00', status: 'Approved' },
@@ -105,10 +105,6 @@ export default function AdminTransactionsPage() {
                                 <TabsTrigger value="withdrawals">Withdrawals</TabsTrigger>
                                 <TabsTrigger value="disputes">Disputes</TabsTrigger>
                             </TabsList>
-                             <div className="relative w-full max-w-xs">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                <Input placeholder="Search transactions..." className="pl-10" />
-                            </div>
                         </div>
                         <TabsContent value="all" className="mt-4">
                             <Card>

@@ -33,7 +33,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MoreVertical, Search, Users, TrendingUp, Clock } from "lucide-react";
+import { MoreVertical, Users, TrendingUp, Clock } from "lucide-react";
 import DashboardClient from "./dashboard-client";
 
 const members = [
@@ -86,10 +86,6 @@ export default function DashboardPage() {
           <h1 className="text-3xl font-bold font-headline mt-2">Dashboard</h1>
         </div>
         <div className="flex items-center gap-4">
-          <div className="relative w-full max-w-xs">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input placeholder="Search..." className="pl-10" />
-          </div>
           <DashboardClient />
         </div>
       </header>
