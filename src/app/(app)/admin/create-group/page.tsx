@@ -120,7 +120,7 @@ const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => {
     const newIndex = formData.members.length;
     setFormData({
       ...formData,
-      members: [...formData.members, { fullName: "", email: "", phone: "", idType: "", idNumber: "", residence: "", sourceOfIncome: "", dob: "", nationality: "", group: "" }],
+      members: [...formData.members, { fullName: "", email: "", phone: "", idType: "", idNumber: "", residence: "", sourceOfIncome: "", dob: "", nationality: "" }],
     });
     // Collapse all others and open the new one
     setOpenCollapsibles([`member-${newIndex}`]);
@@ -211,25 +211,14 @@ const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => {
                         <Label htmlFor={`sourceOfIncome-${index}`}>Source of Income</Label>
                         <Input id={`sourceOfIncome-${index}`} placeholder="e.g., Salary, Business" value={member.sourceOfIncome} onChange={(e) => handleMemberChange(index, 'sourceOfIncome', e.target.value)} />
                     </div>
-                    <div className="space-y-2">
-                        <Label htmlFor={`group-${index}`}>Group</Label>
-                        <Select value={member.group} onValueChange={(value) => handleMemberChange(index, 'group', value)}>
-                            <SelectTrigger><SelectValue placeholder="Select Group" /></SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="group-a">Group A</SelectItem>
-                                <SelectItem value="group-b">Group B</SelectItem>
-                                <SelectItem value="group-c">Group C</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
             </CollapsibleContent>
           </Collapsible>
         )
       })}
-      {formData.members.length < 6 ? (
+      {formData.members.length < (parseInt(formData.maxMembers, 10) || 6) ? (
         <Button onClick={addMember} variant="outline">Add Another Member</Button>
       ) : (
-        <p className="text-sm text-center text-muted-foreground p-2 bg-muted rounded-md">Maximum of 6 members reached for this group.</p>
+        <p className="text-sm text-center text-muted-foreground p-2 bg-muted rounded-md">Maximum of {formData.maxMembers} members reached for this group.</p>
       )}
       <div className="flex justify-between pt-4">
         <Button variant="outline" onClick={prevStep}>Back</Button>
@@ -324,11 +313,11 @@ export default function CreateGroupPage() {
         groupName: "",
         groupDescription: "",
         rotationFrequency: "",
-        maxMembers: "",
+        maxMembers: "6",
         contributionAmount: "",
         payoutMethod: "",
         expectedDuration: "",
-        members: [{ fullName: "", email: "", phone: "", idType: "", idNumber: "", residence: "", sourceOfIncome: "", dob: "", nationality: "", group: "" }],
+        members: [{ fullName: "", email: "", phone: "", idType: "", idNumber: "", residence: "", sourceOfIncome: "", dob: "", nationality: "" }],
         contributionDay: "",
         gracePeriod: "",
         minMembers: "",
@@ -336,28 +325,28 @@ export default function CreateGroupPage() {
         startDate: "",
     });
 
-    const validateStep = (stepNumber: number) => {
-        const step1Fields = ['groupName', 'groupDescription', 'rotationFrequency', 'maxMembers', 'contributionAmount', 'payoutMethod', 'expectedDuration'];
-        const step3Fields = ['contributionDay', 'gracePeriod', 'minMembers', 'latePenalty', 'startDate'];
-        
-        if (stepNumber === 1) {
-            for (const field of step1Fields) {
-                if (!formData[field as keyof typeof formData]) {
-                    return false;
-                }
-            }
-        } else if (stepNumber === 2) {
-             for (const member of formData.members) {
-                if (!member.fullName || !member.email || !member.phone || !member.idType || !member.idNumber || !member.residence || !member.sourceOfIncome || !member.dob || !member.nationality || !member.group) {
-                    return false;
-                }
-            }
-        } else if (stepNumber === 3) {
-            for (const field of step3Fields) {
-                if (!formData[field as keyof typeof formData]) {
-                    return false;
-                }
-            }
+    const validateStep = (currentStep: number) => {
+        if (currentStep === 1) {
+            const step1Fields = ['groupName', 'groupDescription', 'rotationFrequency', 'maxMembers', 'contributionAmount', 'payoutMethod', 'expectedDuration'];
+            return step1Fields.every(field => !!formData[field as keyof typeof formData]);
+        }
+        if (currentStep === 2) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return formData.members.every(member => 
+                member.fullName && 
+                member.email && emailRegex.test(member.email) &&
+                member.phone && 
+                member.dob && 
+                member.nationality && 
+                member.idType && 
+                member.idNumber && 
+                member.residence && 
+                member.sourceOfIncome
+            );
+        }
+        if (currentStep === 3) {
+            const step3Fields = ['contributionDay', 'gracePeriod', 'minMembers', 'latePenalty', 'startDate'];
+            return step3Fields.every(field => !!formData[field as keyof typeof formData]);
         }
         return true;
     }
@@ -368,8 +357,8 @@ export default function CreateGroupPage() {
         } else {
             toast({
                 variant: "destructive",
-                title: "Missing Fields",
-                description: "Please fill out all fields before proceeding.",
+                title: "Missing or Invalid Fields",
+                description: "Please fill out all fields correctly before proceeding.",
             });
         }
     };
@@ -427,3 +416,5 @@ export default function CreateGroupPage() {
         </div>
     );
 }
+
+    
