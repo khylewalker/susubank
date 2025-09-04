@@ -51,6 +51,8 @@ const allContributions = [
 
 
 export default function ContributionsPage() {
+  const isAdmin = true; // This would be replaced with actual role-based logic
+
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -68,9 +70,11 @@ export default function ContributionsPage() {
           </Breadcrumb>
           <h1 className="text-3xl font-bold font-headline mt-2">Contributions</h1>
         </div>
-        <div className="flex items-center gap-4">
-          <Button><PlusCircle /> New Contribution</Button>
-        </div>
+        {!isAdmin && (
+            <div className="flex items-center gap-4">
+            <Button><PlusCircle /> New Contribution</Button>
+            </div>
+        )}
       </header>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -137,54 +141,56 @@ export default function ContributionsPage() {
        </Card>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
-        <Card className="xl:col-span-2">
-            <CardHeader>
-                <CardTitle className="font-headline">Make a Contribution</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <div className="space-y-2">
-                    <Label htmlFor="amount">Amount</Label>
-                    <Input id="amount" placeholder="250.00" />
-                </div>
-                 <div className="space-y-2">
-                    <Label htmlFor="cycle">Cycle</Label>
-                    <Select>
-                        <SelectTrigger><SelectValue placeholder="Select Cycle" /></SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="july">July 2024</SelectItem>
-                            <SelectItem value="august">August 2024</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="method">Method</Label>
-                    <Select>
-                        <SelectTrigger><SelectValue placeholder="Select Method" /></SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="transfer">Bank Transfer</SelectItem>
-                            <SelectItem value="momo">Mobile Money</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="date">Date</Label>
-                    <Input id="date" type="date" />
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="reference">Reference</Label>
-                    <Input id="reference" placeholder="REF-00125" />
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="note">Note (Optional)</Label>
-                    <Textarea id="note" placeholder="Note..." />
-                </div>
-                <div className="flex justify-end gap-2 pt-4">
-                    <Button variant="ghost">Cancel</Button>
-                    <Button>Submit Contribution</Button>
-                </div>
-            </CardContent>
-        </Card>
-        <Card className="xl:col-span-3">
+        {!isAdmin && (
+            <Card className="xl:col-span-2">
+                <CardHeader>
+                    <CardTitle className="font-headline">Make a Contribution</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="amount">Amount</Label>
+                        <Input id="amount" placeholder="250.00" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="cycle">Cycle</Label>
+                        <Select>
+                            <SelectTrigger><SelectValue placeholder="Select Cycle" /></SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="july">July 2024</SelectItem>
+                                <SelectItem value="august">August 2024</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="method">Method</Label>
+                        <Select>
+                            <SelectTrigger><SelectValue placeholder="Select Method" /></SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="transfer">Bank Transfer</SelectItem>
+                                <SelectItem value="momo">Mobile Money</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="date">Date</Label>
+                        <Input id="date" type="date" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="reference">Reference</Label>
+                        <Input id="reference" placeholder="REF-00125" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="note">Note (Optional)</Label>
+                        <Textarea id="note" placeholder="Note..." />
+                    </div>
+                    <div className="flex justify-end gap-2 pt-4">
+                        <Button variant="ghost">Cancel</Button>
+                        <Button>Submit Contribution</Button>
+                    </div>
+                </CardContent>
+            </Card>
+        )}
+        <Card className={isAdmin ? "xl:col-span-5" : "xl:col-span-3"}>
           <CardHeader>
             <CardTitle className="font-headline">Contribution History</CardTitle>
           </CardHeader>

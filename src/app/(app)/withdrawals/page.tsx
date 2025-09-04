@@ -48,6 +48,8 @@ const withdrawalHistory = [
 
 
 export default function WithdrawalsPage() {
+  const isAdmin = true; // This would be replaced with actual role-based logic
+
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -65,9 +67,11 @@ export default function WithdrawalsPage() {
           </Breadcrumb>
           <h1 className="text-3xl font-bold font-headline mt-2">Withdrawals</h1>
         </div>
-        <div className="flex items-center gap-4">
-          <Button><PlusCircle /> New Withdrawal</Button>
-        </div>
+        {!isAdmin && (
+            <div className="flex items-center gap-4">
+            <Button><PlusCircle /> New Withdrawal</Button>
+            </div>
+        )}
       </header>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -127,40 +131,42 @@ export default function WithdrawalsPage() {
        </Card>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
-        <Card className="xl:col-span-2">
-            <CardHeader>
-                <CardTitle className="font-headline">Request Withdrawal</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <div className="space-y-2">
-                    <Label htmlFor="amount">Amount</Label>
-                    <Input id="amount" placeholder="5,000.00" />
-                </div>
-                 <div className="space-y-2">
-                    <Label htmlFor="destination">Destination</Label>
-                    <Select>
-                        <SelectTrigger><SelectValue placeholder="Select Account" /></SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="primary">Primary Account (...1234)</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="reason">Reason</Label>
-                    <Input id="reason" placeholder="e.g., Business Investment" />
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="reference">Reference (Auto-generated)</Label>
-                    <Input id="reference" value="W-REF-0046" disabled />
-                </div>
-                <p className="text-xs text-muted-foreground pt-2">Note: All withdrawal requests require approval from at least two admins.</p>
-                <div className="flex justify-end gap-2 pt-4">
-                    <Button variant="ghost">Cancel</Button>
-                    <Button>Submit Request</Button>
-                </div>
-            </CardContent>
-        </Card>
-        <Card className="xl:col-span-3">
+        {!isAdmin && (
+            <Card className="xl:col-span-2">
+                <CardHeader>
+                    <CardTitle className="font-headline">Request Withdrawal</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="amount">Amount</Label>
+                        <Input id="amount" placeholder="5,000.00" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="destination">Destination</Label>
+                        <Select>
+                            <SelectTrigger><SelectValue placeholder="Select Account" /></SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="primary">Primary Account (...1234)</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="reason">Reason</Label>
+                        <Input id="reason" placeholder="e.g., Business Investment" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="reference">Reference (Auto-generated)</Label>
+                        <Input id="reference" value="W-REF-0046" disabled />
+                    </div>
+                    <p className="text-xs text-muted-foreground pt-2">Note: All withdrawal requests require approval from at least two admins.</p>
+                    <div className="flex justify-end gap-2 pt-4">
+                        <Button variant="ghost">Cancel</Button>
+                        <Button>Submit Request</Button>
+                    </div>
+                </CardContent>
+            </Card>
+        )}
+        <Card className={isAdmin ? "xl:col-span-5" : "xl:col-span-3"}>
           <CardHeader>
             <CardTitle className="font-headline">Pending Approvals</CardTitle>
           </CardHeader>

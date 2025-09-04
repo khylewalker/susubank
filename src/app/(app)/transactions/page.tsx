@@ -33,7 +33,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { PlusCircle, Copy, Calendar } from "lucide-react";
+import { Copy, Calendar } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from '@/components/ui/separator';
 
@@ -91,7 +91,6 @@ export default function TransactionsPage() {
           <h1 className="text-3xl font-bold font-headline mt-2">Transactions</h1>
         </div>
         <div className="flex items-center gap-4">
-          <Button><PlusCircle /> New Transaction</Button>
         </div>
       </header>
 
