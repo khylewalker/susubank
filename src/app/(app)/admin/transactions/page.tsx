@@ -35,7 +35,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { PlusCircle, Download, MoreHorizontal, Calendar } from 'lucide-react';
+import { PlusCircle, MoreHorizontal, Calendar } from 'lucide-react';
 
 const adminTransactions = [
     { time: '2024-07-20 10:05 AM', type: 'Deposit', member: 'Kofi Adu', ref: 'REF-00125', amount: '$250.00', status: 'Approved' },
@@ -83,7 +83,6 @@ export default function AdminTransactionsPage() {
                     <Button variant="outline"><Calendar className="mr-2 h-4 w-4"/> Custom Range</Button>
                     <Select><SelectTrigger className="w-32"><SelectValue placeholder="All types" /></SelectTrigger></Select>
                     <Select><SelectTrigger className="w-32"><SelectValue placeholder="Status: Any" /></SelectTrigger></Select>
-                    <Button variant="outline"><Download /> Export</Button>
                     <Button><PlusCircle /> New</Button>
                 </div>
             </header>

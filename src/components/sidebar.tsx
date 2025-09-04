@@ -85,6 +85,16 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter className="mt-auto">
+        <div className="flex items-center gap-3 p-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:py-2">
+            <Avatar className="h-9 w-9">
+              <AvatarImage src="https://picsum.photos/100/100" data-ai-hint="user avatar" alt="User" />
+              <AvatarFallback>KA</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col group-data-[collapsible=icon]:hidden">
+                <p className="text-sm font-medium text-sidebar-foreground">Kofi Adu</p>
+                <p className="text-xs text-sidebar-foreground/70">Admin</p>
+            </div>
+        </div>
         <Separator className="my-2 bg-sidebar-border" />
         <SidebarMenu>
           <SidebarMenuItem>
@@ -95,22 +105,15 @@ export function AppSidebar() {
                 </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
-        </SidebarMenu>
-
-        <div className="flex items-center gap-3 p-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:py-2">
-            <Avatar className="h-9 w-9">
-              <AvatarImage src="https://picsum.photos/100/100" data-ai-hint="user avatar" alt="User" />
-              <AvatarFallback>KA</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col group-data-[collapsible=icon]:hidden">
-                <p className="text-sm font-medium text-sidebar-foreground">Kofi Adu</p>
-                <p className="text-xs text-sidebar-foreground/70">Admin</p>
-            </div>
-            <SidebarMenuButton variant="ghost" size="icon" className="ml-auto group-data-[collapsible=icon]:hidden">
-                <LogOut />
+           <SidebarMenuItem>
+             <SidebarMenuButton asChild tooltip="Logout">
+                <Link href="/sign-in">
+                    <LogOut />
+                    <span>Logout</span>
+                </Link>
             </SidebarMenuButton>
-        </div>
-
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
   );

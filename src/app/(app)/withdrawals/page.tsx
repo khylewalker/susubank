@@ -32,7 +32,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { PlusCircle, Download, Filter } from "lucide-react";
+import { PlusCircle, Filter } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
 const pendingApprovals = [
@@ -66,7 +66,6 @@ export default function WithdrawalsPage() {
           <h1 className="text-3xl font-bold font-headline mt-2">Withdrawals</h1>
         </div>
         <div className="flex items-center gap-4">
-          <Button variant="outline"><Download /> Export</Button>
           <Button><PlusCircle /> New Withdrawal</Button>
         </div>
       </header>

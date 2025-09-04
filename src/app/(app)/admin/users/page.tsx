@@ -37,7 +37,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MessageSquare, MoreHorizontal, ShieldCheck, UserX, Download } from 'lucide-react';
+import { MessageSquare, MoreHorizontal, ShieldCheck, UserX } from 'lucide-react';
 
 const users = [
     { id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', status: 'Contributor', totalContributions: '$5,250', withdrawals: '$10,000', loanBalance: '$0', joinDate: '2022-01-15' },
@@ -132,7 +132,6 @@ export default function UsersDirectoryPage() {
                             <div className="flex gap-2 pt-4">
                                 <Button className="bg-green-600 hover:bg-green-700 text-white"><ShieldCheck/> Verify KYC</Button>
                                 <Button variant="outline"><UserX/> Suspend</Button>
-                                <Button variant="outline"><Download/> Export</Button>
                             </div>
                         </CardHeader>
                         <CardContent>
