@@ -332,17 +332,36 @@ export default function CreateGroupPage() {
         }
         if (currentStep === 2) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return formData.members.every(member => 
-                member.fullName && 
-                member.email && emailRegex.test(member.email) &&
-                member.phone && 
-                member.dob && 
-                member.nationality && 
-                member.idType && 
-                member.idNumber && 
-                member.residence && 
-                member.sourceOfIncome
-            );
+            // E.164 format for international numbers, allows for optional '+' and spaces/hyphens
+            const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+
+            for (const member of formData.members) {
+                if (!member.fullName || !member.email || !member.phone || !member.dob || !member.nationality || !member.idType || !member.idNumber || !member.residence || !member.sourceOfIncome) {
+                    toast({
+                        variant: "destructive",
+                        title: `Missing Fields for ${member.fullName || 'a member'}`,
+                        description: "Please fill out all fields for every member.",
+                    });
+                    return false;
+                }
+                if (!emailRegex.test(member.email)) {
+                    toast({
+                        variant: "destructive",
+                        title: "Invalid Email",
+                        description: `The email "${member.email}" for ${member.fullName} is not valid.`,
+                    });
+                    return false;
+                }
+                if (!phoneRegex.test(member.phone.replace(/[\s-]+/g, ''))) {
+                     toast({
+                        variant: "destructive",
+                        title: "Invalid Phone Number",
+                        description: `The phone number "${member.phone}" for ${member.fullName} is not valid. Please use an international format (e.g., +233241234567).`,
+                    });
+                    return false;
+                }
+            }
+            return true;
         }
         if (currentStep === 3) {
             const step3Fields = ['contributionDay', 'gracePeriod', 'minMembers', 'latePenalty', 'startDate'];
@@ -355,11 +374,13 @@ export default function CreateGroupPage() {
         if (validateStep(step)) {
             setStep(prev => prev + 1);
         } else {
-            toast({
-                variant: "destructive",
-                title: "Missing or Invalid Fields",
-                description: "Please fill out all fields correctly before proceeding.",
-            });
+            if (step === 1 || step === 3) {
+                toast({
+                    variant: "destructive",
+                    title: "Missing or Invalid Fields",
+                    description: "Please fill out all fields correctly before proceeding.",
+                });
+            }
         }
     };
     const prevStep = () => setStep(prev => prev - 1);
@@ -416,5 +437,3 @@ export default function CreateGroupPage() {
         </div>
     );
 }
-
-    
