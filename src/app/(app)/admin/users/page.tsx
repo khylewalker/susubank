@@ -18,14 +18,6 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -85,130 +77,79 @@ export default function UsersPage() {
                 <Card><CardHeader><CardDescription>Loan Outstanding</CardDescription><CardTitle className="text-2xl font-bold">$12,400</CardTitle></CardHeader></Card>
             </div>
             
-            <Tabs defaultValue="all-users">
-                <TabsList>
-                    <TabsTrigger value="all-users">All Users</TabsTrigger>
-                    <TabsTrigger value="create-member">Create Member</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="all-users" className="mt-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <Card className="lg:col-span-1 h-fit">
-                            <CardHeader>
-                            </CardHeader>
-                            <CardContent className="p-0">
-                                <div className="flex flex-col">
-                                    {users.map(user => (
-                                        <button key={user.id} onClick={() => setSelectedUser(user)} className={`flex items-center gap-3 p-4 w-full text-left hover:bg-muted ${selectedUser?.id === user.id ? 'bg-muted' : ''}`}>
-                                            <Avatar className="h-10 w-10">
-                                                <AvatarImage src={user.avatar} data-ai-hint="member avatar" />
-                                                <AvatarFallback>{user.name.substring(0,2)}</AvatarFallback>
-                                            </Avatar>
-                                            <div className="flex-1">
-                                                <p className="font-semibold">{user.name}</p>
-                                                <Badge className={getStatusColor(user.status)}>{user.status}</Badge>
-                                            </div>
-                                        </button>
-                                    ))}
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        {selectedUser && (
-                            <Card className="lg:col-span-2">
-                                <CardHeader>
-                                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                                        <div>
-                                            <CardTitle className="font-headline text-2xl">{selectedUser.name}</CardTitle>
-                                            <CardDescription>ID: {selectedUser.id} &bull; Joined: {selectedUser.joinDate}</CardDescription>
-                                        </div>
-                                        <div className="flex items-center gap-2 shrink-0">
-                                            <Button variant="outline"><MessageSquare/> Message</Button>
-                                            <Button variant="outline"><MoreHorizontal/></Button>
-                                        </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card className="lg:col-span-1 h-fit">
+                    <CardHeader>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                        <div className="flex flex-col">
+                            {users.map(user => (
+                                <button key={user.id} onClick={() => setSelectedUser(user)} className={`flex items-center gap-3 p-4 w-full text-left hover:bg-muted ${selectedUser?.id === user.id ? 'bg-muted' : ''}`}>
+                                    <Avatar className="h-10 w-10">
+                                        <AvatarImage src={user.avatar} data-ai-hint="member avatar" />
+                                        <AvatarFallback>{user.name.substring(0,2)}</AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex-1">
+                                        <p className="font-semibold">{user.name}</p>
+                                        <Badge className={getStatusColor(user.status)}>{user.status}</Badge>
                                     </div>
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-4">
-                                        <div><p className="text-sm text-muted-foreground">Total Contributions</p><p className="font-bold text-lg">{selectedUser.totalContributions}</p></div>
-                                        <div><p className="text-sm text-muted-foreground">Withdrawals</p><p className="font-bold text-lg">{selectedUser.withdrawals}</p></div>
-                                        <div><p className="text-sm text-muted-foreground">Loan Balance</p><p className="font-bold text-lg">{selectedUser.loanBalance}</p></div>
-                                    </div>
-                                    <div className="flex flex-wrap gap-2 pt-4">
-                                        <Button variant="destructive"><Trash2/> Delete User</Button>
-                                        <div className="flex gap-2">
-                                        <Button variant="outline"><UserX/> Suspend</Button>
-                                        <Input type="number" placeholder="Days" className="w-24" />
-                                        </div>
-                                    </div>
-                                </CardHeader>
-                                <CardContent>
-                                    <Tabs defaultValue="overview">
-                                        <TabsList>
-                                            <TabsTrigger value="overview">Overview</TabsTrigger>
-                                            <TabsTrigger value="transactions">Transactions</TabsTrigger>
-                                            <TabsTrigger value="loans">Loans</TabsTrigger>
-                                            <TabsTrigger value="settings">Settings</TabsTrigger>
-                                        </TabsList>
-                                        <TabsContent value="overview" className="mt-4">
-                                            <div className="w-full overflow-x-auto">
-                                            <Table>
-                                                <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
-                                                <TableBody>
-                                                    <TableRow><TableCell>2024-07-15</TableCell><TableCell>Contribution</TableCell><TableCell>$250.00</TableCell><TableCell><Badge className="bg-green-100 text-green-800">Approved</Badge></TableCell></TableRow>
-                                                    <TableRow><TableCell>2024-07-05</TableCell><TableCell>Withdrawal</TableCell><TableCell>$10,000.00</TableCell><TableCell><Badge className="bg-green-100 text-green-800">Approved</Badge></TableCell></TableRow>
-                                                    <TableRow><TableCell>2024-06-25</TableCell><TableCell>Loan Request</TableCell><TableCell>$1,200.00</TableCell><TableCell><Badge className="bg-red-100 text-red-800">Rejected</Badge></TableCell></TableRow>
-                                                </TableBody>
-                                            </Table>
-                                            </div>
-                                        </TabsContent>
-                                    </Tabs>
-                                </CardContent>
-                            </Card>
-                        )}
-                    </div>
-                </TabsContent>
+                                </button>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
 
-                <TabsContent value="create-member" className="mt-6">
-                    <Card>
+                {selectedUser && (
+                    <Card className="lg:col-span-2">
                         <CardHeader>
-                            <CardTitle className="font-headline">Create a New Member</CardTitle>
-                            <CardDescription>Enter the details below to add a new member to the group.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="fullName">Full Name</Label>
-                                    <Input id="fullName" placeholder="Ama Badu" />
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                                <div>
+                                    <CardTitle className="font-headline text-2xl">{selectedUser.name}</CardTitle>
+                                    <CardDescription>ID: {selectedUser.id} &bull; Joined: {selectedUser.joinDate}</CardDescription>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input id="email" type="email" placeholder="a.badu@email.com" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="phone">Phone</Label>
-                                    <Input id="phone" placeholder="+233 24 123 4567" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="role">Role</Label>
-                                    <Select>
-                                        <SelectTrigger id="role">
-                                            <SelectValue placeholder="Select Role" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="member">Member</SelectItem>
-                                            <SelectItem value="admin">Admin</SelectItem>
-                                            <SelectItem value="contributor">Contributor</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="initialContribution">Initial Contribution</Label>
-                                    <Input id="initialContribution" type="number" placeholder="250.00" />
+                                <div className="flex items-center gap-2 shrink-0">
+                                    <Button variant="outline"><MessageSquare/> Message</Button>
+                                    <Button variant="outline"><MoreHorizontal/></Button>
                                 </div>
                             </div>
-                            <Button>Create Member</Button>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-4">
+                                <div><p className="text-sm text-muted-foreground">Total Contributions</p><p className="font-bold text-lg">{selectedUser.totalContributions}</p></div>
+                                <div><p className="text-sm text-muted-foreground">Withdrawals</p><p className="font-bold text-lg">{selectedUser.withdrawals}</p></div>
+                                <div><p className="text-sm text-muted-foreground">Loan Balance</p><p className="font-bold text-lg">{selectedUser.loanBalance}</p></div>
+                            </div>
+                            <div className="flex flex-wrap gap-2 pt-4">
+                                <Button variant="destructive"><Trash2/> Delete User</Button>
+                                <div className="flex gap-2">
+                                <Button variant="outline"><UserX/> Suspend</Button>
+                                <Input type="number" placeholder="Days" className="w-24" />
+                                </div>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <Tabs defaultValue="overview">
+                                <TabsList>
+                                    <TabsTrigger value="overview">Overview</TabsTrigger>
+                                    <TabsTrigger value="transactions">Transactions</TabsTrigger>
+                                    <TabsTrigger value="loans">Loans</TabsTrigger>
+                                    <TabsTrigger value="settings">Settings</TabsTrigger>
+                                </TabsList>
+                                <TabsContent value="overview" className="mt-4">
+                                    <div className="w-full overflow-x-auto">
+                                    <Table>
+                                        <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
+                                        <TableBody>
+                                            <TableRow><TableCell>2024-07-15</TableCell><TableCell>Contribution</TableCell><TableCell>$250.00</TableCell><TableCell><Badge className="bg-green-100 text-green-800">Approved</Badge></TableCell></TableRow>
+                                            <TableRow><TableCell>2024-07-05</TableCell><TableCell>Withdrawal</TableCell><TableCell>$10,000.00</TableCell><TableCell><Badge className="bg-green-100 text-green-800">Approved</Badge></TableCell></TableRow>
+                                            <TableRow><TableCell>2024-06-25</TableCell><TableCell>Loan Request</TableCell><TableCell>$1,200.00</TableCell><TableCell><Badge className="bg-red-100 text-red-800">Rejected</Badge></TableCell></TableRow>
+                                        </TableBody>
+                                    </Table>
+                                    </div>
+                                </TabsContent>
+                            </Tabs>
                         </CardContent>
                     </Card>
-                </TabsContent>
-            </Tabs>
+                )}
+            </div>
         </div>
     );
+}
