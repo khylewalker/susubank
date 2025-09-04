@@ -100,7 +100,7 @@ const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => {
   const addMember = () => {
     setFormData({
       ...formData,
-      members: [...formData.members, { fullName: "", email: "", phone: "", idType: "", idNumber: "", residence: "", sourceOfIncome: "" }],
+      members: [...formData.members, { fullName: "", email: "", phone: "", idType: "", idNumber: "", residence: "", sourceOfIncome: "", dob: "", nationality: "", group: "" }],
     });
   };
 
@@ -129,6 +129,22 @@ const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => {
           </div>
            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
+                    <Label htmlFor={`dob-${index}`}>Date of Birth</Label>
+                    <Input id={`dob-${index}`} type="date" value={member.dob} onChange={(e) => handleMemberChange(index, 'dob', e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor={`nationality-${index}`}>Nationality</Label>
+                    <Select value={member.nationality} onValueChange={(value) => handleMemberChange(index, 'nationality', value)}>
+                        <SelectTrigger><SelectValue placeholder="Select Nationality" /></SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="ghana">Ghana</SelectItem>
+                            <SelectItem value="nigeria">Nigeria</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
                     <Label htmlFor={`idType-${index}`}>ID Type</Label>
                     <Select value={member.idType} onValueChange={(value) => handleMemberChange(index, 'idType', value)}>
                         <SelectTrigger><SelectValue placeholder="Select ID Type" /></SelectTrigger>
@@ -151,6 +167,17 @@ const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => {
             <div className="space-y-2">
                 <Label htmlFor={`sourceOfIncome-${index}`}>Source of Income</Label>
                 <Input id={`sourceOfIncome-${index}`} placeholder="e.g., Salary, Business" value={member.sourceOfIncome} onChange={(e) => handleMemberChange(index, 'sourceOfIncome', e.target.value)} />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor={`group-${index}`}>Group</Label>
+                <Select value={member.group} onValueChange={(value) => handleMemberChange(index, 'group', value)}>
+                    <SelectTrigger><SelectValue placeholder="Select Group" /></SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="group-a">Group A</SelectItem>
+                        <SelectItem value="group-b">Group B</SelectItem>
+                        <SelectItem value="group-c">Group C</SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
            {formData.members.length > 1 && (
             <Button size="icon" variant="destructive" className="absolute top-2 right-2 h-7 w-7" onClick={() => removeMember(index)}>
@@ -257,7 +284,7 @@ export default function CreateGroupPage() {
         contributionAmount: "",
         payoutMethod: "",
         expectedDuration: "",
-        members: [{ fullName: "", email: "", phone: "", idType: "", idNumber: "", residence: "", sourceOfIncome: "" }],
+        members: [{ fullName: "", email: "", phone: "", idType: "", idNumber: "", residence: "", sourceOfIncome: "", dob: "", nationality: "", group: "" }],
         contributionDay: "",
         gracePeriod: "",
         minMembers: "",
@@ -277,7 +304,7 @@ export default function CreateGroupPage() {
             }
         } else if (stepNumber === 2) {
              for (const member of formData.members) {
-                if (!member.fullName || !member.email || !member.phone || !member.idType || !member.idNumber || !member.residence || !member.sourceOfIncome) {
+                if (!member.fullName || !member.email || !member.phone || !member.idType || !member.idNumber || !member.residence || !member.sourceOfIncome || !member.dob || !member.nationality || !member.group) {
                     return false;
                 }
             }
@@ -356,5 +383,7 @@ export default function CreateGroupPage() {
         </div>
     );
 }
+
+    
 
     
