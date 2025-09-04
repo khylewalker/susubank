@@ -176,7 +176,36 @@ export default function CreateGroupPage() {
         startDate: "",
     });
 
-    const nextStep = () => setStep(prev => prev + 1);
+    const validateStep = (stepNumber: number) => {
+        const step1Fields = ['groupName', 'groupDescription', 'rotationFrequency', 'maxMembers', 'contributionAmount', 'payoutMethod', 'expectedDuration'];
+        const step2Fields = ['contributionDay', 'gracePeriod', 'minMembers', 'latePenalty', 'startDate'];
+        let fields: string[] = [];
+
+        if (stepNumber === 1) {
+            fields = step1Fields;
+        } else if (stepNumber === 2) {
+            fields = step2Fields;
+        }
+
+        for (const field of fields) {
+            if (!formData[field as keyof typeof formData]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    const nextStep = () => {
+        if (validateStep(step)) {
+            setStep(prev => prev + 1);
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Missing Fields",
+                description: "Please fill out all fields before proceeding.",
+            });
+        }
+    };
     const prevStep = () => setStep(prev => prev - 1);
 
     const submitForm = () => {
