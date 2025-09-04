@@ -35,28 +35,28 @@ import Link from 'next/link';
 
 const users = [
     { 
-        id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', status: 'Contributor', totalContributions: '$5,250', withdrawals: '$10,000', loanBalance: '$0', joinDate: '2022-01-15',
+        id: 1, name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', status: 'Contributor', totalContributions: 'GH₵5,250', withdrawals: 'GH₵10,000', loanBalance: 'GH₵0', joinDate: '2022-01-15',
         transactions: [
-            { date: '2024-07-15', activity: 'Contribution', amount: '$250.00', status: 'Approved' },
-            { date: '2024-07-05', activity: 'Withdrawal', amount: '$10,000.00', status: 'Approved' },
-            { date: '2024-06-25', activity: 'Loan Request', amount: '$1,200.00', status: 'Rejected' },
+            { date: '2024-07-15', activity: 'Contribution', amount: 'GH₵250.00', status: 'Approved' },
+            { date: '2024-07-05', activity: 'Withdrawal', amount: 'GH₵10,000.00', status: 'Approved' },
+            { date: '2024-06-25', activity: 'Loan Request', amount: 'GH₵1,200.00', status: 'Rejected' },
         ]
     },
     { 
-        id: 2, name: 'Ama Badu', avatar: 'https://picsum.photos/100/100?random=1', status: 'Member', totalContributions: '$4,800', withdrawals: '$3,000', loanBalance: '$0', joinDate: '2022-01-20',
+        id: 2, name: 'Ama Badu', avatar: 'https://picsum.photos/100/100?random=1', status: 'Member', totalContributions: 'GH₵4,800', withdrawals: 'GH₵3,000', loanBalance: 'GH₵0', joinDate: '2022-01-20',
         transactions: [
-            { date: '2024-07-14', activity: 'Contribution', amount: '$250.00', status: 'Approved' },
+            { date: '2024-07-14', activity: 'Contribution', amount: 'GH₵250.00', status: 'Approved' },
         ] 
     },
     { 
-        id: 3, name: 'Yaw Mensah', avatar: 'https://picsum.photos/100/100?random=3', status: 'Loan', totalContributions: '$4,800', withdrawals: '$5,000', loanBalance: '$1,200', joinDate: '2022-02-10',
+        id: 3, name: 'Yaw Mensah', avatar: 'https://picsum.photos/100/100?random=3', status: 'Loan', totalContributions: 'GH₵4,800', withdrawals: 'GH₵5,000', loanBalance: 'GH₵1,200', joinDate: '2022-02-10',
         transactions: [
-            { date: '2024-07-10', activity: 'Loan Disbursement', amount: '$1,200.00', status: 'Approved' },
-            { date: '2024-06-16', activity: 'Contribution', amount: '$250.00', status: 'Approved' },
+            { date: '2024-07-10', activity: 'Loan Disbursement', amount: 'GH₵1,200.00', status: 'Approved' },
+            { date: '2024-06-16', activity: 'Contribution', amount: 'GH₵250.00', status: 'Approved' },
         ]
     },
     { 
-        id: 4, name: 'Adwoa Boateng', avatar: 'https://picsum.photos/100/100?random=4', status: 'Suspended', totalContributions: '$5,100', withdrawals: '$2,500', loanBalance: '$0', joinDate: '2022-03-01',
+        id: 4, name: 'Adwoa Boateng', avatar: 'https://picsum.photos/100/100?random=4', status: 'Suspended', totalContributions: 'GH₵5,100', withdrawals: 'GH₵2,500', loanBalance: 'GH₵0', joinDate: '2022-03-01',
         transactions: [
             { date: '2024-07-01', activity: 'Account Suspended', amount: '-', status: 'Suspended' },
         ]
@@ -107,8 +107,8 @@ export default function UsersPage() {
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 <Card><CardHeader><CardDescription>Total Members</CardDescription><CardTitle className="text-2xl font-bold">48</CardTitle></CardHeader></Card>
                 <Card><CardHeader><CardDescription>Active Groups</CardDescription><CardTitle className="text-2xl font-bold">3</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>Monthly Deposits</CardDescription><CardTitle className="text-2xl font-bold">$20,150</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>Loan Outstanding</CardDescription><CardTitle className="text-2xl font-bold">$12,400</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Monthly Deposits</CardDescription><CardTitle className="text-2xl font-bold">GH₵20,150</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Loan Outstanding</CardDescription><CardTitle className="text-2xl font-bold">GH₵12,400</CardTitle></CardHeader></Card>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

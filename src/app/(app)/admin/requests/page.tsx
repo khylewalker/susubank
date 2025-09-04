@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -36,8 +37,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Check, X } from 'lucide-react';
 
 const userRequests = [
-    { id: 'REQ-001', member: 'Yaw Mensah', type: 'Withdrawal', details: '$5,000.00 for Business', date: '2024-07-20', status: 'Pending' },
-    { id: 'REQ-002', member: 'Adwoa Boateng', type: 'Loan', details: '$1,200.00 for School Fees', date: '2024-07-19', status: 'Pending' },
+    { id: 'REQ-001', member: 'Yaw Mensah', type: 'Withdrawal', details: 'GH₵5,000.00 for Business', date: '2024-07-20', status: 'Pending' },
+    { id: 'REQ-002', member: 'Adwoa Boateng', type: 'Loan', details: 'GH₵1,200.00 for School Fees', date: '2024-07-19', status: 'Pending' },
     { id: 'REQ-003', member: 'Kofi Adu', type: 'KYC Update', details: 'New Passport Uploaded', date: '2024-07-18', status: 'Approved' },
     { id: 'REQ-004', member: 'Ama Badu', type: 'Dispute', details: 'Incorrect contribution amount', date: '2024-07-17', status: 'Rejected' },
 ];

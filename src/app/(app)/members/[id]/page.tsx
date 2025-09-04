@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardContent,
@@ -75,8 +76,8 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
                 <Card>
                     <CardHeader><CardTitle className="font-headline text-base">Financial Snapshot</CardTitle></CardHeader>
                     <CardContent className="space-y-2">
-                        <div><p className="text-sm text-muted-foreground">Total Saved</p><p className="font-medium">$5,250.00</p></div>
-                        <div><p className="text-sm text-muted-foreground">Loans Outstanding</p><p className="font-medium">$0.00</p></div>
+                        <div><p className="text-sm text-muted-foreground">Total Saved</p><p className="font-medium">GH₵5,250.00</p></div>
+                        <div><p className="text-sm text-muted-foreground">Loans Outstanding</p><p className="font-medium">GH₵0.00</p></div>
                     </CardContent>
                 </Card>
             </div>
@@ -91,7 +92,7 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
             <Card>
                 <CardHeader><CardTitle className="font-headline text-base">Last Contribution</CardTitle></CardHeader>
                 <CardContent>
-                    <p className="text-2xl font-bold">$250.00</p>
+                    <p className="text-2xl font-bold">GH₵250.00</p>
                     <p className="text-sm text-muted-foreground">on July 15, 2024</p>
                 </CardContent>
             </Card>

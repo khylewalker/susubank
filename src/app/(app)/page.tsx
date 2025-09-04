@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardContent,
@@ -31,28 +32,28 @@ const members = [
     name: "Ama Badu",
     avatar: "https://picsum.photos/100/100?random=1",
     role: "Admin",
-    contributed: "$5,250.00",
+    contributed: "GH₵5,250.00",
     status: "Active",
   },
   {
     name: "Kofi Adu",
     avatar: "https://picsum.photos/100/100?random=2",
     role: "Member",
-    contributed: "$4,800.00",
+    contributed: "GH₵4,800.00",
     status: "Active",
   },
   {
     name: "Yaw Mensah",
     avatar: "https://picsum.photos/100/100?random=3",
     role: "Member",
-    contributed: "$4,800.00",
+    contributed: "GH₵4,800.00",
     status: "On-hold",
   },
   {
     name: "Adwoa Boateng",
     avatar: "https://picsum.photos/100/100?random=4",
     role: "Member",
-    contributed: "$5,100.00",
+    contributed: "GH₵5,100.00",
     status: "Active",
   },
 ];
@@ -85,7 +86,7 @@ export default function DashboardPage() {
             <CardTitle className="font-headline">Group Balance</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">$48,950.00</p>
+            <p className="text-4xl font-bold">GH₵48,950.00</p>
             <p className="text-sm text-muted-foreground">+20.1% from last month</p>
           </CardContent>
         </Card>
@@ -94,8 +95,8 @@ export default function DashboardPage() {
             <CardTitle className="font-headline">My Contributions</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">$5,250.00</p>
-            <p className="text-sm text-muted-foreground">Cycle Total: $20,150.00</p>
+            <p className="text-4xl font-bold">GH₵5,250.00</p>
+            <p className="text-sm text-muted-foreground">Cycle Total: GH₵20,150.00</p>
           </CardContent>
         </Card>
         <Card>
@@ -103,7 +104,7 @@ export default function DashboardPage() {
             <CardTitle className="font-headline">Upcoming Payment</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">$250.00</p>
+            <p className="text-4xl font-bold">GH₵250.00</p>
             <p className="text-sm text-muted-foreground">Due on July 25, 2024</p>
           </CardContent>
         </Card>
@@ -120,7 +121,7 @@ export default function DashboardPage() {
         <Card className="flex flex-row items-center justify-between p-4">
             <div>
                 <CardDescription>Loans Outstanding</CardDescription>
-                <CardTitle className="text-2xl font-bold">$12,400</CardTitle>
+                <CardTitle className="text-2xl font-bold">GH₵12,400</CardTitle>
             </div>
              <TrendingUp className="h-8 w-8 text-muted-foreground" />
         </Card>

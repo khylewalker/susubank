@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardContent,
@@ -36,17 +37,17 @@ import { PlusCircle, Filter } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
 const contributionHistory = [
-    { ref: 'REF-00125', amount: '$250.00', status: 'Completed', date: '2024-07-15' },
-    { ref: 'REF-00124', amount: '$250.00', status: 'Completed', date: '2024-06-15' },
-    { ref: 'REF-00123', amount: '$250.00', status: 'Processing', date: '2024-05-15' },
-    { ref: 'REF-00122', amount: '$250.00', status: 'Completed', date: '2024-04-15' },
+    { ref: 'REF-00125', amount: 'GH₵250.00', status: 'Completed', date: '2024-07-15' },
+    { ref: 'REF-00124', amount: 'GH₵250.00', status: 'Completed', date: '2024-06-15' },
+    { ref: 'REF-00123', amount: 'GH₵250.00', status: 'Processing', date: '2024-05-15' },
+    { ref: 'REF-00122', amount: 'GH₵250.00', status: 'Completed', date: '2024-04-15' },
 ];
 
 const allContributions = [
-    { desc: 'July Contribution', member: 'Kofi Adu', type: 'Contribution', amount: '$250.00', date: '2024-07-15' },
-    { desc: 'July Contribution', member: 'Ama Badu', type: 'Contribution', amount: '$250.00', date: '2024-07-14' },
-    { desc: 'June Contribution', member: 'Kofi Adu', type: 'Contribution', amount: '$250.00', date: '2024-06-15' },
-    { desc: 'June Contribution', member: 'Yaw Mensah', type: 'Contribution', amount: '$250.00', date: '2024-06-16' },
+    { desc: 'July Contribution', member: 'Kofi Adu', type: 'Contribution', amount: 'GH₵250.00', date: '2024-07-15' },
+    { desc: 'July Contribution', member: 'Ama Badu', type: 'Contribution', amount: 'GH₵250.00', date: '2024-07-14' },
+    { desc: 'June Contribution', member: 'Kofi Adu', type: 'Contribution', amount: 'GH₵250.00', date: '2024-06-15' },
+    { desc: 'June Contribution', member: 'Yaw Mensah', type: 'Contribution', amount: 'GH₵250.00', date: '2024-06-16' },
 ];
 
 
@@ -83,7 +84,7 @@ export default function ContributionsPage() {
             <CardTitle className="font-headline">This Cycle Total</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">$20,150.00</p>
+            <p className="text-4xl font-bold">GH₵20,150.00</p>
             <p className="text-sm text-muted-foreground">July 1 - July 31, 2024</p>
           </CardContent>
         </Card>
@@ -92,8 +93,8 @@ export default function ContributionsPage() {
             <CardTitle className="font-headline">My Contributions</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">$250.00</p>
-            <p className="text-sm text-muted-foreground">Cycle Total: $5,250.00</p>
+            <p className="text-4xl font-bold">GH₵250.00</p>
+            <p className="text-sm text-muted-foreground">Cycle Total: GH₵5,250.00</p>
           </CardContent>
         </Card>
         <Card>
@@ -101,7 +102,7 @@ export default function ContributionsPage() {
             <CardTitle className="font-headline">Next Due</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">$250.00</p>
+            <p className="text-4xl font-bold">GH₵250.00</p>
             <p className="text-sm text-muted-foreground">Due on August 15, 2024</p>
           </CardContent>
         </Card>
