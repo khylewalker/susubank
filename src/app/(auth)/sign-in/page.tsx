@@ -98,7 +98,7 @@ export default function SignInPage() {
               </button>
             </div>
           </div>
-           <div className="grid w-full grid-cols-2 gap-4 pt-4">
+           <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-4 pt-4">
             <Button variant="outline" asChild>
               <Link href="/sign-up">Create Account</Link>
             </Button>
