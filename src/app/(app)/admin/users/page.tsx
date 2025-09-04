@@ -160,14 +160,14 @@ export default function UsersPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Tabs defaultValue="overview">
+                            <Tabs defaultValue="contributions">
                                 <TabsList>
-                                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                                    <TabsTrigger value="transactions">Transactions</TabsTrigger>
+                                    <TabsTrigger value="contributions">Contributions</TabsTrigger>
+                                    <TabsTrigger value="withdrawals">Withdrawals</TabsTrigger>
                                     <TabsTrigger value="loans">Loans</TabsTrigger>
                                     <TabsTrigger value="settings">Settings</TabsTrigger>
                                 </TabsList>
-                                <TabsContent value="overview" className="mt-4">
+                                <TabsContent value="contributions" className="mt-4">
                                     <div className="w-full overflow-x-auto">
                                     <Table>
                                         <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
