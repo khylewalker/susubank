@@ -91,10 +91,11 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="text-base font-medium">Total Registered Groups</CardTitle>
+            <CardTitle className="text-base font-medium">Total Groups Created</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold">3</p>
+            <p className="text-xs text-muted-foreground">2 active, 1 inactive</p>
           </CardContent>
         </Card>
         <Card>
