@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -18,13 +19,6 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -35,8 +29,9 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Check, X, CheckCheck, XCircle } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
-const userRequests = [
+const initialUserRequests = [
     { id: 'REQ-001', member: 'Yaw Mensah', type: 'Withdrawal', details: 'GH₵5,000.00 for Business', date: '2024-07-20', status: 'Pending' },
     { id: 'REQ-002', member: 'Adwoa Boateng', type: 'Loan', details: 'GH₵1,200.00 for School Fees', date: '2024-07-19', status: 'Pending' },
     { id: 'REQ-003', member: 'Kofi Adu', type: 'KYC Update', details: 'New Passport Uploaded', date: '2024-07-18', status: 'Approved' },
@@ -44,7 +39,9 @@ const userRequests = [
     { id: 'REQ-005', member: 'Esi Williams', type: 'New Member', details: 'Wants to join Group A', date: '2024-07-21', status: 'Pending' },
 ];
 
-const RequestsTable = ({ requests }: { requests: typeof userRequests }) => {
+type UserRequest = typeof initialUserRequests[0];
+
+const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[], onUpdateRequest: (id: string, status: 'Approved' | 'Rejected') => void }) => {
     
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
@@ -85,8 +82,8 @@ const RequestsTable = ({ requests }: { requests: typeof userRequests }) => {
                         <TableCell className="text-right">
                             {req.status === 'Pending' && (
                                 <div className="flex gap-2 justify-end">
-                                    <Button size="icon" variant="outline" className="text-green-600 border-green-600 hover:bg-green-100 hover:text-green-700"><Check className="h-4 w-4"/></Button>
-                                    <Button size="icon" variant="outline" className="text-red-600 border-red-600 hover:bg-red-100 hover:text-red-700"><X className="h-4 w-4"/></Button>
+                                    <Button size="icon" variant="outline" className="text-green-600 border-green-600 hover:bg-green-100 hover:text-green-700" onClick={() => onUpdateRequest(req.id, 'Approved')}><Check className="h-4 w-4"/></Button>
+                                    <Button size="icon" variant="outline" className="text-red-600 border-red-600 hover:bg-red-100 hover:text-red-700" onClick={() => onUpdateRequest(req.id, 'Rejected')}><X className="h-4 w-4"/></Button>
                                 </div>
                             )}
                         </TableCell>
@@ -99,6 +96,24 @@ const RequestsTable = ({ requests }: { requests: typeof userRequests }) => {
 
 
 export default function UserRequestsPage() {
+    const { toast } = useToast();
+    const [userRequests, setUserRequests] = useState<UserRequest[]>(initialUserRequests);
+
+    const handleUpdateRequest = (id: string, status: 'Approved' | 'Rejected') => {
+        setUserRequests(prev => prev.map(req => req.id === id ? { ...req, status } : req));
+        toast({
+            title: `Request ${status}`,
+            description: `Request ID ${id} has been ${status.toLowerCase()}.`,
+        });
+    };
+
+    const handleBulkUpdate = (status: 'Approved' | 'Rejected') => {
+        setUserRequests(prev => prev.map(req => req.status === 'Pending' ? { ...req, status } : req));
+        toast({
+            title: `All Pending Requests ${status}`,
+            description: `All pending requests have been ${status.toLowerCase()}.`,
+        });
+    };
     
     return (
         <div className="flex flex-col gap-6">
@@ -118,10 +133,10 @@ export default function UserRequestsPage() {
             </header>
             
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <Card><CardHeader><CardDescription>Pending Requests</CardDescription><CardTitle className="text-2xl font-bold">3</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Pending Requests</CardDescription><CardTitle className="text-2xl font-bold">{userRequests.filter(r => r.status === 'Pending').length}</CardTitle></CardHeader></Card>
                 <Card><CardHeader><CardDescription>Approved Today</CardDescription><CardTitle className="text-2xl font-bold">5</CardTitle></CardHeader></Card>
                 <Card><CardHeader><CardDescription>Rejected Today</CardDescription><CardTitle className="text-2xl font-bold">1</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">1</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">{userRequests.filter(r => r.type === 'New Member' && r.status === 'Pending').length}</CardTitle></CardHeader></Card>
             </div>
 
             <Tabs defaultValue="all">
@@ -135,25 +150,25 @@ export default function UserRequestsPage() {
                              <TabsTrigger value="new-member">New Member</TabsTrigger>
                         </TabsList>
                         <div className="flex gap-2 shrink-0">
-                            <Button variant="outline"><CheckCheck /> Approve All</Button>
-                            <Button variant="destructive"><XCircle /> Reject All</Button>
+                            <Button variant="outline" onClick={() => handleBulkUpdate('Approved')}><CheckCheck /> Approve All</Button>
+                            <Button variant="destructive" onClick={() => handleBulkUpdate('Rejected')}><XCircle /> Reject All</Button>
                         </div>
                     </CardHeader>
                     <CardContent>
                         <TabsContent value="all">
-                            <RequestsTable requests={userRequests} />
+                            <RequestsTable requests={userRequests} onUpdateRequest={handleUpdateRequest} />
                         </TabsContent>
                         <TabsContent value="pending">
-                            <RequestsTable requests={userRequests.filter(r => r.status === 'Pending')} />
+                            <RequestsTable requests={userRequests.filter(r => r.status === 'Pending')} onUpdateRequest={handleUpdateRequest} />
                         </TabsContent>
                         <TabsContent value="approved">
-                            <RequestsTable requests={userRequests.filter(r => r.status === 'Approved')} />
+                            <RequestsTable requests={userRequests.filter(r => r.status === 'Approved')} onUpdateRequest={handleUpdateRequest} />
                         </TabsContent>
                         <TabsContent value="rejected">
-                            <RequestsTable requests={userRequests.filter(r => r.status === 'Rejected')} />
+                            <RequestsTable requests={userRequests.filter(r => r.status === 'Rejected')} onUpdateRequest={handleUpdateRequest} />
                         </TabsContent>
                          <TabsContent value="new-member">
-                            <RequestsTable requests={userRequests.filter(r => r.type === 'New Member')} />
+                            <RequestsTable requests={userRequests.filter(r => r.type === 'New Member')} onUpdateRequest={handleUpdateRequest} />
                         </TabsContent>
                     </CardContent>
                 </Card>
