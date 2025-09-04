@@ -87,7 +87,7 @@ const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => (
   <div className="space-y-4">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-            <Label htmlFor="contributionDay">Days from cycle start to contribute</Label>
+            <Label htmlFor="contributionDay">Contribution Deadline (days)</Label>
             <Input id="contributionDay" type="number" placeholder="5" value={formData.contributionDay} onChange={(e) => setFormData({...formData, contributionDay: e.target.value})} />
         </div>
         <div className="space-y-2">
