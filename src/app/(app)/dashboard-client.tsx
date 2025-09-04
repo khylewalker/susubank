@@ -15,6 +15,8 @@ import {
 import type { FraudDetectionOutput } from "@/ai/flows/fraud-detection";
 import { useToast } from "@/hooks/use-toast";
 import { handleFraudCheck } from "./actions";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ShieldCheck } from "lucide-react";
 
 export default function DashboardClient() {
   const { toast } = useToast();
@@ -42,6 +44,31 @@ export default function DashboardClient() {
 
   return (
     <>
+       <div className="flex flex-col gap-6">
+        <header>
+          <h1 className="text-3xl font-bold font-headline">Admin Dashboard</h1>
+          <p className="text-muted-foreground">Welcome back, Admin!</p>
+        </header>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <Card><CardHeader><CardDescription>Total Users</CardDescription><CardTitle className="text-2xl font-bold">0</CardTitle></CardHeader></Card>
+          <Card><CardHeader><CardDescription>Total Groups Created</CardDescription><CardTitle className="text-2xl font-bold">0</CardTitle></CardHeader></Card>
+          <Card><CardHeader><CardDescription>All Group Contributions</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
+          <Card><CardHeader><CardDescription>All Group Withdrawals</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
+        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-headline">Security</CardTitle>
+            <CardDescription>Run manual checks for potentially fraudulent activities in the system.</CardDescription>
+          </CardHeader>
+          <CardContent>
+             <Button onClick={onCheck} disabled={isLoading}>
+              <ShieldCheck />
+              {isLoading ? 'Running Check...' : 'Run Fraud Check'}
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
       {fraudResult && (
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogContent>
