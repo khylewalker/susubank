@@ -67,14 +67,14 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
         <div className="lg:col-span-2 flex flex-col gap-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
-                    <CardHeader><CardTitle className="font-headline text-base">Member Details</CardTitle></CardHeader>
+                    <CardHeader><CardTitle className="text-base font-medium">Member Details</CardTitle></CardHeader>
                     <CardContent className="space-y-2">
                         <div><p className="text-sm text-muted-foreground">Phone</p><p className="font-medium">+233 24 123 4567</p></div>
                         <div><p className="text-sm text-muted-foreground">Email</p><p className="font-medium">k.adu@email.com</p></div>
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardHeader><CardTitle className="font-headline text-base">Financial Snapshot</CardTitle></CardHeader>
+                    <CardHeader><CardTitle className="text-base font-medium">Financial Snapshot</CardTitle></CardHeader>
                     <CardContent className="space-y-2">
                         <div><p className="text-sm text-muted-foreground">Total Saved</p><p className="font-medium">GH₵5,250.00</p></div>
                         <div><p className="text-sm text-muted-foreground">Loans Outstanding</p><p className="font-medium">GH₵0.00</p></div>
@@ -90,14 +90,14 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
         </div>
         <div className="lg:col-span-1 flex flex-col gap-6">
             <Card>
-                <CardHeader><CardTitle className="font-headline text-base">Last Contribution</CardTitle></CardHeader>
+                <CardHeader><CardTitle className="text-base font-medium">Last Contribution</CardTitle></CardHeader>
                 <CardContent>
                     <p className="text-2xl font-bold">GH₵250.00</p>
                     <p className="text-sm text-muted-foreground">on July 15, 2024</p>
                 </CardContent>
             </Card>
              <Card>
-                <CardHeader><CardTitle className="font-headline text-base">Missed Payments</CardTitle></CardHeader>
+                <CardHeader><CardTitle className="text-base font-medium">Missed Payments</CardTitle></CardHeader>
                 <CardContent>
                     <p className="text-2xl font-bold">0</p>
                      <p className="text-sm text-muted-foreground">Excellent standing</p>

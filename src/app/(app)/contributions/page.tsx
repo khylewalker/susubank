@@ -84,7 +84,7 @@ export default function ContributionsPage() {
             <CardTitle className="font-headline">This Cycle Total</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">GH₵20,150.00</p>
+            <p className="text-2xl font-bold">GH₵20,150.00</p>
             <p className="text-sm text-muted-foreground">July 1 - July 31, 2024</p>
           </CardContent>
         </Card>
@@ -93,7 +93,7 @@ export default function ContributionsPage() {
             <CardTitle className="font-headline">My Contributions</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">GH₵250.00</p>
+            <p className="text-2xl font-bold">GH₵250.00</p>
             <p className="text-sm text-muted-foreground">Cycle Total: GH₵5,250.00</p>
           </CardContent>
         </Card>
@@ -102,7 +102,7 @@ export default function ContributionsPage() {
             <CardTitle className="font-headline">Next Due</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">GH₵250.00</p>
+            <p className="text-2xl font-bold">GH₵250.00</p>
             <p className="text-sm text-muted-foreground">Due on August 15, 2024</p>
           </CardContent>
         </Card>

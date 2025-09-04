@@ -81,7 +81,7 @@ export default function WithdrawalsPage() {
             <CardTitle className="font-headline">Available Pool</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">GH₵36,550.00</p>
+            <p className="text-2xl font-bold">GH₵36,550.00</p>
             <p className="text-sm text-muted-foreground">Total funds available for withdrawal</p>
           </CardContent>
         </Card>
@@ -90,7 +90,7 @@ export default function WithdrawalsPage() {
             <CardTitle className="font-headline">Pending Requests</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">3</p>
+            <p className="text-2xl font-bold">3</p>
             <p className="text-sm text-muted-foreground">Totaling GH₵8,500.00</p>
           </CardContent>
         </Card>
@@ -99,7 +99,7 @@ export default function WithdrawalsPage() {
             <CardTitle className="font-headline">My Last Withdrawal</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">GH₵10,000.00</p>
+            <p className="text-2xl font-bold">GH₵10,000.00</p>
             <p className="text-sm text-muted-foreground">On July 5, 2024</p>
           </CardContent>
         </Card>
