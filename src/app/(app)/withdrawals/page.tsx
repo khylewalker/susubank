@@ -54,15 +54,7 @@ const pendingApprovals: any[] = [
 const withdrawalHistory: any[] = [
 ];
 
-const groupsData = [
-    { id: 'group-a', name: 'Group A', totalWithdrawals: '12,500.00', members: [
-        { id: 'user-1', name: 'Ama Badu', avatar: 'https://picsum.photos/100/100?random=1', withdrawal: '5,000.00' },
-        { id: 'user-2', name: 'Kofi Adu', avatar: 'https://picsum.photos/100/100?random=2', withdrawal: '7,500.00' },
-    ]},
-    { id: 'group-b', name: 'Group B', totalWithdrawals: '8,200.00', members: [
-        { id: 'user-3', name: 'Yaw Mensah', avatar: 'https://picsum.photos/100/100?random=3', withdrawal: '8,200.00' },
-    ]},
-    { id: 'group-c', name: 'Group C', totalWithdrawals: '0.00', members: []},
+const groupsData: any[] = [
 ];
 
 export default function WithdrawalsPage() {
