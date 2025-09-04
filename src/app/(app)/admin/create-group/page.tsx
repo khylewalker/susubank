@@ -63,7 +63,7 @@ const Step1 = ({ nextStep, formData, setFormData }: any) => (
      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
             <Label htmlFor="contributionAmount">Contribution Amount (GH₵)</Label>
-            <Input id="contributionAmount" type="number" placeholder="250.00" value={formData.contributionAmount} onChange={(e) => setFormData({...formData, contributionAmount: e.target.value})} />
+            <Input id="contributionAmount" type="number" placeholder="30.00" min="30" step="5" value={formData.contributionAmount} onChange={(e) => setFormData({...formData, contributionAmount: e.target.value})} />
         </div>
         <div className="space-y-2">
             <Label htmlFor="payoutMethod">Payout Order Method</Label>
