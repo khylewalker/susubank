@@ -58,7 +58,7 @@ export default function DashboardPage() {
             <CardTitle className="text-base font-medium">Total Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">1</p>
+            <p className="text-2xl font-bold">{members.length}</p>
           </CardContent>
         </Card>
         <Card>
