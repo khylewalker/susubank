@@ -25,7 +25,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MoreVertical, Users, TrendingUp, Clock } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 
 const members = [
   {
@@ -74,76 +74,51 @@ export default function DashboardPage() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <h1 className="text-3xl font-bold font-headline mt-2">Dashboard</h1>
+          <h1 className="text-3xl font-bold font-headline mt-2">Admin Dashboard</h1>
         </div>
         <div className="flex items-center gap-4">
         </div>
       </header>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline">Group Balance</CardTitle>
+            <CardTitle className="font-headline">Total Registered Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">GH₵48,950.00</p>
-            <p className="text-sm text-muted-foreground">+20.1% from last month</p>
+            <p className="text-4xl font-bold">48</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline">My Contributions</CardTitle>
+            <CardTitle className="font-headline">Total Registered Groups</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">GH₵5,250.00</p>
-            <p className="text-sm text-muted-foreground">Cycle Total: GH₵20,150.00</p>
+            <p className="text-4xl font-bold">3</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline">Upcoming Payment</CardTitle>
+            <CardTitle className="font-headline">Total Contributions</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">GH₵250.00</p>
-            <p className="text-sm text-muted-foreground">Due on July 25, 2024</p>
+            <p className="text-4xl font-bold">GH₵85,200.00</p>
           </CardContent>
         </Card>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:grid-cols-4">
-        <Card className="flex flex-row items-center justify-between p-4">
-            <div>
-                <CardDescription>Active Members</CardDescription>
-                <CardTitle className="text-2xl font-bold">48</CardTitle>
-            </div>
-            <Users className="h-8 w-8 text-muted-foreground" />
-        </Card>
-        <Card className="flex flex-row items-center justify-between p-4">
-            <div>
-                <CardDescription>Loans Outstanding</CardDescription>
-                <CardTitle className="text-2xl font-bold">GH₵12,400</CardTitle>
-            </div>
-             <TrendingUp className="h-8 w-8 text-muted-foreground" />
-        </Card>
-        <Card className="flex flex-row items-center justify-between p-4">
-            <div>
-                <CardDescription>On-time Rate</CardDescription>
-                <CardTitle className="text-2xl font-bold">98.5%</CardTitle>
-            </div>
-            <Clock className="h-8 w-8 text-muted-foreground" />
-        </Card>
-        <Card className="flex flex-row items-center justify-between p-4 bg-primary text-primary-foreground">
-            <div>
-                <CardDescription className="text-primary-foreground/80">Cycle Progress</CardDescription>
-                <CardTitle className="text-2xl font-bold">75%</CardTitle>
-            </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-headline">Total Withdrawals</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-4xl font-bold">GH₵40,150.00</p>
+          </CardContent>
         </Card>
       </div>
 
       <div className="grid grid-cols-1 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline">Members</CardTitle>
+            <CardTitle className="font-headline">All Members</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="w-full overflow-x-auto">
