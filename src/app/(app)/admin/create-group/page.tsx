@@ -31,7 +31,9 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { Trash2 } from "lucide-react";
+import { Trash2, ChevronDown } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { cn } from "@/lib/utils";
 
 const Step1 = ({ nextStep, formData, setFormData }: any) => (
   <div className="space-y-4">
@@ -106,6 +108,8 @@ const Step1 = ({ nextStep, formData, setFormData }: any) => (
 );
 
 const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => {
+  const [openCollapsibles, setOpenCollapsibles] = useState<string[]>(["member-0"]);
+
   const handleMemberChange = (index: number, field: string, value: string) => {
     const newMembers = [...formData.members];
     newMembers[index][field as keyof typeof newMembers[0]] = value;
@@ -113,10 +117,13 @@ const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => {
   };
 
   const addMember = () => {
+    const newIndex = formData.members.length;
     setFormData({
       ...formData,
       members: [...formData.members, { fullName: "", email: "", phone: "", idType: "", idNumber: "", residence: "", sourceOfIncome: "", dob: "", nationality: "", group: "" }],
     });
+    // Collapse all others and open the new one
+    setOpenCollapsibles([`member-${newIndex}`]);
   };
 
   const removeMember = (index: number) => {
@@ -124,84 +131,106 @@ const Step2 = ({ nextStep, prevStep, formData, setFormData }: any) => {
     setFormData({ ...formData, members: newMembers });
   };
 
+  const toggleCollapsible = (id: string) => {
+    setOpenCollapsibles(prev => prev.includes(id) ? prev.filter(p => p !== id) : [id]);
+  };
+
   return (
     <div className="space-y-4">
-      {formData.members.map((member: any, index: number) => (
-        <div key={index} className="p-4 border rounded-lg space-y-4 relative">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor={`fullName-${index}`}>Full Name</Label>
-              <Input id={`fullName-${index}`} placeholder="John Doe" value={member.fullName} onChange={(e) => handleMemberChange(index, 'fullName', e.target.value)} />
+      {formData.members.map((member: any, index: number) => {
+        const id = `member-${index}`;
+        const isOpen = openCollapsibles.includes(id);
+        return (
+          <Collapsible key={index} open={isOpen} onOpenChange={() => toggleCollapsible(id)} className="p-4 border rounded-lg space-y-4 relative">
+            <div className="flex justify-between items-center">
+              <CollapsibleTrigger asChild>
+                <button className="flex items-center gap-2 font-semibold w-full">
+                  <ChevronDown className={cn("h-5 w-5 transition-transform", isOpen && "rotate-180")} />
+                  Member {index + 1}: {member.fullName || "New Member"}
+                </button>
+              </CollapsibleTrigger>
+              {formData.members.length > 1 && (
+                <Button size="icon" variant="destructive" className="h-7 w-7" onClick={() => removeMember(index)}>
+                    <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
             </div>
-             <div className="space-y-2">
-              <Label htmlFor={`email-${index}`}>Email</Label>
-              <Input id={`email-${index}`} type="email" placeholder="j.doe@email.com" value={member.email} onChange={(e) => handleMemberChange(index, 'email', e.target.value)} />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor={`phone-${index}`}>Phone</Label>
-            <Input id={`phone-${index}`} placeholder="+233 24 123 4567" value={member.phone} onChange={(e) => handleMemberChange(index, 'phone', e.target.value)} />
-          </div>
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                    <Label htmlFor={`dob-${index}`}>Date of Birth</Label>
-                    <Input id={`dob-${index}`} type="date" value={member.dob} onChange={(e) => handleMemberChange(index, 'dob', e.target.value)} />
+            <CollapsibleContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                    <Label htmlFor={`fullName-${index}`}>Full Name</Label>
+                    <Input id={`fullName-${index}`} placeholder="John Doe" value={member.fullName} onChange={(e) => handleMemberChange(index, 'fullName', e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                    <Label htmlFor={`email-${index}`}>Email</Label>
+                    <Input id={`email-${index}`} type="email" placeholder="j.doe@email.com" value={member.email} onChange={(e) => handleMemberChange(index, 'email', e.target.value)} />
+                    </div>
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor={`nationality-${index}`}>Nationality</Label>
-                    <Select value={member.nationality} onValueChange={(value) => handleMemberChange(index, 'nationality', value)}>
-                        <SelectTrigger><SelectValue placeholder="Select Nationality" /></SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="ghana">Ghana</SelectItem>
-                            <SelectItem value="nigeria">Nigeria</SelectItem>
-                        </SelectContent>
-                    </Select>
+                    <Label htmlFor={`phone-${index}`}>Phone</Label>
+                    <Input id={`phone-${index}`} placeholder="+233 24 123 4567" value={member.phone} onChange={(e) => handleMemberChange(index, 'phone', e.target.value)} />
                 </div>
-            </div>
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                    <Label htmlFor={`idType-${index}`}>ID Type</Label>
-                    <Select value={member.idType} onValueChange={(value) => handleMemberChange(index, 'idType', value)}>
-                        <SelectTrigger><SelectValue placeholder="Select ID Type" /></SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="ghana_card">Ghana Card</SelectItem>
-                            <SelectItem value="passport">Passport</SelectItem>
-                            <SelectItem value="drivers_license">Driver's License</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor={`idNumber-${index}`}>ID Number</Label>
-                    <Input id={`idNumber-${index}`} placeholder="GHA-123456789-0" value={member.idNumber} onChange={(e) => handleMemberChange(index, 'idNumber', e.target.value)} />
-                </div>
-            </div>
-            <div className="space-y-2">
-                <Label htmlFor={`residence-${index}`}>Residence</Label>
-                <Input id={`residence-${index}`} placeholder="Accra, Ghana" value={member.residence} onChange={(e) => handleMemberChange(index, 'residence', e.target.value)} />
-            </div>
-            <div className="space-y-2">
-                <Label htmlFor={`sourceOfIncome-${index}`}>Source of Income</Label>
-                <Input id={`sourceOfIncome-${index}`} placeholder="e.g., Salary, Business" value={member.sourceOfIncome} onChange={(e) => handleMemberChange(index, 'sourceOfIncome', e.target.value)} />
-            </div>
-            <div className="space-y-2">
-                <Label htmlFor={`group-${index}`}>Group</Label>
-                <Select value={member.group} onValueChange={(value) => handleMemberChange(index, 'group', value)}>
-                    <SelectTrigger><SelectValue placeholder="Select Group" /></SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="group-a">Group A</SelectItem>
-                        <SelectItem value="group-b">Group B</SelectItem>
-                        <SelectItem value="group-c">Group C</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
-           {formData.members.length > 1 && (
-            <Button size="icon" variant="destructive" className="absolute top-2 right-2 h-7 w-7" onClick={() => removeMember(index)}>
-                <Trash2 className="h-4 w-4" />
-            </Button>
-           )}
-        </div>
-      ))}
-       <Button onClick={addMember} variant="outline">Add Another Member</Button>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label htmlFor={`dob-${index}`}>Date of Birth</Label>
+                            <Input id={`dob-${index}`} type="date" value={member.dob} onChange={(e) => handleMemberChange(index, 'dob', e.target.value)} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor={`nationality-${index}`}>Nationality</Label>
+                            <Select value={member.nationality} onValueChange={(value) => handleMemberChange(index, 'nationality', value)}>
+                                <SelectTrigger><SelectValue placeholder="Select Nationality" /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="ghana">Ghana</SelectItem>
+                                    <SelectItem value="nigeria">Nigeria</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label htmlFor={`idType-${index}`}>ID Type</Label>
+                            <Select value={member.idType} onValueChange={(value) => handleMemberChange(index, 'idType', value)}>
+                                <SelectTrigger><SelectValue placeholder="Select ID Type" /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="ghana_card">Ghana Card</SelectItem>
+                                    <SelectItem value="passport">Passport</SelectItem>
+                                    <SelectItem value="drivers_license">Driver's License</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor={`idNumber-${index}`}>ID Number</Label>
+                            <Input id={`idNumber-${index}`} placeholder="GHA-123456789-0" value={member.idNumber} onChange={(e) => handleMemberChange(index, 'idNumber', e.target.value)} disabled={!member.idType} />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor={`residence-${index}`}>Residence</Label>
+                        <Input id={`residence-${index}`} placeholder="Accra, Ghana" value={member.residence} onChange={(e) => handleMemberChange(index, 'residence', e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor={`sourceOfIncome-${index}`}>Source of Income</Label>
+                        <Input id={`sourceOfIncome-${index}`} placeholder="e.g., Salary, Business" value={member.sourceOfIncome} onChange={(e) => handleMemberChange(index, 'sourceOfIncome', e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor={`group-${index}`}>Group</Label>
+                        <Select value={member.group} onValueChange={(value) => handleMemberChange(index, 'group', value)}>
+                            <SelectTrigger><SelectValue placeholder="Select Group" /></SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="group-a">Group A</SelectItem>
+                                <SelectItem value="group-b">Group B</SelectItem>
+                                <SelectItem value="group-c">Group C</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+            </CollapsibleContent>
+          </Collapsible>
+        )
+      })}
+      {formData.members.length < 6 ? (
+        <Button onClick={addMember} variant="outline">Add Another Member</Button>
+      ) : (
+        <p className="text-sm text-center text-muted-foreground p-2 bg-muted rounded-md">Maximum of 6 members reached for this group.</p>
+      )}
       <div className="flex justify-between pt-4">
         <Button variant="outline" onClick={prevStep}>Back</Button>
         <Button onClick={nextStep}>Next</Button>
@@ -398,7 +427,3 @@ export default function CreateGroupPage() {
         </div>
     );
 }
-
-    
-
-    
