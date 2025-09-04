@@ -1,4 +1,7 @@
 
+"use client";
+
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -17,6 +20,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -27,8 +41,19 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Save, Undo2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SettingsPage() {
+  const { toast } = useToast();
+
+  const handleDeleteGroup = () => {
+    toast({
+        variant: "destructive",
+        title: "Group Deleted",
+        description: "The group has been permanently deleted.",
+    });
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -169,7 +194,23 @@ export default function SettingsPage() {
                             <h4 className="font-semibold">Delete Group</h4>
                             <p className="text-sm text-muted-foreground">Permanently delete the entire group, including all members, transactions, and settings. This cannot be undone.</p>
                         </div>
-                        <Button variant="destructive" className="self-start">Delete Group</Button>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button variant="destructive" className="self-start">Delete Group</Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. This will permanently delete the group and remove all associated data from our servers.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={handleDeleteGroup}>Continue</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </CardContent>
                 </Card>
             </div>
