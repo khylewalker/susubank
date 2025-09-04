@@ -41,6 +41,7 @@ const userRequests = [
     { id: 'REQ-002', member: 'Adwoa Boateng', type: 'Loan', details: 'GH₵1,200.00 for School Fees', date: '2024-07-19', status: 'Pending' },
     { id: 'REQ-003', member: 'Kofi Adu', type: 'KYC Update', details: 'New Passport Uploaded', date: '2024-07-18', status: 'Approved' },
     { id: 'REQ-004', member: 'Ama Badu', type: 'Dispute', details: 'Incorrect contribution amount', date: '2024-07-17', status: 'Rejected' },
+    { id: 'REQ-005', member: 'Esi Williams', type: 'New Member', details: 'Wants to join Group A', date: '2024-07-21', status: 'Pending' },
 ];
 
 const RequestsTable = ({ requests }: { requests: typeof userRequests }) => {
@@ -60,6 +61,7 @@ const RequestsTable = ({ requests }: { requests: typeof userRequests }) => {
             case 'loan': return 'bg-indigo-100 text-indigo-800';
             case 'kyc update': return 'bg-purple-100 text-purple-800';
             case 'dispute': return 'bg-orange-100 text-orange-800';
+            case 'new member': return 'bg-pink-100 text-pink-800';
             default: return 'bg-gray-100 text-gray-800';
         }
     }
@@ -115,10 +117,11 @@ export default function UserRequestsPage() {
                 </div>
             </header>
             
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                <Card><CardHeader><CardDescription>Pending Requests</CardDescription><CardTitle className="text-2xl font-bold">2</CardTitle></CardHeader></Card>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <Card><CardHeader><CardDescription>Pending Requests</CardDescription><CardTitle className="text-2xl font-bold">3</CardTitle></CardHeader></Card>
                 <Card><CardHeader><CardDescription>Approved Today</CardDescription><CardTitle className="text-2xl font-bold">5</CardTitle></CardHeader></Card>
                 <Card><CardHeader><CardDescription>Rejected Today</CardDescription><CardTitle className="text-2xl font-bold">1</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">1</CardTitle></CardHeader></Card>
             </div>
 
             <Tabs defaultValue="all">
