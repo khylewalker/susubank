@@ -11,6 +11,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarMenuBadge,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/logo";
 import {
@@ -60,6 +61,13 @@ const adminNavItems = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
@@ -74,6 +82,7 @@ export function AppSidebar() {
                 asChild
                 isActive={pathname === item.href}
                 tooltip={item.label}
+                onClick={handleLinkClick}
               >
                 <Link href={item.href}>
                   <item.icon />
@@ -94,6 +103,7 @@ export function AppSidebar() {
                 asChild
                 isActive={pathname.startsWith(item.href)}
                 tooltip={item.label}
+                onClick={handleLinkClick}
               >
                 <Link href={item.href}>
                   <item.icon />
