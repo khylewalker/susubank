@@ -99,7 +99,7 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="text-base font-medium">Total Contributions</CardTitle>
+            <CardTitle className="text-base font-medium">All Group Contributions</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold">GH₵85,200.00</p>
