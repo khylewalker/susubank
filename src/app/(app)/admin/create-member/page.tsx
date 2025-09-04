@@ -264,7 +264,7 @@ export default function CreateMemberPage() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit">Create Member</Button>
+                            <Button type="submit">Add Member</Button>
                         </form>
                     </Form>
                 </CardContent>
