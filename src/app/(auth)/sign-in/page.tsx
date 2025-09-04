@@ -98,17 +98,20 @@ export default function SignInPage() {
               </button>
             </div>
           </div>
-           <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-            <Button variant="outline" asChild>
-              <Link href="/sign-up">Create Account</Link>
-            </Button>
-            <Button type="submit" disabled={isLoading}>
+           <div className="pt-4">
+            <Button type="submit" disabled={isLoading} className="w-full">
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </div>
         </form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
+        <div className="text-sm text-center">
+            Don&apos;t have an account?{" "}
+            <Link href="/sign-up" className="font-medium text-primary hover:underline">
+                Create Account
+            </Link>
+        </div>
         <p className="flex items-center gap-2 text-xs text-muted-foreground">
           <ShieldCheck className="h-4 w-4" />
           Your information is protected with bank-grade security.
