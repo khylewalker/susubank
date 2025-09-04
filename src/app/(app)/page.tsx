@@ -15,15 +15,6 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -34,7 +25,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MoreVertical, Users, TrendingUp, Clock } from "lucide-react";
-import DashboardClient from "./dashboard-client";
 
 const members = [
   {
@@ -86,7 +76,6 @@ export default function DashboardPage() {
           <h1 className="text-3xl font-bold font-headline mt-2">Dashboard</h1>
         </div>
         <div className="flex items-center gap-4">
-          <DashboardClient />
         </div>
       </header>
 
@@ -150,8 +139,8 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Card className="xl:col-span-2">
+      <div className="grid grid-cols-1 gap-6">
+        <Card>
           <CardHeader>
             <CardTitle className="font-headline">Members</CardTitle>
           </CardHeader>
@@ -194,51 +183,6 @@ export default function DashboardPage() {
                 ))}
               </TableBody>
             </Table>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-headline">Profile & Settings</CardTitle>
-            <CardDescription>Update your personal details and preferences.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-                <Label htmlFor="language">Language</Label>
-                <Select defaultValue="en-us">
-                    <SelectTrigger>
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="en-us">English (US)</SelectItem>
-                        <SelectItem value="fr">French</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
-            <div className="space-y-2">
-                <Label htmlFor="timezone">Time Zone</Label>
-                <Select defaultValue="utc-5">
-                    <SelectTrigger>
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="utc-5">Eastern Time (US & Canada)</SelectItem>
-                        <SelectItem value="utc">UTC</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
-             <div className="space-y-2">
-                <Label>Notifications</Label>
-                 <div className="flex items-center space-x-2">
-                    <Input type="checkbox" id="email-notif" defaultChecked />
-                    <Label htmlFor="email-notif" className="font-normal">Email Notifications</Label>
-                </div>
-                 <div className="flex items-center space-x-2">
-                    <Input type="checkbox" id="sms-notif" />
-                    <Label htmlFor="sms-notif" className="font-normal">SMS Notifications</Label>
-                </div>
-            </div>
-            <Button className="w-full">Save Changes</Button>
           </CardContent>
         </Card>
       </div>

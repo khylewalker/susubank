@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'SusuPal App',
+  title: 'SusuBank App',
   description: 'Manage your collective savings with ease.',
 };
 
