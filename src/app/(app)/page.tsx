@@ -83,7 +83,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base font-medium">Total Registered Users</CardTitle>
+            <CardTitle className="text-base font-medium">Total Users</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold">48</p>
