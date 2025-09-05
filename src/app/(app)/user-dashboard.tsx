@@ -18,11 +18,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const recentActivity: any[] = [];
+const recentActivity = [
+    { activity: 'Contribution', details: 'Cycle Contribution for July', amount: 'GH₵250.00', date: 'July 15, 2024', status: 'Completed' },
+    { activity: 'Withdrawal', details: 'Emergency Withdrawal', amount: 'GH₵100.00', date: 'July 10, 2024', status: 'Approved' },
+];
 
-const groupMembers: any[] = [];
+const groupMembers = [
+    { name: 'Approved User', avatar: 'https://picsum.photos/seed/approved@susu.bank/100/100', status: 'Paid' },
+    { name: 'First Timer', avatar: 'https://picsum.photos/seed/first.timer@susu.bank/100/100', status: 'Paid' },
+    { name: 'Yaw Mensah', avatar: 'https://picsum.photos/seed/yaw.m@email.com/100/100', status: 'Pending' },
+];
 
 export default function UserDashboard({ user }: { user: User }) {
   const getStatusColor = (status: string) => {
@@ -38,34 +47,39 @@ export default function UserDashboard({ user }: { user: User }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <header>
-        <h1 className="text-3xl font-bold font-headline">Welcome, {user.name.split(' ')[0]}!</h1>
-        <p className="text-muted-foreground">Here is your financial overview.</p>
+      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 className="text-3xl font-bold font-headline">Welcome, {user.name.split(' ')[0]}!</h1>
+            <p className="text-muted-foreground">Here is your financial overview.</p>
+        </div>
+        <div className="flex items-center gap-4">
+            <Button><PlusCircle /> New Contribution</Button>
+        </div>
       </header>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader>
             <CardDescription>My Total Contributions</CardDescription>
-            <CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle>
+            <CardTitle className="text-2xl font-bold">GH₵500.00</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader>
             <CardDescription>Current Cycle Contribution</CardDescription>
-            <CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle>
+            <CardTitle className="text-2xl font-bold">GH₵250.00</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader>
             <CardDescription>Group Pool Size</CardDescription>
-            <CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle>
+            <CardTitle className="text-2xl font-bold">GH₵1,250.00</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader>
             <CardDescription>Next Payout</CardDescription>
-            <CardTitle className="text-2xl font-bold">N/A</CardTitle>
+            <CardTitle className="text-2xl font-bold">Aug 1, 2024</CardTitle>
           </CardHeader>
         </Card>
       </div>
@@ -87,7 +101,7 @@ export default function UserDashboard({ user }: { user: User }) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {recentActivity.length > 0 ? recentActivity.map((item, index) => (
+                        {recentActivity.map((item, index) => (
                             <TableRow key={index}>
                                 <TableCell className="font-medium">{item.activity}</TableCell>
                                 <TableCell>{item.details}</TableCell>
@@ -95,11 +109,7 @@ export default function UserDashboard({ user }: { user: User }) {
                                 <TableCell>{item.date}</TableCell>
                                 <TableCell><Badge className={getStatusColor(item.status)}>{item.status}</Badge></TableCell>
                             </TableRow>
-                        )) : (
-                           <TableRow>
-                                <TableCell colSpan={5} className="text-center">No recent activity.</TableCell>
-                            </TableRow>
-                        )}
+                        ))}
                     </TableBody>
                 </Table>
             </CardContent>
@@ -110,7 +120,7 @@ export default function UserDashboard({ user }: { user: User }) {
             </CardHeader>
             <CardContent>
                  <ul className="space-y-4">
-                    {groupMembers.length > 0 ? groupMembers.map((member, index) => (
+                    {groupMembers.map((member, index) => (
                         <li key={index} className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <Avatar className="h-9 w-9">
@@ -121,9 +131,7 @@ export default function UserDashboard({ user }: { user: User }) {
                             </div>
                             <Badge className={getStatusColor(member.status)}>{member.status}</Badge>
                         </li>
-                    )) : (
-                        <li className="text-center text-muted-foreground">No group members to display.</li>
-                    )}
+                    ))}
                  </ul>
             </CardContent>
         </Card>

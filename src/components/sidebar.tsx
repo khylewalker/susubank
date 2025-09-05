@@ -38,9 +38,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { mockUsers as initialMockUsers, type User } from "@/lib/mock-users";
-import { useState, useEffect } from "react";
-
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -49,43 +46,17 @@ const navItems = [
   { href: "/transactions", label: "Transactions", icon: History },
 ];
 
+const adminNavItems = [
+  { href: "/admin/users", label: "Users", icon: Users },
+  { href: "/admin/create-member", label: "Add New Member", icon: UserPlus },
+  { href: "/admin/create-group", label: "Create Group", icon: PlusCircle },
+  { href: "/admin/requests", label: "User Requests", icon: BellRing, badge: "1" },
+  { href: "/admin/login-activity", label: "Login Activity", icon: ShieldCheck },
+];
 
 export function AppSidebar() {
   const pathname = usePathname();
   const { isMobile, setOpenMobile } = useSidebar();
-  const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const getPendingCount = () => {
-      const storedUsers = localStorage.getItem('mockUsers');
-      const users: User[] = storedUsers ? JSON.parse(storedUsers) : initialMockUsers;
-      const loggedInUserEmail = "approved@susu.bank"; // This should be dynamic in a real app
-      const user = users.find(u => u.email === loggedInUserEmail) || null;
-      setCurrentUser(user);
-      return users.filter(user => user.status === 'pending').length;
-    };
-    
-    setPendingRequestsCount(getPendingCount());
-
-    // Listen for storage changes to update the badge in real-time
-    const handleStorageChange = () => {
-      setPendingRequestsCount(getPendingCount());
-    };
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-
-  }, []);
-
-  const isAdmin = currentUser?.email === 'admin@susu.bank';
-
-  const adminNavItems = [
-    { href: "/admin/users", label: "Users", icon: Users },
-    { href: "/admin/create-member", label: "Add New Member", icon: UserPlus },
-    { href: "/admin/create-group", label: "Create Group", icon: PlusCircle },
-    { href: "/admin/requests", label: "User Requests", icon: BellRing, badge: pendingRequestsCount > 0 ? String(pendingRequestsCount) : undefined },
-    { href: "/admin/login-activity", label: "Login Activity", icon: ShieldCheck },
-  ];
 
   const handleLinkClick = () => {
     if (isMobile) {
@@ -116,44 +87,39 @@ export function AppSidebar() {
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
-
-        {isAdmin && (
-            <>
-                <SidebarGroup className="mt-4">
-                    <h3 className="px-2 text-xs font-semibold text-sidebar-foreground/70 uppercase tracking-wider group-data-[collapsible=icon]:hidden">Admin</h3>
-                </SidebarGroup>
-                <SidebarMenu>
-                {adminNavItems.map((item) => (
-                    <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton
-                        asChild
-                        isActive={pathname.startsWith(item.href)}
-                        tooltip={item.label}
-                        onClick={handleLinkClick}
-                    >
-                        <Link href={item.href}>
-                        <item.icon />
-                        <span>{item.label}</span>
-                        {item.badge && <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>}
-                        </Link>
-                    </SidebarMenuButton>
-                    </SidebarMenuItem>
-                ))}
-                </SidebarMenu>
-            </>
-        )}
+        <SidebarGroup className="mt-4">
+            <h3 className="px-2 text-xs font-semibold text-sidebar-foreground/70 uppercase tracking-wider group-data-[collapsible=icon]:hidden">Admin</h3>
+        </SidebarGroup>
+        <SidebarMenu>
+          {adminNavItems.map((item) => (
+            <SidebarMenuItem key={item.href}>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname.startsWith(item.href)}
+                tooltip={item.label}
+                onClick={handleLinkClick}
+              >
+                <Link href={item.href}>
+                  <item.icon />
+                  <span>{item.label}</span>
+                  {item.badge && <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>}
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
       </SidebarContent>
       <SidebarFooter className="mt-auto">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div className="flex items-center gap-3 p-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:py-2 cursor-pointer hover:bg-sidebar-accent rounded-md">
                 <Avatar className="h-9 w-9">
-                  <AvatarImage src="https://picsum.photos/100/100" data-ai-hint="user avatar" alt="User" />
-                  <AvatarFallback>{currentUser?.name.substring(0,2).toUpperCase() || 'U'}</AvatarFallback>
+                  <AvatarImage src="https://picsum.photos/100/100" data-ai-hint="user avatar" alt="Admin" />
+                  <AvatarFallback>AD</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col group-data-[collapsible=icon]:hidden">
-                    <p className="text-sm font-medium text-sidebar-foreground">{currentUser?.name || 'User'}</p>
-                    <p className="text-xs text-sidebar-foreground/70">{isAdmin ? 'Admin' : 'Member'}</p>
+                    <p className="text-sm font-medium text-sidebar-foreground">Admin</p>
+                    <p className="text-xs text-sidebar-foreground/70">Admin</p>
                 </div>
             </div>
           </DropdownMenuTrigger>

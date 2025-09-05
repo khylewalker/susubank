@@ -1,7 +1,6 @@
 
 "use client";
 
-import { useEffect, useState } from 'react';
 import {
   Card,
   CardDescription,
@@ -20,49 +19,38 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
-import { mockUsers as initialMockUsers, User } from "@/lib/mock-users";
-import UserDashboard from './user-dashboard';
+
+const transactions = [
+  {
+    id: "TRN-001",
+    member: "First Timer",
+    type: "Contribution",
+    amount: "GH₵250.00",
+  },
+  {
+    id: "TRN-002",
+    member: "Admin",
+    type: "Withdrawal",
+    amount: "GH₵500.00",
+  },
+  {
+    id: "TRN-003",
+    member: "Approved User",
+    type: "Contribution",
+    amount: "GH₵250.00",
+  },
+];
+
+const requests = [
+  {
+    id: "REQ-001",
+    member: "New User",
+    type: "New Member",
+    status: "Pending",
+  },
+];
 
 export default function DashboardClient() {
-  const [transactions, setTransactions] = useState<any[]>([]);
-  const [requests, setRequests] = useState<any[]>([]);
-  const [totalUsers, setTotalUsers] = useState(0);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    // In a real app, this data would come from an API/auth context
-    const storedUsers = localStorage.getItem('mockUsers');
-    const users: User[] = storedUsers ? JSON.parse(storedUsers) : initialMockUsers;
-    
-    // Simulate a logged-in user. Change this to test different users.
-    const loggedInUserEmail = "approved@susu.bank"; // or "admin@susu.bank"
-    const user = users.find(u => u.email === loggedInUserEmail) || null;
-    setCurrentUser(user);
-
-    const adminCheck = user?.email === 'admin@susu.bank';
-    setIsAdmin(adminCheck);
-
-    if (adminCheck) {
-      const registeredUsers = users.filter(u => u.status === 'approved' && u.email !== 'admin@susu.bank');
-      setTotalUsers(registeredUsers.length);
-      
-      const pendingRequests = users
-          .filter(user => user.status === 'pending')
-          .map((user, index) => ({
-              id: `REQ-00${index+1}`,
-              member: user.name,
-              type: 'New Member',
-              status: 'Pending',
-          }));
-      setRequests(pendingRequests);
-      
-      // For now, transactions are empty
-      setTransactions([]);
-    }
-
-  }, []);
-
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
         case 'approved': return 'bg-green-100 text-green-800';
@@ -71,15 +59,6 @@ export default function DashboardClient() {
         default: return 'bg-gray-100 text-gray-800';
     }
   }
-  
-  if (!currentUser) {
-    return <div>Loading...</div>; // Or a proper loader
-  }
-  
-  if (!isAdmin) {
-    return <UserDashboard user={currentUser} />;
-  }
-
 
   return (
     <div className="flex flex-col gap-6">
@@ -91,7 +70,7 @@ export default function DashboardClient() {
         <Card>
           <CardHeader>
             <CardDescription>Total Users</CardDescription>
-            <CardTitle className="text-2xl font-bold">{totalUsers}</CardTitle>
+            <CardTitle className="text-2xl font-bold">4</CardTitle>
           </CardHeader>
         </Card>
         <Card>
@@ -103,13 +82,13 @@ export default function DashboardClient() {
         <Card>
           <CardHeader>
             <CardDescription>All Group Contributions</CardDescription>
-            <CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle>
+            <CardTitle className="text-2xl font-bold">GH₵500.00</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader>
             <CardDescription>All Group Withdrawals</CardDescription>
-            <CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle>
+            <CardTitle className="text-2xl font-bold">GH₵500.00</CardTitle>
           </CardHeader>
         </Card>
       </div>
@@ -134,17 +113,13 @@ export default function DashboardClient() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {transactions.length > 0 ? transactions.map((tx) => (
+                        {transactions.map((tx) => (
                             <TableRow key={tx.id}>
                                 <TableCell>{tx.member}</TableCell>
                                 <TableCell>{tx.type}</TableCell>
                                 <TableCell className="text-right">{tx.amount}</TableCell>
                             </TableRow>
-                        )) : (
-                            <TableRow>
-                                <TableCell colSpan={3} className="text-center">No recent transactions.</TableCell>
-                            </TableRow>
-                        )}
+                        ))}
                     </TableBody>
                 </Table>
             </CardContent>
@@ -169,17 +144,13 @@ export default function DashboardClient() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {requests.length > 0 ? requests.map((req) => (
+                        {requests.map((req) => (
                              <TableRow key={req.id}>
                                 <TableCell>{req.member}</TableCell>
                                 <TableCell>{req.type}</TableCell>
                                 <TableCell><Badge className={getStatusColor(req.status)}>{req.status}</Badge></TableCell>
                             </TableRow>
-                        )): (
-                            <TableRow>
-                                <TableCell colSpan={3} className="text-center">No pending requests.</TableCell>
-                            </TableRow>
-                        )}
+                        ))}
                     </TableBody>
                 </Table>
             </CardContent>
