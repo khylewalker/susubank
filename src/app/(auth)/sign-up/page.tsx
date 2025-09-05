@@ -51,10 +51,11 @@ const formSchema = z
     confirmPassword: z.string(),
     dob: z.string().refine((dob) => {
         const date = new Date(dob);
+        const year = date.getFullYear();
         const currentYear = new Date().getFullYear();
-        return !isNaN(date.getTime()) && date.getFullYear() <= currentYear;
+        return !isNaN(date.getTime()) && year >= 1600 && year <= currentYear;
     }, {
-        message: "Please enter a valid date of birth that is not in the future.",
+        message: "Please enter a valid year between 1600 and the current year.",
     }),
     nationality: z.string().min(1, { message: "Please select a nationality." }),
     address: z.string().min(1, { message: "Residential address is required." }),
@@ -229,9 +230,17 @@ export default function SignUpPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Government ID Type</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Passport, Driver's license, etc." {...field} />
-                    </FormControl>
+                     <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                            <SelectTrigger><SelectValue placeholder="Select ID Type" /></SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            <SelectItem value="ghana_card">Ghana Card</SelectItem>
+                            <SelectItem value="passport">Passport</SelectItem>
+                            <SelectItem value="drivers_license">Driver's License</SelectItem>
+                            <SelectItem value="voters_id">Voter's ID</SelectItem>
+                        </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
