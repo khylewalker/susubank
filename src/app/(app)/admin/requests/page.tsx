@@ -47,7 +47,7 @@ type UserRequest = {
 
 const mockRequests: Omit<UserRequest, 'status' | 'statusChangeDate' | 'member' | 'email' | 'id'>[] = [];
 
-const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[], onUpdateRequest: (id: string, email: string, status: 'Approved' | 'Rejected') => void }) => {
+const RequestsTable = ({ requests, onUpdateRequest, showActions }: { requests: UserRequest[], onUpdateRequest: (id: string, email: string, status: 'Approved' | 'Rejected') => void, showActions: boolean }) => {
     
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
@@ -81,7 +81,7 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
                     <TableHead>Details</TableHead>
                     <TableHead>Date</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    {showActions && <TableHead className="text-right">Actions</TableHead>}
                 </TableRow></TableHeader>
                 <TableBody>
                     {requests.length > 0 ? requests.map(req => (
@@ -93,22 +93,24 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
                             <TableCell>{req.details}</TableCell>
                             <TableCell>{req.date}</TableCell>
                             <TableCell><Badge className={getStatusColor(req.status)}>{req.status}</Badge></TableCell>
-                            <TableCell className="text-right">
-                                {req.status === 'Pending' && (
-                                    <div className="flex gap-2 justify-end">
-                                        <Button size="icon" variant="ghost" className="h-7 w-7 text-green-600" onClick={() => onUpdateRequest(req.id, req.email, 'Approved')}>
-                                            <Check className="h-4 w-4" />
-                                        </Button>
-                                        <Button size="icon" variant="ghost" className="h-7 w-7 text-red-600" onClick={() => onUpdateRequest(req.id, req.email, 'Rejected')}>
-                                            <X className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                )}
-                            </TableCell>
+                            {showActions && (
+                                <TableCell className="text-right">
+                                    {req.status === 'Pending' && (
+                                        <div className="flex gap-2 justify-end">
+                                            <Button size="icon" variant="ghost" className="h-7 w-7 text-green-600" onClick={() => onUpdateRequest(req.id, req.email, 'Approved')}>
+                                                <Check className="h-4 w-4" />
+                                            </Button>
+                                            <Button size="icon" variant="ghost" className="h-7 w-7 text-red-600" onClick={() => onUpdateRequest(req.id, req.email, 'Rejected')}>
+                                                <X className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    )}
+                                </TableCell>
+                            )}
                         </TableRow>
                     )) : (
                         <TableRow>
-                            <TableCell colSpan={8} className="text-center">No pending requests.</TableCell>
+                            <TableCell colSpan={showActions ? 8 : 7} className="text-center">No requests found in this category.</TableCell>
                         </TableRow>
                     )}
                 </TableBody>
@@ -222,7 +224,8 @@ export default function UserRequestsPage() {
     };
 
     const pendingRequests = userRequests.filter(r => r.status === 'Pending');
-    const newMemberRequests = pendingRequests.filter(r => r.type === 'New Member');
+    const approvedRequests = userRequests.filter(r => r.status === 'Approved');
+    const rejectedRequests = userRequests.filter(r => r.status === 'Rejected');
     
     return (
         <div className="flex flex-col gap-6">
@@ -245,7 +248,7 @@ export default function UserRequestsPage() {
                 <Card><CardHeader><CardDescription>Pending Requests</CardDescription><CardTitle className="text-2xl font-bold">{pendingRequests.length}</CardTitle></CardHeader></Card>
                 <Card><CardHeader><CardDescription>Approved Today</CardDescription><CardTitle className="text-2xl font-bold">{approvedToday}</CardTitle></CardHeader></Card>
                 <Card><CardHeader><CardDescription>Rejected Today</CardDescription><CardTitle className="text-2xl font-bold">{rejectedToday}</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">{newMemberRequests.length}</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Total Requests</CardDescription><CardTitle className="text-2xl font-bold">{userRequests.length}</CardTitle></CardHeader></Card>
             </div>
 
             <Tabs defaultValue="all">
@@ -253,19 +256,29 @@ export default function UserRequestsPage() {
                     <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <TabsList>
                             <TabsTrigger value="all">All</TabsTrigger>
-                            <TabsTrigger value="new-members">New Members</TabsTrigger>
+                            <TabsTrigger value="pending">Pending</TabsTrigger>
+                            <TabsTrigger value="approved">Approved</TabsTrigger>
+                            <TabsTrigger value="rejected">Rejected</TabsTrigger>
                         </TabsList>
-                        <div className="flex gap-2 shrink-0">
-                            <Button variant="outline" onClick={() => handleBulkUpdate('Approved')}><CheckCheck /> Approve All</Button>
-                            <Button variant="destructive" onClick={() => handleBulkUpdate('Rejected')}><XCircle /> Reject All</Button>
-                        </div>
+                        {pendingRequests.length > 0 && (
+                            <div className="flex gap-2 shrink-0">
+                                <Button variant="outline" onClick={() => handleBulkUpdate('Approved')}><CheckCheck /> Approve All</Button>
+                                <Button variant="destructive" onClick={() => handleBulkUpdate('Rejected')}><XCircle /> Reject All</Button>
+                            </div>
+                        )}
                     </CardHeader>
                     <CardContent>
                         <TabsContent value="all">
-                            <RequestsTable requests={pendingRequests} onUpdateRequest={handleUpdateRequest} />
+                            <RequestsTable requests={userRequests} onUpdateRequest={handleUpdateRequest} showActions={true} />
                         </TabsContent>
-                        <TabsContent value="new-members">
-                            <RequestsTable requests={newMemberRequests} onUpdateRequest={handleUpdateRequest} />
+                         <TabsContent value="pending">
+                            <RequestsTable requests={pendingRequests} onUpdateRequest={handleUpdateRequest} showActions={true} />
+                        </TabsContent>
+                        <TabsContent value="approved">
+                            <RequestsTable requests={approvedRequests} onUpdateRequest={handleUpdateRequest} showActions={false} />
+                        </TabsContent>
+                         <TabsContent value="rejected">
+                            <RequestsTable requests={rejectedRequests} onUpdateRequest={handleUpdateRequest} showActions={false} />
                         </TabsContent>
                     </CardContent>
                 </Card>
