@@ -30,7 +30,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Check, X, CheckCheck, XCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { mockUsers } from "@/lib/mock-users";
+import { mockUsers as initialMockUsers, User } from "@/lib/mock-users";
 
 type UserRequest = {
   id: string;
@@ -112,11 +112,25 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
 
 export default function UserRequestsPage() {
     const { toast } = useToast();
+    const [allUsers, setAllUsers] = useState<User[]>([]);
     const [userRequests, setUserRequests] = useState<UserRequest[]>([]);
+    const [approvedToday, setApprovedToday] = useState(0);
+    const [rejectedToday, setRejectedToday] = useState(0);
 
-     useEffect(() => {
-        const pendingUsers = mockUsers
-            .filter(user => user.status === 'pending')
+    const isToday = (date: Date) => {
+        const today = new Date();
+        return date.getDate() === today.getDate() &&
+               date.getMonth() === today.getMonth() &&
+               date.getFullYear() === today.getFullYear();
+    }
+
+    const loadUsers = () => {
+        const storedUsers = localStorage.getItem('mockUsers');
+        const users: User[] = storedUsers ? JSON.parse(storedUsers) : initialMockUsers;
+
+        setAllUsers(users);
+
+        const requests = users
             .map((user, index) => ({
                 id: `REQ-${String(index + 1).padStart(4, '0')}`,
                 member: user.name,
@@ -126,18 +140,40 @@ export default function UserRequestsPage() {
                 details: 'New account registration',
                 destination: 'N/A',
                 date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
-                status: 'Pending' as 'Pending' | 'Approved' | 'Rejected',
+                status: user.status.charAt(0).toUpperCase() + user.status.slice(1) as 'Pending' | 'Approved' | 'Rejected',
+                statusChangeDate: user.statusChangeDate ? new Date(user.statusChangeDate) : undefined,
             }));
-        setUserRequests(pendingUsers);
+
+        setUserRequests(requests);
+
+        const todayApproved = requests.filter(r => r.status === 'Approved' && r.statusChangeDate && isToday(r.statusChangeDate)).length;
+        const todayRejected = requests.filter(r => r.status === 'Rejected' && r.statusChangeDate && isToday(r.statusChangeDate)).length;
+        setApprovedToday(todayApproved);
+        setRejectedToday(todayRejected);
+    };
+    
+    useEffect(() => {
+        loadUsers();
+        // Fallback for initial load if localStorage is empty
+        if (!localStorage.getItem('mockUsers')) {
+            localStorage.setItem('mockUsers', JSON.stringify(initialMockUsers));
+        }
     }, []);
 
+    const updateUsersInStorage = (updatedUsers: User[]) => {
+        localStorage.setItem('mockUsers', JSON.stringify(updatedUsers));
+        loadUsers(); // Reload state from storage
+    };
+
     const handleUpdateRequest = (email: string, status: 'Approved' | 'Rejected') => {
-        const userIndex = mockUsers.findIndex(u => u.email === email);
-        if (userIndex !== -1) {
-            mockUsers[userIndex].status = status.toLowerCase() as 'approved' | 'rejected';
-        }
-        
-        setUserRequests(prev => prev.filter(req => req.email !== email));
+        const updatedUsers = allUsers.map(user => {
+            if (user.email === email) {
+                return { ...user, status: status.toLowerCase() as 'approved' | 'rejected' | 'pending', statusChangeDate: new Date().toISOString() };
+            }
+            return user;
+        });
+
+        updateUsersInStorage(updatedUsers);
 
         toast({
             title: `Request ${status}`,
@@ -146,22 +182,23 @@ export default function UserRequestsPage() {
     };
 
     const handleBulkUpdate = (status: 'Approved' | 'Rejected') => {
-        userRequests.forEach(req => {
-            if (req.status === 'Pending') {
-                 const userIndex = mockUsers.findIndex(u => u.email === req.email);
-                if (userIndex !== -1) {
-                    mockUsers[userIndex].status = status.toLowerCase() as 'approved' | 'rejected';
-                }
+        const now = new Date().toISOString();
+        const updatedUsers = allUsers.map(user => {
+            if (user.status === 'pending') {
+                return { ...user, status: status.toLowerCase() as 'approved' | 'rejected' | 'pending', statusChangeDate: now };
             }
+            return user;
         });
-
-        setUserRequests(prev => prev.map(req => req.status === 'Pending' ? { ...req, status } : req).filter(req => req.status !== 'Pending'));
+        
+        updateUsersInStorage(updatedUsers);
         
         toast({
             title: `All Pending Requests ${status}`,
             description: `All pending requests have been ${status.toLowerCase()}.`,
         });
     };
+
+    const pendingRequests = userRequests.filter(r => r.status === 'Pending');
     
     return (
         <div className="flex flex-col gap-6">
@@ -181,10 +218,10 @@ export default function UserRequestsPage() {
             </header>
             
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <Card><CardHeader><CardDescription>Pending Requests</CardDescription><CardTitle className="text-2xl font-bold">{userRequests.filter(r => r.status === 'Pending').length}</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>Approved Today</CardDescription><CardTitle className="text-2xl font-bold">0</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>Rejected Today</CardDescription><CardTitle className="text-2xl font-bold">0</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">{userRequests.filter(r => r.type === 'New Member' && r.status === 'Pending').length}</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Pending Requests</CardDescription><CardTitle className="text-2xl font-bold">{pendingRequests.length}</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Approved Today</CardDescription><CardTitle className="text-2xl font-bold">{approvedToday}</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Rejected Today</CardDescription><CardTitle className="text-2xl font-bold">{rejectedToday}</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">{userRequests.filter(r => r.type === 'New Member').length}</CardTitle></CardHeader></Card>
             </div>
 
             <Tabs defaultValue="all">

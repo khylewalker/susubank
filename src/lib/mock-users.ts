@@ -2,12 +2,13 @@
 // In a real application, this would be a database.
 // For demonstration purposes, we're using an in-memory array.
 
-type User = {
+export type User = {
   email: string;
   password?: string; // Make password optional as we might not always have it
   status: 'approved' | 'pending' | 'rejected';
   firstLogin: boolean;
   name: string;
+  statusChangeDate?: string; // ISO date string
 };
 
 export let mockUsers: User[] = [
@@ -19,11 +20,15 @@ export let mockUsers: User[] = [
 
 
 export const addUser = (user: User) => {
-  const existingUser = mockUsers.find(u => u.email === user.email);
+  const storedUsers = localStorage.getItem('mockUsers');
+  let currentUsers: User[] = storedUsers ? JSON.parse(storedUsers) : mockUsers;
+  
+  const existingUser = currentUsers.find(u => u.email === user.email);
   if (!existingUser) {
-    mockUsers.push(user);
+    currentUsers.push(user);
+    localStorage.setItem('mockUsers', JSON.stringify(currentUsers));
     console.log("User added:", user);
-    console.log("Current users:", mockUsers);
+    console.log("Current users:", currentUsers);
   } else {
     console.log("User already exists:", user.email);
   }

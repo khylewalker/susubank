@@ -19,7 +19,7 @@ import { Logo } from "@/components/logo";
 import { ShieldCheck, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { mockUsers } from "@/lib/mock-users";
+import { mockUsers as initialMockUsers, User } from "@/lib/mock-users";
 
 export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,8 +30,17 @@ export default function SignInPage() {
   const { toast } = useToast();
   const router = useRouter();
 
+  const getMockUsers = (): User[] => {
+    if (typeof window !== 'undefined') {
+      const storedUsers = localStorage.getItem('mockUsers');
+      return storedUsers ? JSON.parse(storedUsers) : initialMockUsers;
+    }
+    return initialMockUsers;
+  };
+
   // Check on load if the user was previously pending and is now approved
   useEffect(() => {
+    const mockUsers = getMockUsers();
     const lastLoginAttemptEmail = localStorage.getItem('lastLoginAttemptEmail');
     const user = mockUsers.find(u => u.email === lastLoginAttemptEmail);
 
@@ -52,6 +61,7 @@ export default function SignInPage() {
 
     // Simulate API call
     setTimeout(() => {
+      const mockUsers = getMockUsers();
       console.log("Attempting login for:", email);
       console.log("Current users:", mockUsers);
       const user = mockUsers.find(u => u.email === email);
@@ -80,8 +90,10 @@ export default function SignInPage() {
         
         // In a real app, you would update the user's `firstLogin` status in the database.
         if(user.firstLogin) {
-            const userIndex = mockUsers.findIndex(u => u.email === user.email);
-            if(userIndex !== -1) mockUsers[userIndex].firstLogin = false;
+            const updatedUsers = mockUsers.map(u => u.email === user.email ? {...u, firstLogin: false} : u);
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('mockUsers', JSON.stringify(updatedUsers));
+            }
         }
 
         localStorage.removeItem('lastLoginAttemptEmail');
