@@ -34,6 +34,17 @@ import { MessageSquare, MoreHorizontal, Trash2, UserX, UserCheck } from 'lucide-
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import { mockUsers as initialMockUsers, User as MockUser } from "@/lib/mock-users";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 
 type User = { 
@@ -142,6 +153,27 @@ export default function UsersPage() {
         });
     };
 
+    const handleDeleteUser = () => {
+        if (!selectedUser) return;
+        
+        const updatedUsers = users.filter(u => u.id !== selectedUser.id);
+        setUsers(updatedUsers);
+        setSelectedUser(updatedUsers.length > 0 ? updatedUsers[0] : null);
+
+        toast({
+            title: "User Deleted",
+            description: `${selectedUser.name} has been removed.`,
+        });
+    };
+
+    const handleMessageUser = () => {
+        if (!selectedUser) return;
+        toast({
+            title: "Message Sent (Simulated)",
+            description: `A message has been sent to ${selectedUser.name}.`,
+        });
+    };
+
     return (
         <div className="flex flex-col gap-6">
              <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -199,7 +231,7 @@ export default function UsersPage() {
                                     <CardDescription>ID: {selectedUser.id} &bull; Joined: {selectedUser.joinDate}</CardDescription>
                                 </div>
                                 <div className="flex items-center gap-2 shrink-0">
-                                    <Button variant="outline"><MessageSquare/> Message</Button>
+                                    <Button variant="outline" onClick={handleMessageUser}><MessageSquare/> Message</Button>
                                     <Button variant="outline"><MoreHorizontal/></Button>
                                 </div>
                             </div>
@@ -209,7 +241,23 @@ export default function UsersPage() {
                                 <div><p className="text-sm text-muted-foreground">Loan Balance</p><p className="font-bold text-lg">{selectedUser.loanBalance}</p></div>
                             </div>
                             <div className="flex flex-wrap gap-2 pt-4">
-                                <Button variant="destructive"><Trash2/> Delete User</Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button variant="destructive"><Trash2/> Delete User</Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone. This will permanently delete {selectedUser.name}'s account.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction onClick={handleDeleteUser}>Delete</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                                 <div className="flex gap-2">
                                     <Button variant="outline" onClick={handleToggleSuspend}>
                                         {selectedUser.status === 'Suspended' ? <UserCheck/> : <UserX/>}
