@@ -38,6 +38,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useEffect, useState } from "react";
+import type { User } from "@/lib/mock-users";
+import { mockUsers as initialMockUsers } from "@/lib/mock-users";
+
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -57,6 +61,16 @@ const adminNavItems = [
 export function AppSidebar() {
   const pathname = usePathname();
   const { isMobile, setOpenMobile } = useSidebar();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const lastLoggedInEmail = localStorage.getItem('lastLoggedInEmail');
+    const mockUsers = localStorage.getItem('mockUsers') ? JSON.parse(localStorage.getItem('mockUsers')!) : initialMockUsers;
+    const currentUser = mockUsers.find((u: User) => u.email === lastLoggedInEmail);
+    setUser(currentUser || mockUsers.find((u: User) => u.email === 'admin@susu.bank')!);
+  }, []);
+
+  const isAdmin = user?.email === 'admin@susu.bank';
 
   const handleLinkClick = () => {
     if (isMobile) {
@@ -87,39 +101,43 @@ export function AppSidebar() {
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
-        <SidebarGroup className="mt-4">
-            <h3 className="px-2 text-xs font-semibold text-sidebar-foreground/70 uppercase tracking-wider group-data-[collapsible=icon]:hidden">Admin</h3>
-        </SidebarGroup>
-        <SidebarMenu>
-          {adminNavItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
-              <SidebarMenuButton
-                asChild
-                isActive={pathname.startsWith(item.href)}
-                tooltip={item.label}
-                onClick={handleLinkClick}
-              >
-                <Link href={item.href}>
-                  <item.icon />
-                  <span>{item.label}</span>
-                  {item.badge && <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>}
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
+        {isAdmin && (
+          <>
+            <SidebarGroup className="mt-4">
+                <h3 className="px-2 text-xs font-semibold text-sidebar-foreground/70 uppercase tracking-wider group-data-[collapsible=icon]:hidden">Admin</h3>
+            </SidebarGroup>
+            <SidebarMenu>
+              {adminNavItems.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname.startsWith(item.href)}
+                    tooltip={item.label}
+                    onClick={handleLinkClick}
+                  >
+                    <Link href={item.href}>
+                      <item.icon />
+                      <span>{item.label}</span>
+                      {item.badge && <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>}
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </>
+        )}
       </SidebarContent>
       <SidebarFooter className="mt-auto">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div className="flex items-center gap-3 p-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:py-2 cursor-pointer hover:bg-sidebar-accent rounded-md">
                 <Avatar className="h-9 w-9">
-                  <AvatarImage src="https://picsum.photos/100/100" data-ai-hint="user avatar" alt="Admin" />
-                  <AvatarFallback>AD</AvatarFallback>
+                  <AvatarImage src={`https://picsum.photos/seed/${user?.email}/100/100`} data-ai-hint="user avatar" alt={user?.name} />
+                  <AvatarFallback>{user?.name?.substring(0,2) || 'US'}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col group-data-[collapsible=icon]:hidden">
-                    <p className="text-sm font-medium text-sidebar-foreground">Admin</p>
-                    <p className="text-xs text-sidebar-foreground/70">Admin</p>
+                    <p className="text-sm font-medium text-sidebar-foreground">{user?.name}</p>
+                    <p className="text-xs text-sidebar-foreground/70">{isAdmin ? 'Admin' : 'Member'}</p>
                 </div>
             </div>
           </DropdownMenuTrigger>

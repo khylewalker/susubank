@@ -15,6 +15,7 @@ export let mockUsers: User[] = [
   { email: "admin@susu.bank", password: "mkisdeadmin", status: "approved", firstLogin: false, name: "Admin" },
   { email: "approved@susu.bank", password: "password123", status: "approved", firstLogin: false, name: "Approved User" },
   { email: "new.user@susu.bank", password: "password123", status: "pending", firstLogin: true, name: "New User" },
+  { email: "user@susu.bank", password: "password123", status: "approved", firstLogin: true, name: "Regular User" },
 ];
 
 

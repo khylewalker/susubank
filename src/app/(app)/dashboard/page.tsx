@@ -2,26 +2,40 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import DashboardClient from '../dashboard-client';
+import UserDashboard from '../user-dashboard';
+import type { User } from '@/lib/mock-users';
+import { mockUsers as initialMockUsers } from '@/lib/mock-users';
 
 export default function DashboardPage() {
   const router = useRouter();
-  
-  // A real app would have a session check here.
-  // For now, we'll simulate a simple check.
-  const isLoggedIn = true; // In a real app, this would come from a session/auth context
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Simulate logged in state
 
   useEffect(() => {
     if (!isLoggedIn) {
       router.push('/sign-in');
+    } else {
+      // In a real app, you'd get the current user from a session context.
+      // We'll simulate it by grabbing the last logged-in user from localStorage.
+      const lastLoggedInEmail = localStorage.getItem('lastLoggedInEmail');
+      const mockUsers = localStorage.getItem('mockUsers') ? JSON.parse(localStorage.getItem('mockUsers')!) : initialMockUsers;
+      const currentUser = mockUsers.find((u: User) => u.email === lastLoggedInEmail);
+      
+      // Default to admin if no one is "logged in" for demo purposes
+      setUser(currentUser || mockUsers.find((u: User) => u.email === 'admin@susu.bank')!);
     }
   }, [isLoggedIn, router]);
 
-  if (!isLoggedIn) {
-    // You can return a loader here while the redirect happens
+  if (!isLoggedIn || !user) {
+    // You can return a loader here while the redirect or user loading happens
     return null; 
   }
   
-  return <DashboardClient />;
+  if (user.email === 'admin@susu.bank') {
+    return <DashboardClient />;
+  }
+
+  return <UserDashboard user={user} />;
 }

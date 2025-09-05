@@ -99,6 +99,9 @@ export default function SignInPage() {
         localStorage.removeItem('lastLoginAttemptEmail');
         localStorage.removeItem(`status_${user.email}`);
 
+        // Store the logged-in user's email to be used on the dashboard page
+        localStorage.setItem('lastLoggedInEmail', user.email);
+
         router.push("/dashboard"); // Redirect to dashboard
       }
       setIsLoading(false);
