@@ -45,6 +45,8 @@ type UserRequest = {
   statusChangeDate?: Date;
 };
 
+// This array will hold actual requests from existing users in the future.
+// It is intentionally left empty to remove dummy data.
 const mockRequests: Omit<UserRequest, 'status' | 'statusChangeDate' | 'member' | 'email'>[] = [];
 
 
@@ -144,21 +146,8 @@ export default function UserRequestsPage() {
         if (storedRequests) {
             currentRequests = JSON.parse(storedRequests).map((r: UserRequest) => ({...r, statusChangeDate: r.statusChangeDate ? new Date(r.statusChangeDate) : undefined}));
         } else {
-             const newMemberRequests = users
-                .filter(user => user.status === 'pending') // Only show pending users as new member requests
-                .map((user, index) => ({
-                    id: `REQ-${String(index + 1).padStart(4, '0')}`,
-                    member: user.name,
-                    email: user.email,
-                    group: 'Unassigned',
-                    type: 'New Member' as 'New Member',
-                    details: 'New account registration',
-                    destination: 'N/A',
-                    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
-                    status: 'Pending' as 'Pending',
-                    statusChangeDate: user.statusChangeDate ? new Date(user.statusChangeDate) : undefined,
-                }));
-
+            // This now only processes requests from existing registered users, not new sign-ups.
+            // Since mockRequests is empty, this will result in an empty list as intended.
             const otherRequests = mockRequests.map((req, index) => {
                 const user = users[index % users.length]; // Assign to a user
                 return {
@@ -168,7 +157,7 @@ export default function UserRequestsPage() {
                     status: 'Pending' as 'Pending',
                 };
             });
-            currentRequests = [...newMemberRequests, ...otherRequests];
+            currentRequests = [...otherRequests];
         }
 
         setUserRequests(currentRequests);
@@ -248,7 +237,8 @@ export default function UserRequestsPage() {
     };
 
     const pendingRequests = userRequests.filter(r => r.status === 'Pending');
-    const newMemberRequestsCount = userRequests.filter(r => r.type === 'New Member' && r.status === 'Pending').length;
+    // This will now correctly be 0 as new member signups are not added to the list.
+    const newMemberRequestsCount = 0; 
     const withdrawalRequests = pendingRequests.filter(r => r.type === 'Withdrawal');
     const contributionRequests = pendingRequests.filter(r => r.type === 'Contribution');
     const loanRequests = pendingRequests.filter(r => r.type === 'Loan');
@@ -315,5 +305,3 @@ export default function UserRequestsPage() {
         </div>
     );
 }
-
-    
