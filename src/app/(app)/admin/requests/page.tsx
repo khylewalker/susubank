@@ -224,15 +224,11 @@ export default function UserRequestsPage() {
                 <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">{userRequests.filter(r => r.type === 'New Member').length}</CardTitle></CardHeader></Card>
             </div>
 
-            <Tabs defaultValue="all">
+            <Tabs defaultValue="pending">
                 <Card>
                     <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <TabsList>
-                            <TabsTrigger value="all">All Requests</TabsTrigger>
                             <TabsTrigger value="pending">Pending</TabsTrigger>
-                            <TabsTrigger value="approved">Approved</TabsTrigger>
-                            <TabsTrigger value="rejected">Rejected</TabsTrigger>
-                             <TabsTrigger value="new-member">New Member</TabsTrigger>
                         </TabsList>
                         <div className="flex gap-2 shrink-0">
                             <Button variant="outline" onClick={() => handleBulkUpdate('Approved')}><CheckCheck /> Approve All</Button>
@@ -240,20 +236,8 @@ export default function UserRequestsPage() {
                         </div>
                     </CardHeader>
                     <CardContent>
-                        <TabsContent value="all">
-                            <RequestsTable requests={userRequests} onUpdateRequest={handleUpdateRequest} />
-                        </TabsContent>
                         <TabsContent value="pending">
                             <RequestsTable requests={userRequests.filter(r => r.status === 'Pending')} onUpdateRequest={handleUpdateRequest} />
-                        </TabsContent>
-                        <TabsContent value="approved">
-                            <RequestsTable requests={userRequests.filter(r => r.status === 'Approved')} onUpdateRequest={handleUpdateRequest} />
-                        </TabsContent>
-                        <TabsContent value="rejected">
-                            <RequestsTable requests={userRequests.filter(r => r.status === 'Rejected')} onUpdateRequest={handleUpdateRequest} />
-                        </TabsContent>
-                         <TabsContent value="new-member">
-                            <RequestsTable requests={userRequests.filter(r => r.type === 'New Member')} onUpdateRequest={handleUpdateRequest} />
                         </TabsContent>
                     </CardContent>
                 </Card>
