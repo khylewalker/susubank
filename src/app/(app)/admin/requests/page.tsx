@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -30,14 +30,21 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Check, X, CheckCheck, XCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { mockUsers } from "@/lib/mock-users";
 
-const initialUserRequests: any[] = [
-];
+type UserRequest = {
+  id: string;
+  member: string;
+  email: string;
+  group: string;
+  type: string;
+  details: string;
+  destination: string;
+  date: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+};
 
-
-type UserRequest = (typeof initialUserRequests)[0];
-
-const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[], onUpdateRequest: (id: string, status: 'Approved' | 'Rejected') => void }) => {
+const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[], onUpdateRequest: (email: string, status: 'Approved' | 'Rejected') => void }) => {
     
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
@@ -60,63 +67,96 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
     }
 
     return (
-        <Table>
-            <TableHeader><TableRow>
-                <TableHead>Request ID</TableHead>
-                <TableHead>Member</TableHead>
-                <TableHead className="hidden md:table-cell">Group</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Details</TableHead>
-                <TableHead className="hidden lg:table-cell">Destination</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-            </TableRow></TableHeader>
-            <TableBody>
-                {requests.map(req => (
-                    <TableRow key={req.id}>
-                        <TableCell className="font-mono text-xs">{req.id}</TableCell>
-                        <TableCell>{req.member}</TableCell>
-                        <TableCell className="hidden md:table-cell">{req.group}</TableCell>
-                        <TableCell><Badge className={getTypeColor(req.type)}>{req.type}</Badge></TableCell>
-                        <TableCell>{req.details}</TableCell>
-                        <TableCell className="hidden lg:table-cell">{req.destination}</TableCell>
-                        <TableCell>{req.date}</TableCell>
-                        <TableCell><Badge className={getStatusColor(req.status)}>{req.status}</Badge></TableCell>
-                         <TableCell className="text-right">
-                            {req.status === 'Pending' && (
-                                <div className="flex gap-2 justify-end">
-                                    <Button size="icon" variant="ghost" className="h-7 w-7 text-green-600" onClick={() => onUpdateRequest(req.id, 'Approved')}>
-                                        <Check className="h-4 w-4" />
-                                    </Button>
-                                    <Button size="icon" variant="ghost" className="h-7 w-7 text-red-600" onClick={() => onUpdateRequest(req.id, 'Rejected')}>
-                                        <X className="h-4 w-4" />
-                                    </Button>
-                                </div>
-                            )}
-                        </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+        <div className="w-full overflow-x-auto">
+            <Table>
+                <TableHeader><TableRow>
+                    <TableHead>Request ID</TableHead>
+                    <TableHead>Member</TableHead>
+                    <TableHead className="hidden md:table-cell">Group</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Details</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                </TableRow></TableHeader>
+                <TableBody>
+                    {requests.map(req => (
+                        <TableRow key={req.id}>
+                            <TableCell className="font-mono text-xs">{req.id}</TableCell>
+                            <TableCell>{req.member}</TableCell>
+                            <TableCell className="hidden md:table-cell">{req.group}</TableCell>
+                            <TableCell><Badge className={getTypeColor(req.type)}>{req.type}</Badge></TableCell>
+                            <TableCell>{req.details}</TableCell>
+                            <TableCell>{req.date}</TableCell>
+                            <TableCell><Badge className={getStatusColor(req.status)}>{req.status}</Badge></TableCell>
+                            <TableCell className="text-right">
+                                {req.status === 'Pending' && (
+                                    <div className="flex gap-2 justify-end">
+                                        <Button size="icon" variant="ghost" className="h-7 w-7 text-green-600" onClick={() => onUpdateRequest(req.email, 'Approved')}>
+                                            <Check className="h-4 w-4" />
+                                        </Button>
+                                        <Button size="icon" variant="ghost" className="h-7 w-7 text-red-600" onClick={() => onUpdateRequest(req.email, 'Rejected')}>
+                                            <X className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                )}
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </div>
     );
 };
 
 
 export default function UserRequestsPage() {
     const { toast } = useToast();
-    const [userRequests, setUserRequests] = useState<UserRequest[]>(initialUserRequests);
+    const [userRequests, setUserRequests] = useState<UserRequest[]>([]);
 
-    const handleUpdateRequest = (id: string, status: 'Approved' | 'Rejected') => {
-        setUserRequests(prev => prev.map(req => req.id === id ? { ...req, status } : req));
+     useEffect(() => {
+        const pendingUsers = mockUsers
+            .filter(user => user.status === 'pending')
+            .map((user, index) => ({
+                id: `REQ-${String(index + 1).padStart(4, '0')}`,
+                member: user.name,
+                email: user.email,
+                group: 'Unassigned',
+                type: 'New Member',
+                details: 'New account registration',
+                destination: 'N/A',
+                date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+                status: 'Pending' as 'Pending' | 'Approved' | 'Rejected',
+            }));
+        setUserRequests(pendingUsers);
+    }, []);
+
+    const handleUpdateRequest = (email: string, status: 'Approved' | 'Rejected') => {
+        const userIndex = mockUsers.findIndex(u => u.email === email);
+        if (userIndex !== -1) {
+            mockUsers[userIndex].status = status.toLowerCase() as 'approved' | 'rejected';
+        }
+        
+        setUserRequests(prev => prev.filter(req => req.email !== email));
+
         toast({
             title: `Request ${status}`,
-            description: `Request ID ${id} has been ${status.toLowerCase()}.`,
+            description: `Request for ${email} has been ${status.toLowerCase()}.`,
         });
     };
 
     const handleBulkUpdate = (status: 'Approved' | 'Rejected') => {
-        setUserRequests(prev => prev.map(req => req.status === 'Pending' ? { ...req, status } : req));
+        userRequests.forEach(req => {
+            if (req.status === 'Pending') {
+                 const userIndex = mockUsers.findIndex(u => u.email === req.email);
+                if (userIndex !== -1) {
+                    mockUsers[userIndex].status = status.toLowerCase() as 'approved' | 'rejected';
+                }
+            }
+        });
+
+        setUserRequests(prev => prev.map(req => req.status === 'Pending' ? { ...req, status } : req).filter(req => req.status !== 'Pending'));
+        
         toast({
             title: `All Pending Requests ${status}`,
             description: `All pending requests have been ${status.toLowerCase()}.`,
