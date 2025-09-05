@@ -38,11 +38,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { mockUsers } from "@/lib/mock-users";
 
-const initialUserRequests: any[] = [
-];
 
-const pendingRequestsCount = initialUserRequests.filter(req => req.status === 'Pending').length;
+const pendingRequestsCount = mockUsers.filter(user => user.status === 'pending').length;
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
