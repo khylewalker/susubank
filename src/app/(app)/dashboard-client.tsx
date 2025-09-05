@@ -28,6 +28,7 @@ export default function DashboardClient() {
   const [requests, setRequests] = useState<any[]>([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     // In a real app, this data would come from an API/auth context
@@ -39,7 +40,10 @@ export default function DashboardClient() {
     const user = users.find(u => u.email === loggedInUserEmail) || null;
     setCurrentUser(user);
 
-    if (user?.email === 'admin@susu.bank') {
+    const adminCheck = user?.email === 'admin@susu.bank';
+    setIsAdmin(adminCheck);
+
+    if (adminCheck) {
       const registeredUsers = users.filter(u => u.status === 'approved' && u.email !== 'admin@susu.bank');
       setTotalUsers(registeredUsers.length);
       
@@ -72,7 +76,7 @@ export default function DashboardClient() {
     return <div>Loading...</div>; // Or a proper loader
   }
   
-  if (currentUser.email !== 'admin@susu.bank') {
+  if (!isAdmin) {
     return <UserDashboard user={currentUser} />;
   }
 
