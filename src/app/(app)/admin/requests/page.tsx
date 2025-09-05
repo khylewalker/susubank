@@ -143,19 +143,7 @@ export default function UserRequestsPage() {
         if (storedRequests) {
             currentRequests = JSON.parse(storedRequests).map((r: UserRequest) => ({...r, statusChangeDate: r.statusChangeDate ? new Date(r.statusChangeDate) : undefined}));
         } else {
-            const registeredUsers = users.filter(u => u.email !== 'admin@susu.bank' && u.email !== 'new@susu.bank');
-            const otherRequests = mockRequests.map((req, index) => {
-                 const user = registeredUsers[index % registeredUsers.length];
-                return {
-                    ...req,
-                    id: `REQ-000${index + 5}`,
-                    member: user.name,
-                    email: user.email,
-                    status: 'Pending' as 'Pending',
-                };
-            });
-
-            const newSignups = users.filter(user => user.status === 'pending').map((user, index) => ({
+             const newSignups = users.filter(user => user.status === 'pending').map((user, index) => ({
                 id: `REQ-000${index + 2}`,
                 member: user.name,
                 email: user.email,
@@ -167,7 +155,7 @@ export default function UserRequestsPage() {
                 status: 'Pending' as 'Pending',
             }));
 
-            currentRequests = [...newSignups, ...otherRequests];
+            currentRequests = newSignups;
         }
 
         setUserRequests(currentRequests);
@@ -247,9 +235,6 @@ export default function UserRequestsPage() {
 
     const pendingRequests = userRequests.filter(r => r.status === 'Pending');
     const newMemberRequests = pendingRequests.filter(r => r.type === 'New Member');
-    const withdrawalRequests = pendingRequests.filter(r => r.type === 'Withdrawal');
-    const contributionRequests = pendingRequests.filter(r => r.type === 'Contribution');
-    const loanRequests = pendingRequests.filter(r => r.type === 'Loan');
     
     return (
         <div className="flex flex-col gap-6">

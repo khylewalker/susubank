@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -20,11 +21,35 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
-
-const transactions: any[] = [];
-const requests: any[] = [];
+import { mockUsers as initialMockUsers, User } from "@/lib/mock-users";
 
 export default function DashboardClient() {
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [requests, setRequests] = useState<any[]>([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+
+  useEffect(() => {
+    // In a real app, this data would come from an API
+    const storedUsers = localStorage.getItem('mockUsers');
+    const users: User[] = storedUsers ? JSON.parse(storedUsers) : initialMockUsers;
+
+    const registeredUsers = users.filter(u => u.status === 'approved' && u.email !== 'admin@susu.bank');
+    setTotalUsers(registeredUsers.length);
+    
+    const pendingRequests = users
+        .filter(user => user.status === 'pending')
+        .map((user, index) => ({
+            id: `REQ-00${index+1}`,
+            member: user.name,
+            type: 'New Member',
+            status: 'Pending',
+        }));
+    setRequests(pendingRequests);
+    
+    // For now, transactions are empty
+    setTransactions([]);
+
+  }, []);
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -45,7 +70,7 @@ export default function DashboardClient() {
         <Card>
           <CardHeader>
             <CardDescription>Total Users</CardDescription>
-            <CardTitle className="text-2xl font-bold">0</CardTitle>
+            <CardTitle className="text-2xl font-bold">{totalUsers}</CardTitle>
           </CardHeader>
         </Card>
         <Card>

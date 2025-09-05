@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -33,9 +33,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MessageSquare, MoreHorizontal, Trash2, UserX, UserCheck } from 'lucide-react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
+import { mockUsers as initialMockUsers, User as MockUser } from "@/lib/mock-users";
 
-
-const initialUsers: any[] = [];
 
 type User = { 
     id: string;
@@ -53,9 +52,36 @@ type User = {
 
 export default function UsersPage() {
     const { toast } = useToast();
-    const [users, setUsers] = useState<User[]>(initialUsers);
+    const [users, setUsers] = useState<User[]>([]);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [suspensionDays, setSuspensionDays] = useState('');
+
+    useEffect(() => {
+        const storedUsers = localStorage.getItem('mockUsers');
+        const mockUsers: MockUser[] = storedUsers ? JSON.parse(storedUsers) : initialMockUsers;
+
+        // Filter out admin and pending users, then map to the User type for this page
+        const registeredUsers = mockUsers
+            .filter(u => u.status === 'approved' && u.email !== 'admin@susu.bank')
+            .map((user, index) => ({
+                id: `USR-00${index + 1}`,
+                name: user.name,
+                email: user.email,
+                avatar: `https://picsum.photos/seed/${user.email}/100/100`,
+                status: 'Member', 
+                previousStatus: 'Member',
+                joinDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                totalContributions: 'GH₵0.00',
+                withdrawals: 'GH₵0.00',
+                loanBalance: 'GH₵0.00',
+                transactions: [],
+            }));
+        
+        setUsers(registeredUsers);
+        if (registeredUsers.length > 0) {
+            setSelectedUser(registeredUsers[0]);
+        }
+    }, []);
 
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
@@ -214,14 +240,16 @@ export default function UsersPage() {
                                         <Table>
                                             <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
                                             <TableBody>
-                                                {selectedUser.transactions.filter(tx => tx.activity.toLowerCase().includes('contribution')).map((tx, i) => (
+                                                {selectedUser.transactions.filter(tx => tx.activity.toLowerCase().includes('contribution')).length > 0 ? selectedUser.transactions.filter(tx => tx.activity.toLowerCase().includes('contribution')).map((tx, i) => (
                                                     <TableRow key={i}>
                                                         <TableCell>{tx.date}</TableCell>
                                                         <TableCell>{tx.activity}</TableCell>
                                                         <TableCell>{tx.amount}</TableCell>
                                                         <TableCell><Badge className={getTransactionStatusColor(tx.status)}>{tx.status}</Badge></TableCell>
                                                     </TableRow>
-                                                ))}
+                                                )) : (
+                                                    <TableRow><TableCell colSpan={4} className="text-center">No contributions found.</TableCell></TableRow>
+                                                )}
                                             </TableBody>
                                         </Table>
                                     </div>
@@ -231,14 +259,16 @@ export default function UsersPage() {
                                         <Table>
                                             <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
                                             <TableBody>
-                                                {selectedUser.transactions.filter(tx => tx.activity.toLowerCase().includes('withdrawal')).map((tx, i) => (
+                                                 {selectedUser.transactions.filter(tx => tx.activity.toLowerCase().includes('withdrawal')).length > 0 ? selectedUser.transactions.filter(tx => tx.activity.toLowerCase().includes('withdrawal')).map((tx, i) => (
                                                     <TableRow key={i}>
                                                         <TableCell>{tx.date}</TableCell>
                                                         <TableCell>{tx.activity}</TableCell>
                                                         <TableCell>{tx.amount}</TableCell>
                                                         <TableCell><Badge className={getTransactionStatusColor(tx.status)}>{tx.status}</Badge></TableCell>
                                                     </TableRow>
-                                                ))}
+                                                )) : (
+                                                    <TableRow><TableCell colSpan={4} className="text-center">No withdrawals found.</TableCell></TableRow>
+                                                )}
                                             </TableBody>
                                         </Table>
                                     </div>
@@ -248,14 +278,16 @@ export default function UsersPage() {
                                         <Table>
                                             <TableHeader><TableRow><TableHead>Date</TableHead><TableHead>Activity</TableHead><TableHead>Amount</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
                                             <TableBody>
-                                                {selectedUser.transactions.filter(tx => tx.activity.toLowerCase().includes('loan')).map((tx, i) => (
+                                                 {selectedUser.transactions.filter(tx => tx.activity.toLowerCase().includes('loan')).length > 0 ? selectedUser.transactions.filter(tx => tx.activity.toLowerCase().includes('loan')).map((tx, i) => (
                                                     <TableRow key={i}>
                                                         <TableCell>{tx.date}</TableCell>
                                                         <TableCell>{tx.activity}</TableCell>
                                                         <TableCell>{tx.amount}</TableCell>
                                                         <TableCell><Badge className={getTransactionStatusColor(tx.status)}>{tx.status}</Badge></TableCell>
                                                     </TableRow>
-                                                ))}
+                                                )) : (
+                                                    <TableRow><TableCell colSpan={4} className="text-center">No loans found.</TableCell></TableRow>
+                                                )}
                                             </TableBody>
                                         </Table>
                                     </div>
