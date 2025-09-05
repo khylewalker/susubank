@@ -37,7 +37,7 @@ type UserRequest = {
   member: string;
   email: string;
   group: string;
-  type: 'New Member' | 'Withdrawal' | 'Contribution';
+  type: 'New Member' | 'Withdrawal' | 'Contribution' | 'Loan';
   details: string;
   destination: string;
   date: string;
@@ -61,6 +61,14 @@ const mockRequests: Omit<UserRequest, 'status' | 'statusChangeDate' | 'member' |
         details: 'GH₵250.00',
         destination: 'Bank Transfer',
         date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+    },
+    {
+        id: 'REQ-0007',
+        group: 'Innovators',
+        type: 'Loan',
+        details: 'GH₵1000.00',
+        destination: 'Bank Transfer',
+        date: new Date(new Date().setDate(new Date().getDate() - 2)).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
     },
 ];
 
@@ -267,6 +275,7 @@ export default function UserRequestsPage() {
     const newMemberRequestsCount = userRequests.filter(r => r.type === 'New Member' && r.status === 'Pending').length;
     const withdrawalRequests = pendingRequests.filter(r => r.type === 'Withdrawal');
     const contributionRequests = pendingRequests.filter(r => r.type === 'Contribution');
+    const loanRequests = pendingRequests.filter(r => r.type === 'Loan');
     const newMemberRequests = pendingRequests.filter(r => r.type === 'New Member');
     
     return (
@@ -301,6 +310,7 @@ export default function UserRequestsPage() {
                             <TabsTrigger value="new-members">New Members</TabsTrigger>
                             <TabsTrigger value="withdrawals">Withdrawals</TabsTrigger>
                             <TabsTrigger value="contributions">Contributions</TabsTrigger>
+                            <TabsTrigger value="loans">Loans</TabsTrigger>
                         </TabsList>
                         <div className="flex gap-2 shrink-0">
                             <Button variant="outline" onClick={() => handleBulkUpdate('Approved')}><CheckCheck /> Approve All</Button>
@@ -320,9 +330,14 @@ export default function UserRequestsPage() {
                         <TabsContent value="contributions">
                             <RequestsTable requests={contributionRequests} onUpdateRequest={handleUpdateRequest} />
                         </TabsContent>
+                         <TabsContent value="loans">
+                            <RequestsTable requests={loanRequests} onUpdateRequest={handleUpdateRequest} />
+                        </TabsContent>
                     </CardContent>
                 </Card>
             </Tabs>
         </div>
     );
 }
+
+    
