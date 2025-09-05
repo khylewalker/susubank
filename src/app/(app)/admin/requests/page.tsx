@@ -102,7 +102,7 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
                     <TableHead className="text-right">Actions</TableHead>
                 </TableRow></TableHeader>
                 <TableBody>
-                    {requests.map(req => (
+                    {requests.length > 0 ? requests.map(req => (
                         <TableRow key={req.id}>
                             <TableCell className="font-mono text-xs">{req.id}</TableCell>
                             <TableCell>{req.member}</TableCell>
@@ -124,7 +124,11 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
                                 )}
                             </TableCell>
                         </TableRow>
-                    ))}
+                    )) : (
+                        <TableRow>
+                            <TableCell colSpan={8} className="text-center">No pending requests of this type.</TableCell>
+                        </TableRow>
+                    )}
                 </TableBody>
             </Table>
         </div>
@@ -261,6 +265,9 @@ export default function UserRequestsPage() {
 
     const pendingRequests = userRequests.filter(r => r.status === 'Pending');
     const newMemberRequestsCount = userRequests.filter(r => r.type === 'New Member' && r.status === 'Pending').length;
+    const withdrawalRequests = pendingRequests.filter(r => r.type === 'Withdrawal');
+    const contributionRequests = pendingRequests.filter(r => r.type === 'Contribution');
+    const newMemberRequests = pendingRequests.filter(r => r.type === 'New Member');
     
     return (
         <div className="flex flex-col gap-6">
@@ -286,11 +293,14 @@ export default function UserRequestsPage() {
                 <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">{newMemberRequestsCount}</CardTitle></CardHeader></Card>
             </div>
 
-            <Tabs defaultValue="pending">
+            <Tabs defaultValue="all">
                 <Card>
                     <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <TabsList>
-                            <TabsTrigger value="pending">Pending</TabsTrigger>
+                            <TabsTrigger value="all">All</TabsTrigger>
+                            <TabsTrigger value="new-members">New Members</TabsTrigger>
+                            <TabsTrigger value="withdrawals">Withdrawals</TabsTrigger>
+                            <TabsTrigger value="contributions">Contributions</TabsTrigger>
                         </TabsList>
                         <div className="flex gap-2 shrink-0">
                             <Button variant="outline" onClick={() => handleBulkUpdate('Approved')}><CheckCheck /> Approve All</Button>
@@ -298,8 +308,17 @@ export default function UserRequestsPage() {
                         </div>
                     </CardHeader>
                     <CardContent>
-                        <TabsContent value="pending">
-                            <RequestsTable requests={userRequests.filter(r => r.status === 'Pending')} onUpdateRequest={handleUpdateRequest} />
+                        <TabsContent value="all">
+                            <RequestsTable requests={pendingRequests} onUpdateRequest={handleUpdateRequest} />
+                        </TabsContent>
+                        <TabsContent value="new-members">
+                            <RequestsTable requests={newMemberRequests} onUpdateRequest={handleUpdateRequest} />
+                        </TabsContent>
+                        <TabsContent value="withdrawals">
+                            <RequestsTable requests={withdrawalRequests} onUpdateRequest={handleUpdateRequest} />
+                        </TabsContent>
+                        <TabsContent value="contributions">
+                            <RequestsTable requests={contributionRequests} onUpdateRequest={handleUpdateRequest} />
                         </TabsContent>
                     </CardContent>
                 </Card>
