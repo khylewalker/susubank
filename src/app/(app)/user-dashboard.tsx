@@ -19,8 +19,6 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
 
 const recentActivity = [
     {
@@ -59,12 +57,9 @@ export default function UserDashboard({ user }: { user: User }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <h1 className="text-3xl font-bold font-headline">Welcome, {user.name.split(' ')[0]}!</h1>
-            <p className="text-muted-foreground">Here is your financial overview.</p>
-        </div>
-        <Button><PlusCircle/> New Contribution</Button>
+      <header>
+        <h1 className="text-3xl font-bold font-headline">Welcome, {user.name.split(' ')[0]}!</h1>
+        <p className="text-muted-foreground">Here is your financial overview.</p>
       </header>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
