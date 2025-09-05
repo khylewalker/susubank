@@ -143,12 +143,26 @@ export default function UserRequestsPage() {
         if (storedRequests) {
             currentRequests = JSON.parse(storedRequests).map((r: UserRequest) => ({...r, statusChangeDate: r.statusChangeDate ? new Date(r.statusChangeDate) : undefined}));
         } else {
-            // No longer auto-generating new member requests
-            currentRequests = [];
+            // Generate requests from pending users only
+             currentRequests = users
+                .filter(user => user.status === 'pending')
+                .map((user, index) => ({
+                    id: `REQ-00${index + 1}`,
+                    member: user.name,
+                    email: user.email,
+                    group: "Unassigned",
+                    type: 'New Member',
+                    details: "New account registration",
+                    destination: "-",
+                    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                    status: 'Pending' as const,
+                }));
         }
 
         setUserRequests(currentRequests);
-        localStorage.setItem('mockRequests', JSON.stringify(currentRequests));
+        if (!storedRequests) {
+             localStorage.setItem('mockRequests', JSON.stringify(currentRequests));
+        }
 
         const todayApproved = currentRequests.filter(r => r.status === 'Approved' && r.statusChangeDate && isToday(r.statusChangeDate)).length;
         const todayRejected = currentRequests.filter(r => r.status === 'Rejected' && r.statusChangeDate && isToday(r.statusChangeDate)).length;
