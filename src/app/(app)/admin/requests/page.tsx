@@ -45,10 +45,7 @@ type UserRequest = {
   statusChangeDate?: Date;
 };
 
-const mockRequests: Omit<UserRequest, 'status' | 'statusChangeDate' | 'member' | 'email' | 'id'>[] = [
-    { type: 'Withdrawal', details: 'GH₵500.00', date: 'Sep 4, 2025', destination: 'Bank Account', group: 'Innovators' },
-    { type: 'Contribution', details: 'GH₵250.00', date: 'Sep 5, 2025', destination: 'Group Wallet', group: 'Pioneers' },
-];
+const mockRequests: Omit<UserRequest, 'status' | 'statusChangeDate' | 'member' | 'email' | 'id'>[] = [];
 
 const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[], onUpdateRequest: (id: string, email: string, status: 'Approved' | 'Rejected') => void }) => {
     
@@ -111,7 +108,7 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
                         </TableRow>
                     )) : (
                         <TableRow>
-                            <TableCell colSpan={8} className="text-center">No pending requests of this type.</TableCell>
+                            <TableCell colSpan={8} className="text-center">No pending requests.</TableCell>
                         </TableRow>
                     )}
                 </TableBody>
@@ -166,7 +163,7 @@ export default function UserRequestsPage() {
                 type: 'New Member' as 'New Member',
                 details: 'New account registration',
                 destination: '',
-                date: 'Sep 5, 2025',
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
                 status: 'Pending' as 'Pending',
             }));
 
@@ -284,8 +281,6 @@ export default function UserRequestsPage() {
                         <TabsList>
                             <TabsTrigger value="all">All</TabsTrigger>
                             <TabsTrigger value="new-members">New Members</TabsTrigger>
-                            <TabsTrigger value="withdrawals">Withdrawals</TabsTrigger>
-                            <TabsTrigger value="contributions">Contributions</TabsTrigger>
                         </TabsList>
                         <div className="flex gap-2 shrink-0">
                             <Button variant="outline" onClick={() => handleBulkUpdate('Approved')}><CheckCheck /> Approve All</Button>
@@ -298,12 +293,6 @@ export default function UserRequestsPage() {
                         </TabsContent>
                         <TabsContent value="new-members">
                             <RequestsTable requests={newMemberRequests} onUpdateRequest={handleUpdateRequest} />
-                        </TabsContent>
-                        <TabsContent value="withdrawals">
-                            <RequestsTable requests={withdrawalRequests} onUpdateRequest={handleUpdateRequest} />
-                        </TabsContent>
-                        <TabsContent value="contributions">
-                            <RequestsTable requests={contributionRequests} onUpdateRequest={handleUpdateRequest} />
                         </TabsContent>
                     </CardContent>
                 </Card>

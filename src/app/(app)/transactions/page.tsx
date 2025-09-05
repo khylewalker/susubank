@@ -38,23 +38,25 @@ import { Copy, Calendar } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from '@/components/ui/separator';
 
-const transactionsData = [
-    { ref: "TXN-001", member: "First Timer", email: "first.timer@susu.bank", avatar: "https://picsum.photos/100/100?random=1", type: "Contribution", amount: "GH₵250.00", date: "Jul 15, 2024", status: "Settled", method: "Mobile Money", category: "Monthly Dues", cycle: "July 2024" },
-    { ref: "TXN-002", member: "Approved User", email: "approved@susu.bank", avatar: "https://picsum.photos/100/100?random=2", type: "Contribution", amount: "GH₵500.00", date: "Jul 10, 2024", status: "Settled", method: "Bank Transfer", category: "Monthly Dues", cycle: "July 2024" },
-    { ref: "TXN-003", member: "First Timer", email: "first.timer@susu.bank", avatar: "https://picsum.photos/100/100?random=1", type: "Withdrawal", amount: "GH₵200.00", date: "May 15, 2024", status: "Settled", method: "Bank Transfer", category: "Personal", cycle: "May 2024" },
-    { ref: "TXN-004", member: "New User", email: "new@susu.bank", avatar: "https://picsum.photos/100/100?random=3", type: "Contribution", amount: "GH₵250.00", date: "Jun 01, 2024", status: "Pending", method: "Mobile Money", category: "Monthly Dues", cycle: "June 2024" },
-];
+const transactionsData: any[] = [];
+const historyData: any[] = [];
 
-const historyData = [
-    { event: "Transaction created", time: "2024-07-15 10:00 AM" },
-    { event: "Payment processed", time: "2024-07-15 10:05 AM" },
-    { event: "Marked as settled", time: "2024-07-15 10:10 AM" },
-]
-
-type Transaction = (typeof transactionsData)[0];
+type Transaction = {
+    ref: string;
+    member: string;
+    email: string;
+    avatar: string;
+    type: string;
+    amount: string;
+    date: string;
+    status: string;
+    method: string;
+    category: string;
+    cycle: string;
+};
 
 export default function TransactionsPage() {
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(transactionsData[0]);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
 
   const getStatusBadge = (status: string) => {
       switch(status) {
@@ -95,9 +97,9 @@ export default function TransactionsPage() {
       </header>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <Card><CardHeader><CardDescription>Total Volume</CardDescription><CardTitle className="text-2xl font-bold">GH₵1,200.00</CardTitle></CardHeader></Card>
-        <Card><CardHeader><CardDescription>Contributions</CardDescription><CardTitle className="text-2xl font-bold">GH₵1,000.00</CardTitle></CardHeader></Card>
-        <Card><CardHeader><CardDescription>Withdrawals</CardDescription><CardTitle className="text-2xl font-bold">GH₵200.00</CardTitle></CardHeader></Card>
+        <Card><CardHeader><CardDescription>Total Volume</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
+        <Card><CardHeader><CardDescription>Contributions</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
+        <Card><CardHeader><CardDescription>Withdrawals</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
         <Card><CardHeader><CardDescription>Fees & Adjustments</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
       </div>
 
@@ -130,7 +132,7 @@ export default function TransactionsPage() {
                               </TableRow>
                           </TableHeader>
                           <TableBody>
-                              {transactionsData.map((tx) => (
+                              {transactionsData.length > 0 ? transactionsData.map((tx) => (
                                   <TableRow key={tx.ref} onClick={() => setSelectedTransaction(tx)} className={`cursor-pointer ${selectedTransaction?.ref === tx.ref ? 'bg-primary/10' : ''}`}>
                                       <TableCell className="font-medium">{tx.ref}</TableCell>
                                       <TableCell>
@@ -150,14 +152,18 @@ export default function TransactionsPage() {
                                       <TableCell className="hidden md:table-cell">{tx.date}</TableCell>
                                       <TableCell><Badge className={getStatusBadge(tx.status)}>{tx.status}</Badge></TableCell>
                                   </TableRow>
-                              ))}
+                              )) : (
+                                <TableRow>
+                                    <TableCell colSpan={6} className="text-center">No transactions found.</TableCell>
+                                </TableRow>
+                              )}
                           </TableBody>
                       </Table>
                     </div>
                 </CardContent>
             </Card>
 
-            {selectedTransaction && (
+            {selectedTransaction ? (
                  <Card>
                     <CardHeader>
                         <CardTitle className="font-headline">Transaction Detail</CardTitle>
@@ -180,7 +186,7 @@ export default function TransactionsPage() {
                         <div>
                             <h4 className="font-semibold mb-2">History</h4>
                             <div className="space-y-3">
-                                {historyData.map((item, i) => (
+                                {historyData.length > 0 ? historyData.map((item, i) => (
                                     <div key={i} className="flex items-start gap-3">
                                         <div className="bg-muted rounded-full h-8 w-8 flex items-center justify-center shrink-0 mt-1"><Calendar className="h-4 w-4"/></div>
                                         <div>
@@ -188,10 +194,14 @@ export default function TransactionsPage() {
                                             <p className="text-xs text-muted-foreground">{item.time}</p>
                                         </div>
                                     </div>
-                                ))}
+                                )) : <p className="text-sm text-muted-foreground">No history for this transaction.</p>}
                             </div>
                         </div>
                     </CardContent>
+                </Card>
+            ) : (
+                <Card className="flex items-center justify-center">
+                    <p className="text-muted-foreground">Select a transaction to see details</p>
                 </Card>
             )}
        </div>

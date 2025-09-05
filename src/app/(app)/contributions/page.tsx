@@ -48,41 +48,13 @@ import {
 } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const contributionHistory = [
-  { ref: "REF-001", amount: "GH₵250.00", status: "Completed", date: "July 15, 2024" },
-  { ref: "REF-002", amount: "GH₵250.00", status: "Completed", date: "June 15, 2024" },
-  { ref: "REF-003", amount: "GH₵250.00", status: "Processing", date: "August 15, 2024" },
-];
-const allContributions = [
-    { desc: "Cycle Contribution for July", member: "New User", type: "Contribution", amount: "GH₵250.00", date: "July 15, 2024" },
-    { desc: "Cycle Contribution for July", member: "First Timer", type: "Contribution", amount: "GH₵250.00", date: "July 14, 2024" },
-    { desc: "Initial Deposit", member: "Approved User", type: "Deposit", amount: "GH₵100.00", date: "July 1, 2024" },
-];
-const groupsData = [
-    {
-        id: 1,
-        name: "Innovators",
-        totalContributions: "1250.00",
-        members: [
-            { id: "user-1", name: "New User", avatar: "https://picsum.photos/100/100?random=1", contribution: "250.00" },
-            { id: "user-2", name: "First Timer", avatar: "https://picsum.photos/100/100?random=2", contribution: "250.00" },
-            { id: "user-3", name: "Approved User", avatar: "https://picsum.photos/100/100?random=3", contribution: "250.00" },
-        ]
-    },
-    {
-        id: 2,
-        name: "Pioneers",
-        totalContributions: "800.00",
-        members: [
-            { id: "user-4", name: "Adwoa Fosu", avatar: "https://picsum.photos/100/100?random=4", contribution: "200.00" },
-            { id: "user-5", name: "Kwame Nkrumah", avatar: "https://picsum.photos/100/100?random=5", contribution: "200.00" },
-        ]
-    },
-];
+const contributionHistory: any[] = [];
+const allContributions: any[] = [];
+const groupsData: any[] = [];
 
 export default function ContributionsPage() {
   const isAdmin = true; // This would be replaced with actual role-based logic
-  const [selectedGroup, setSelectedGroup] = useState<(typeof groupsData)[0] | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState<any | null>(null);
 
 
   return (
@@ -115,7 +87,7 @@ export default function ContributionsPage() {
             <CardTitle className="font-headline">This Cycle Total</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">GH₵750.00</p>
+            <p className="text-2xl font-bold">GH₵0.00</p>
             <p className="text-sm text-muted-foreground">July 1 - July 31, 2024</p>
           </CardContent>
         </Card>
@@ -124,8 +96,8 @@ export default function ContributionsPage() {
             <CardTitle className="font-headline">My Contributions</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">GH₵500.00</p>
-            <p className="text-sm text-muted-foreground">Cycle Total: GH₵250.00</p>
+            <p className="text-2xl font-bold">GH₵0.00</p>
+            <p className="text-sm text-muted-foreground">Cycle Total: GH₵0.00</p>
           </CardContent>
         </Card>
         {groupsData.slice(0, 2).map(group => (
@@ -242,7 +214,7 @@ export default function ContributionsPage() {
                       </TableRow>
                   </TableHeader>
                   <TableBody>
-                      {contributionHistory.map(item => (
+                      {contributionHistory.length > 0 ? contributionHistory.map(item => (
                           <TableRow key={item.ref}>
                               <TableCell className="font-medium">{item.ref}</TableCell>
                               <TableCell>{item.amount}</TableCell>
@@ -251,7 +223,11 @@ export default function ContributionsPage() {
                               </TableCell>
                               <TableCell>{item.date}</TableCell>
                           </TableRow>
-                      ))}
+                      )) : (
+                        <TableRow>
+                            <TableCell colSpan={4} className="text-center">No contribution history.</TableCell>
+                        </TableRow>
+                      )}
                   </TableBody>
               </Table>
             </div>
@@ -276,7 +252,7 @@ export default function ContributionsPage() {
                       </TableRow>
                   </TableHeader>
                   <TableBody>
-                      {allContributions.map((item, i) => (
+                      {allContributions.length > 0 ? allContributions.map((item, i) => (
                           <TableRow key={i}>
                               <TableCell className="font-medium">{item.desc}</TableCell>
                               <TableCell>{item.member}</TableCell>
@@ -286,7 +262,11 @@ export default function ContributionsPage() {
                               <TableCell>{item.amount}</TableCell>
                               <TableCell className="hidden md:table-cell">{item.date}</TableCell>
                           </TableRow>
-                      ))}
+                      )) : (
+                        <TableRow>
+                            <TableCell colSpan={5} className="text-center">No contributions found.</TableCell>
+                        </TableRow>
+                      )}
                   </TableBody>
               </Table>
             </div>

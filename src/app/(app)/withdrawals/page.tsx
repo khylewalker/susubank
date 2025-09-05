@@ -48,34 +48,13 @@ import {
 } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const pendingApprovals = [
-    { ref: "W-REF-0045", amount: "GH₵500.00", member: "Approved User", status: "2/3 Approvals" },
-];
-
-const withdrawalHistory = [
-    { desc: "Personal Withdrawal", member: "First Timer", type: "Withdrawal", amount: "GH₵200.00", date: "May 15, 2024" },
-];
-
-const groupsData = [
-    { 
-        id: 1, 
-        name: "Innovators", 
-        totalWithdrawals: "200.00",
-        members: [
-            { id: "user-1", name: "First Timer", avatar: "https://picsum.photos/100/100?random=1", withdrawal: "200.00" },
-        ]
-    },
-    { 
-        id: 2, 
-        name: "Pioneers", 
-        totalWithdrawals: "0.00",
-        members: []
-    },
-];
+const pendingApprovals: any[] = [];
+const withdrawalHistory: any[] = [];
+const groupsData: any[] = [];
 
 export default function WithdrawalsPage() {
   const isAdmin = true; // This would be replaced with actual role-based logic
-  const [selectedGroup, setSelectedGroup] = useState<(typeof groupsData)[0] | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState<any | null>(null);
 
   return (
     <div className="flex flex-col gap-6">
@@ -107,7 +86,7 @@ export default function WithdrawalsPage() {
             <CardTitle className="font-headline">Available Pool</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">GH₵4,300.00</p>
+            <p className="text-2xl font-bold">GH₵0.00</p>
             <p className="text-sm text-muted-foreground">Total funds available for withdrawal</p>
           </CardContent>
         </Card>
@@ -116,8 +95,8 @@ export default function WithdrawalsPage() {
             <CardTitle className="font-headline">Pending Requests</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">1</p>
-            <p className="text-sm text-muted-foreground">Totaling GH₵500.00</p>
+            <p className="text-2xl font-bold">0</p>
+            <p className="text-sm text-muted-foreground">Totaling GH₵0.00</p>
           </CardContent>
         </Card>
          {groupsData.slice(0, 2).map(group => (
@@ -215,7 +194,7 @@ export default function WithdrawalsPage() {
                       </TableRow>
                   </TableHeader>
                   <TableBody>
-                      {pendingApprovals.map(item => (
+                      {pendingApprovals.length > 0 ? pendingApprovals.map(item => (
                           <TableRow key={item.ref}>
                               <TableCell className="font-medium">{item.ref}</TableCell>
                               <TableCell>{item.amount}</TableCell>
@@ -224,7 +203,11 @@ export default function WithdrawalsPage() {
                                   <Badge variant="secondary" className="bg-orange-100 text-orange-800">{item.status}</Badge>
                               </TableCell>
                           </TableRow>
-                      ))}
+                      )) : (
+                        <TableRow>
+                            <TableCell colSpan={4} className="text-center">No pending approvals.</TableCell>
+                        </TableRow>
+                      )}
                   </TableBody>
               </Table>
             </div>
@@ -249,7 +232,7 @@ export default function WithdrawalsPage() {
                       </TableRow>
                   </TableHeader>
                   <TableBody>
-                      {withdrawalHistory.map((item, i) => (
+                      {withdrawalHistory.length > 0 ? withdrawalHistory.map((item, i) => (
                           <TableRow key={i}>
                               <TableCell className="font-medium">{item.desc}</TableCell>
                               <TableCell>{item.member}</TableCell>
@@ -259,7 +242,11 @@ export default function WithdrawalsPage() {
                               <TableCell>{item.amount}</TableCell>
                               <TableCell className="hidden md:table-cell">{item.date}</TableCell>
                           </TableRow>
-                      ))}
+                      )) : (
+                        <TableRow>
+                            <TableCell colSpan={5} className="text-center">No withdrawal history.</TableCell>
+                        </TableRow>
+                      )}
                   </TableBody>
               </Table>
             </div>

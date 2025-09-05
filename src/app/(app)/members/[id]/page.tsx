@@ -27,11 +27,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-const recentActivity = [
-    { activity: "Login", details: "Successful login from IP 192.168.1.1", time: "10 minutes ago" },
-    { activity: "Contribution", details: "GH₵250.00 contribution made", time: "1 day ago" },
-    { activity: "Profile Update", details: "Updated residential address", time: "3 days ago" },
-];
+const recentActivity: any[] = [];
 
 export default function MemberOverviewPage({ params }: { params: { id: string } }) {
   return (
@@ -42,19 +38,19 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
           <BreadcrumbSeparator />
           <BreadcrumbItem><BreadcrumbLink href="/admin/users">Users</BreadcrumbLink></BreadcrumbItem>
           <BreadcrumbSeparator />
-          <BreadcrumbItem><BreadcrumbPage>Approved User</BreadcrumbPage></BreadcrumbItem>
+          <BreadcrumbItem><BreadcrumbPage>User Details</BreadcrumbPage></BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
             <Avatar className="h-20 w-20">
-                <AvatarImage src="https://picsum.photos/100/100?random=2" data-ai-hint="member avatar" />
-                <AvatarFallback>AU</AvatarFallback>
+                <AvatarImage src="" data-ai-hint="member avatar" />
+                <AvatarFallback>--</AvatarFallback>
             </Avatar>
             <div>
-                <h1 className="text-3xl font-bold font-headline">Approved User</h1>
-                <Badge>Contributor</Badge>
+                <h1 className="text-3xl font-bold font-headline">User Name</h1>
+                <Badge>Status</Badge>
             </div>
         </div>
         <div className="flex items-center gap-2">
@@ -69,22 +65,22 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
                 <Card>
                     <CardHeader><CardTitle className="text-base font-medium">Member Details</CardTitle></CardHeader>
                     <CardContent className="space-y-2">
-                        <div><p className="text-sm text-muted-foreground">Phone</p><p className="font-medium">+233241234568</p></div>
-                        <div><p className="text-sm text-muted-foreground">Email</p><p className="font-medium">approved@susu.bank</p></div>
+                        <div><p className="text-sm text-muted-foreground">Phone</p><p className="font-medium">N/A</p></div>
+                        <div><p className="text-sm text-muted-foreground">Email</p><p className="font-medium">N/A</p></div>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader><CardTitle className="text-base font-medium">Financial Snapshot</CardTitle></CardHeader>
                     <CardContent className="space-y-2">
-                        <div><p className="text-sm text-muted-foreground">Total Saved</p><p className="font-medium">GH₵2,500.00</p></div>
-                        <div><p className="text-sm text-muted-foreground">Loans Outstanding</p><p className="font-medium">GH₵1,000.00</p></div>
+                        <div><p className="text-sm text-muted-foreground">Total Saved</p><p className="font-medium">GH₵0.00</p></div>
+                        <div><p className="text-sm text-muted-foreground">Loans Outstanding</p><p className="font-medium">GH₵0.00</p></div>
                     </CardContent>
                 </Card>
             </div>
              <Card className="flex-grow">
                 <CardHeader><CardTitle className="font-headline">Contribution Chart</CardTitle></CardHeader>
                 <CardContent className="h-64 flex items-center justify-center">
-                    <p className="text-muted-foreground">Mini Chart</p>
+                    <p className="text-muted-foreground">No contribution data available.</p>
                 </CardContent>
             </Card>
         </div>
@@ -92,15 +88,15 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
             <Card>
                 <CardHeader><CardTitle className="text-base font-medium">Last Contribution</CardTitle></CardHeader>
                 <CardContent>
-                    <p className="text-2xl font-bold">GH₵500.00</p>
-                    <p className="text-sm text-muted-foreground">on July 10, 2024</p>
+                    <p className="text-2xl font-bold">GH₵0.00</p>
+                    <p className="text-sm text-muted-foreground">N/A</p>
                 </CardContent>
             </Card>
              <Card>
                 <CardHeader><CardTitle className="text-base font-medium">Missed Payments</CardTitle></CardHeader>
                 <CardContent>
                     <p className="text-2xl font-bold">0</p>
-                     <p className="text-sm text-muted-foreground">Excellent standing</p>
+                     <p className="text-sm text-muted-foreground">No payment data</p>
                 </CardContent>
             </Card>
         </div>
@@ -118,13 +114,17 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {recentActivity.map((item, index) => (
+                        {recentActivity.length > 0 ? recentActivity.map((item, index) => (
                             <TableRow key={index}>
                                 <TableCell className="font-medium">{item.activity}</TableCell>
                                 <TableCell>{item.details}</TableCell>
                                 <TableCell>{item.time}</TableCell>
                             </TableRow>
-                        ))}
+                        )) : (
+                            <TableRow>
+                                <TableCell colSpan={3} className="text-center">No recent activity.</TableCell>
+                            </TableRow>
+                        )}
                     </TableBody>
                 </Table>
             </CardContent>
