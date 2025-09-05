@@ -3,6 +3,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   Card,
   CardContent,
@@ -25,45 +28,75 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Logo } from "@/components/logo";
 import { useToast } from "@/hooks/use-toast";
 import { addUser } from "@/lib/mock-users";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+const formSchema = z
+  .object({
+    fullName: z.string().min(1, { message: "Full name is required." }),
+    email: z.string().email({ message: "Invalid email address. Please use the format name@example.com." }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long." })
+      .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter." })
+      .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter." })
+      .regex(/[0-9]/, { message: "Password must contain at least one number." })
+      .regex(/[^A-Za-z0-9]/, { message: "Password must contain at least one special character." }),
+    confirmPassword: z.string(),
+    dob: z.string().refine((dob) => {
+        const date = new Date(dob);
+        const currentYear = new Date().getFullYear();
+        return !isNaN(date.getTime()) && date.getFullYear() <= currentYear;
+    }, {
+        message: "Please enter a valid date of birth that is not in the future.",
+    }),
+    nationality: z.string().min(1, { message: "Please select a nationality." }),
+    address: z.string().min(1, { message: "Residential address is required." }),
+    idType: z.string().min(1, { message: "Government ID type is required." }),
+    idNumber: z.string().min(1, { message: "ID number is required." }),
+    terms: z.boolean().refine((val) => val === true, {
+      message: "You must accept the terms.",
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+  });
+
 
 export default function SignUpPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const fullName = formData.get("full-name") as string;
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const confirmPassword = formData.get("confirm-password") as string;
-    const terms = formData.get("terms") === "on";
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      dob: "",
+      nationality: "",
+      address: "",
+      idType: "",
+      idNumber: "",
+      terms: false,
+    },
+  });
 
-    if (password !== confirmPassword) {
-      toast({
-        variant: "destructive",
-        title: "Passwords do not match",
-        description: "Please make sure your passwords match.",
-      });
-      return;
-    }
-    
-    if (!terms) {
-         toast({
-            variant: "destructive",
-            title: "Terms and Conditions",
-            description: "You must agree to the terms and conditions.",
-        });
-        return;
-    }
-
-    // A real app would have more robust validation
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     addUser({
-      email,
-      password,
+      email: values.email,
+      password: values.password,
       status: 'pending',
       firstLogin: true,
-      name: fullName,
+      name: values.fullName,
     });
 
     toast({
@@ -84,87 +117,158 @@ export default function SignUpPage() {
         <CardDescription>Enter your details to get started.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form id="signup-form" onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="full-name">Full Name</Label>
-            <Input
-              id="full-name"
-              name="full-name"
-              placeholder="As shown on your government ID"
-              required
+        <Form {...form}>
+          <form id="signup-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="As shown on your government ID" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
+             <FormField
+              control={form.control}
               name="email"
-              type="email"
-              placeholder="you@example.com"
-              required
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="you@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirm-password">Confirm Password</Label>
-              <Input id="confirm-password" name="confirm-password" type="password" required />
-            </div>
-          </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="dob">Date of Birth</Label>
-              <Input id="dob" type="date" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="nationality">Nationality</Label>
-              <Select name="nationality">
-                <SelectTrigger id="nationality">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ghana">Ghana</SelectItem>
-                  <SelectItem value="nigeria">Nigeria</SelectItem>
-                  <SelectItem value="usa">United States</SelectItem>
-                  <SelectItem value="uk">United Kingdom</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="address">Residential Address</Label>
-            <Input id="address" name="address" placeholder="123 Main St, Anytown" required />
-          </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="id-type">Government ID Type</Label>
-              <Input
-                id="id-type"
-                name="id-type"
-                placeholder="Passport, Driver's license, etc."
-                required
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+               <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+               <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="id-number">ID Number</Label>
-              <Input id="id-number" name="id-number" placeholder="GHA-123456789-0" required />
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="dob"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date of Birth</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="nationality"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nationality</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="ghana">Ghana</SelectItem>
+                        <SelectItem value="nigeria">Nigeria</SelectItem>
+                        <SelectItem value="usa">United States</SelectItem>
+                        <SelectItem value="uk">United Kingdom</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-          </div>
-          <div className="flex items-start space-x-2 pt-2">
-            <Checkbox id="terms" name="terms" />
-            <div className="grid gap-1.5 leading-none">
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                I confirm my information is correct and agree to the terms.
-              </label>
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Residential Address</FormLabel>
+                  <FormControl>
+                    <Input placeholder="123 Main St, Anytown" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="idType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Government ID Type</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Passport, Driver's license, etc." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="idNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>ID Number</FormLabel>
+                    <FormControl>
+                      <Input placeholder="GHA-123456789-0" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-          </div>
-        </form>
+            <FormField
+              control={form.control}
+              name="terms"
+              render={({ field }) => (
+                <FormItem className="flex items-start space-x-2 pt-2">
+                  <FormControl>
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+                  <div className="grid gap-1.5 leading-none">
+                    <Label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        I confirm my information is correct and agree to the terms.
+                    </Label>
+                    <FormMessage />
+                  </div>
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
         <div className="w-full flex justify-end items-center gap-4">
