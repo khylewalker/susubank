@@ -145,6 +145,7 @@ export default function UserRequestsPage() {
             currentRequests = JSON.parse(storedRequests).map((r: UserRequest) => ({...r, statusChangeDate: r.statusChangeDate ? new Date(r.statusChangeDate) : undefined}));
         } else {
              const newMemberRequests = users
+                .filter(user => user.status === 'pending') // Only show pending users as new member requests
                 .map((user, index) => ({
                     id: `REQ-${String(index + 1).padStart(4, '0')}`,
                     member: user.name,
@@ -154,7 +155,7 @@ export default function UserRequestsPage() {
                     details: 'New account registration',
                     destination: 'N/A',
                     date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
-                    status: user.status.charAt(0).toUpperCase() + user.status.slice(1) as 'Pending' | 'Approved' | 'Rejected',
+                    status: 'Pending' as 'Pending',
                     statusChangeDate: user.statusChangeDate ? new Date(user.statusChangeDate) : undefined,
                 }));
 
