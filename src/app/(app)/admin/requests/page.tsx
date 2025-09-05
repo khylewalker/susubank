@@ -37,14 +37,35 @@ type UserRequest = {
   member: string;
   email: string;
   group: string;
-  type: string;
+  type: 'New Member' | 'Withdrawal' | 'Contribution';
   details: string;
   destination: string;
   date: string;
   status: 'Pending' | 'Approved' | 'Rejected';
+  statusChangeDate?: Date;
 };
 
-const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[], onUpdateRequest: (email: string, status: 'Approved' | 'Rejected') => void }) => {
+const mockRequests: Omit<UserRequest, 'status' | 'statusChangeDate' | 'member' | 'email'>[] = [
+    {
+        id: 'REQ-0005',
+        group: 'Innovators',
+        type: 'Withdrawal',
+        details: 'GH₵500.00',
+        destination: 'Mobile Money',
+        date: new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+    },
+    {
+        id: 'REQ-0006',
+        group: 'Pioneers',
+        type: 'Contribution',
+        details: 'GH₵250.00',
+        destination: 'Bank Transfer',
+        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+    },
+];
+
+
+const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[], onUpdateRequest: (id: string, email: string, status: 'Approved' | 'Rejected') => void }) => {
     
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
@@ -62,6 +83,7 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
             case 'kyc update': return 'bg-purple-100 text-purple-800';
             case 'dispute': return 'bg-orange-100 text-orange-800';
             case 'new member': return 'bg-pink-100 text-pink-800';
+            case 'contribution': return 'bg-teal-100 text-teal-800';
             default: return 'bg-gray-100 text-gray-800';
         }
     }
@@ -92,10 +114,10 @@ const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[],
                             <TableCell className="text-right">
                                 {req.status === 'Pending' && (
                                     <div className="flex gap-2 justify-end">
-                                        <Button size="icon" variant="ghost" className="h-7 w-7 text-green-600" onClick={() => onUpdateRequest(req.email, 'Approved')}>
+                                        <Button size="icon" variant="ghost" className="h-7 w-7 text-green-600" onClick={() => onUpdateRequest(req.id, req.email, 'Approved')}>
                                             <Check className="h-4 w-4" />
                                         </Button>
-                                        <Button size="icon" variant="ghost" className="h-7 w-7 text-red-600" onClick={() => onUpdateRequest(req.email, 'Rejected')}>
+                                        <Button size="icon" variant="ghost" className="h-7 w-7 text-red-600" onClick={() => onUpdateRequest(req.id, req.email, 'Rejected')}>
                                             <X className="h-4 w-4" />
                                         </Button>
                                     </div>
@@ -124,56 +146,87 @@ export default function UserRequestsPage() {
                date.getFullYear() === today.getFullYear();
     }
 
-    const loadUsers = () => {
+    const loadData = () => {
         const storedUsers = localStorage.getItem('mockUsers');
         const users: User[] = storedUsers ? JSON.parse(storedUsers) : initialMockUsers;
-
         setAllUsers(users);
 
-        const requests = users
-            .map((user, index) => ({
-                id: `REQ-${String(index + 1).padStart(4, '0')}`,
-                member: user.name,
-                email: user.email,
-                group: 'Unassigned',
-                type: 'New Member',
-                details: 'New account registration',
-                destination: 'N/A',
-                date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
-                status: user.status.charAt(0).toUpperCase() + user.status.slice(1) as 'Pending' | 'Approved' | 'Rejected',
-                statusChangeDate: user.statusChangeDate ? new Date(user.statusChangeDate) : undefined,
-            }));
+        const storedRequests = localStorage.getItem('mockRequests');
+        let currentRequests: UserRequest[];
 
-        setUserRequests(requests);
+        if (storedRequests) {
+            currentRequests = JSON.parse(storedRequests).map((r: UserRequest) => ({...r, statusChangeDate: r.statusChangeDate ? new Date(r.statusChangeDate) : undefined}));
+        } else {
+             const newMemberRequests = users
+                .map((user, index) => ({
+                    id: `REQ-${String(index + 1).padStart(4, '0')}`,
+                    member: user.name,
+                    email: user.email,
+                    group: 'Unassigned',
+                    type: 'New Member' as 'New Member',
+                    details: 'New account registration',
+                    destination: 'N/A',
+                    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+                    status: user.status.charAt(0).toUpperCase() + user.status.slice(1) as 'Pending' | 'Approved' | 'Rejected',
+                    statusChangeDate: user.statusChangeDate ? new Date(user.statusChangeDate) : undefined,
+                }));
 
-        const todayApproved = requests.filter(r => r.status === 'Approved' && r.statusChangeDate && isToday(r.statusChangeDate)).length;
-        const todayRejected = requests.filter(r => r.status === 'Rejected' && r.statusChangeDate && isToday(r.statusChangeDate)).length;
+            const otherRequests = mockRequests.map((req, index) => {
+                const user = users[index % users.length]; // Assign to a user
+                return {
+                    ...req,
+                    member: user.name,
+                    email: user.email,
+                    status: 'Pending' as 'Pending',
+                };
+            });
+            currentRequests = [...newMemberRequests, ...otherRequests];
+        }
+
+        setUserRequests(currentRequests);
+        localStorage.setItem('mockRequests', JSON.stringify(currentRequests));
+
+        const todayApproved = currentRequests.filter(r => r.status === 'Approved' && r.statusChangeDate && isToday(r.statusChangeDate)).length;
+        const todayRejected = currentRequests.filter(r => r.status === 'Rejected' && r.statusChangeDate && isToday(r.statusChangeDate)).length;
         setApprovedToday(todayApproved);
         setRejectedToday(todayRejected);
     };
     
     useEffect(() => {
-        loadUsers();
+        loadData();
         // Fallback for initial load if localStorage is empty
         if (!localStorage.getItem('mockUsers')) {
             localStorage.setItem('mockUsers', JSON.stringify(initialMockUsers));
         }
     }, []);
-
-    const updateUsersInStorage = (updatedUsers: User[]) => {
+    
+    const updateDataInStorage = (updatedRequests: UserRequest[], updatedUsers: User[]) => {
+        localStorage.setItem('mockRequests', JSON.stringify(updatedRequests));
         localStorage.setItem('mockUsers', JSON.stringify(updatedUsers));
-        loadUsers(); // Reload state from storage
+        loadData(); // Reload state from storage
     };
 
-    const handleUpdateRequest = (email: string, status: 'Approved' | 'Rejected') => {
-        const updatedUsers = allUsers.map(user => {
-            if (user.email === email) {
-                return { ...user, status: status.toLowerCase() as 'approved' | 'rejected' | 'pending', statusChangeDate: new Date().toISOString() };
+    const handleUpdateRequest = (id: string, email: string, status: 'Approved' | 'Rejected') => {
+        const now = new Date();
+        const updatedRequests = userRequests.map(req => {
+            if (req.id === id) {
+                return { ...req, status: status, statusChangeDate: now };
             }
-            return user;
+            return req;
         });
-
-        updateUsersInStorage(updatedUsers);
+        
+        const request = updatedRequests.find(r => r.id === id);
+        let updatedUsers = [...allUsers];
+        if (request && request.type === 'New Member') {
+             updatedUsers = allUsers.map(user => {
+                if (user.email === email) {
+                    return { ...user, status: status.toLowerCase() as 'approved' | 'rejected' | 'pending', statusChangeDate: now.toISOString() };
+                }
+                return user;
+            });
+        }
+        
+        updateDataInStorage(updatedRequests, updatedUsers);
 
         toast({
             title: `Request ${status}`,
@@ -182,15 +235,23 @@ export default function UserRequestsPage() {
     };
 
     const handleBulkUpdate = (status: 'Approved' | 'Rejected') => {
-        const now = new Date().toISOString();
+        const now = new Date();
+        
+        const updatedRequests = userRequests.map(req => {
+            if (req.status === 'Pending') {
+                return { ...req, status, statusChangeDate: now };
+            }
+            return req;
+        });
+
         const updatedUsers = allUsers.map(user => {
-            if (user.status === 'pending') {
-                return { ...user, status: status.toLowerCase() as 'approved' | 'rejected' | 'pending', statusChangeDate: now };
+             if (user.status === 'pending') {
+                return { ...user, status: status.toLowerCase() as 'approved' | 'rejected' | 'pending', statusChangeDate: now.toISOString() };
             }
             return user;
-        });
+        })
         
-        updateUsersInStorage(updatedUsers);
+        updateDataInStorage(updatedRequests, updatedUsers);
         
         toast({
             title: `All Pending Requests ${status}`,
@@ -199,6 +260,7 @@ export default function UserRequestsPage() {
     };
 
     const pendingRequests = userRequests.filter(r => r.status === 'Pending');
+    const newMemberRequestsCount = userRequests.filter(r => r.type === 'New Member' && r.status === 'Pending').length;
     
     return (
         <div className="flex flex-col gap-6">
@@ -221,7 +283,7 @@ export default function UserRequestsPage() {
                 <Card><CardHeader><CardDescription>Pending Requests</CardDescription><CardTitle className="text-2xl font-bold">{pendingRequests.length}</CardTitle></CardHeader></Card>
                 <Card><CardHeader><CardDescription>Approved Today</CardDescription><CardTitle className="text-2xl font-bold">{approvedToday}</CardTitle></CardHeader></Card>
                 <Card><CardHeader><CardDescription>Rejected Today</CardDescription><CardTitle className="text-2xl font-bold">{rejectedToday}</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">{userRequests.filter(r => r.type === 'New Member').length}</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">{newMemberRequestsCount}</CardTitle></CardHeader></Card>
             </div>
 
             <Tabs defaultValue="pending">
