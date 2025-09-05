@@ -138,25 +138,10 @@ export default function UserRequestsPage() {
         setAllUsers(users);
 
         const storedRequests = localStorage.getItem('mockRequests');
-        let currentRequests: UserRequest[];
+        let currentRequests: UserRequest[] = [];
 
         if (storedRequests) {
             currentRequests = JSON.parse(storedRequests).map((r: UserRequest) => ({...r, statusChangeDate: r.statusChangeDate ? new Date(r.statusChangeDate) : undefined}));
-        } else {
-            // Generate requests from pending users only
-             currentRequests = users
-                .filter(user => user.status === 'pending')
-                .map((user, index) => ({
-                    id: `REQ-00${index + 1}`,
-                    member: user.name,
-                    email: user.email,
-                    group: "Unassigned",
-                    type: 'New Member',
-                    details: "New account registration",
-                    destination: "-",
-                    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                    status: 'Pending' as const,
-                }));
         }
 
         setUserRequests(currentRequests);
