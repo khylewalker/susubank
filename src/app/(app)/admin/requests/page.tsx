@@ -45,10 +45,10 @@ type UserRequest = {
   statusChangeDate?: Date;
 };
 
-// This array will hold actual requests from existing users in the future.
-// It is intentionally left empty to remove dummy data.
-const mockRequests: Omit<UserRequest, 'status' | 'statusChangeDate' | 'member' | 'email'>[] = [];
-
+const mockRequests: Omit<UserRequest, 'status' | 'statusChangeDate' | 'member' | 'email' | 'id'>[] = [
+    { type: 'Withdrawal', details: 'GH₵500.00', date: 'Sep 4, 2025', destination: 'Bank Account', group: 'Innovators' },
+    { type: 'Contribution', details: 'GH₵250.00', date: 'Sep 5, 2025', destination: 'Group Wallet', group: 'Pioneers' },
+];
 
 const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[], onUpdateRequest: (id: string, email: string, status: 'Approved' | 'Rejected') => void }) => {
     
@@ -146,18 +146,31 @@ export default function UserRequestsPage() {
         if (storedRequests) {
             currentRequests = JSON.parse(storedRequests).map((r: UserRequest) => ({...r, statusChangeDate: r.statusChangeDate ? new Date(r.statusChangeDate) : undefined}));
         } else {
-            // This now only processes requests from existing registered users, not new sign-ups.
-            // Since mockRequests is empty, this will result in an empty list as intended.
+            const registeredUsers = users.filter(u => u.email !== 'admin@susu.bank' && u.email !== 'new@susu.bank');
             const otherRequests = mockRequests.map((req, index) => {
-                const user = users[index % users.length]; // Assign to a user
+                 const user = registeredUsers[index % registeredUsers.length];
                 return {
                     ...req,
+                    id: `REQ-000${index + 5}`,
                     member: user.name,
                     email: user.email,
                     status: 'Pending' as 'Pending',
                 };
             });
-            currentRequests = [...otherRequests];
+
+            const newSignups = users.filter(user => user.status === 'pending').map((user, index) => ({
+                id: `REQ-000${index + 2}`,
+                member: user.name,
+                email: user.email,
+                group: 'Unassigned',
+                type: 'New Member' as 'New Member',
+                details: 'New account registration',
+                destination: '',
+                date: 'Sep 5, 2025',
+                status: 'Pending' as 'Pending',
+            }));
+
+            currentRequests = [...newSignups, ...otherRequests];
         }
 
         setUserRequests(currentRequests);
@@ -171,7 +184,6 @@ export default function UserRequestsPage() {
     
     useEffect(() => {
         loadData();
-        // Fallback for initial load if localStorage is empty
         if (!localStorage.getItem('mockUsers')) {
             localStorage.setItem('mockUsers', JSON.stringify(initialMockUsers));
         }
@@ -237,12 +249,10 @@ export default function UserRequestsPage() {
     };
 
     const pendingRequests = userRequests.filter(r => r.status === 'Pending');
-    // This will now correctly be 0 as new member signups are not added to the list.
-    const newMemberRequestsCount = 0; 
+    const newMemberRequests = pendingRequests.filter(r => r.type === 'New Member');
     const withdrawalRequests = pendingRequests.filter(r => r.type === 'Withdrawal');
     const contributionRequests = pendingRequests.filter(r => r.type === 'Contribution');
     const loanRequests = pendingRequests.filter(r => r.type === 'Loan');
-    const newMemberRequests = pendingRequests.filter(r => r.type === 'New Member');
     
     return (
         <div className="flex flex-col gap-6">
@@ -265,7 +275,7 @@ export default function UserRequestsPage() {
                 <Card><CardHeader><CardDescription>Pending Requests</CardDescription><CardTitle className="text-2xl font-bold">{pendingRequests.length}</CardTitle></CardHeader></Card>
                 <Card><CardHeader><CardDescription>Approved Today</CardDescription><CardTitle className="text-2xl font-bold">{approvedToday}</CardTitle></CardHeader></Card>
                 <Card><CardHeader><CardDescription>Rejected Today</CardDescription><CardTitle className="text-2xl font-bold">{rejectedToday}</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">{newMemberRequestsCount}</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>New Member Requests</CardDescription><CardTitle className="text-2xl font-bold">{newMemberRequests.length}</CardTitle></CardHeader></Card>
             </div>
 
             <Tabs defaultValue="all">
@@ -274,9 +284,8 @@ export default function UserRequestsPage() {
                         <TabsList>
                             <TabsTrigger value="all">All</TabsTrigger>
                             <TabsTrigger value="new-members">New Members</TabsTrigger>
-                            {withdrawalRequests.length > 0 && <TabsTrigger value="withdrawals">Withdrawals</TabsTrigger>}
-                            {contributionRequests.length > 0 && <TabsTrigger value="contributions">Contributions</TabsTrigger>}
-                            {loanRequests.length > 0 && <TabsTrigger value="loans">Loans</TabsTrigger>}
+                            <TabsTrigger value="withdrawals">Withdrawals</TabsTrigger>
+                            <TabsTrigger value="contributions">Contributions</TabsTrigger>
                         </TabsList>
                         <div className="flex gap-2 shrink-0">
                             <Button variant="outline" onClick={() => handleBulkUpdate('Approved')}><CheckCheck /> Approve All</Button>
@@ -290,26 +299,15 @@ export default function UserRequestsPage() {
                         <TabsContent value="new-members">
                             <RequestsTable requests={newMemberRequests} onUpdateRequest={handleUpdateRequest} />
                         </TabsContent>
-                        {withdrawalRequests.length > 0 && (
-                            <TabsContent value="withdrawals">
-                                <RequestsTable requests={withdrawalRequests} onUpdateRequest={handleUpdateRequest} />
-                            </TabsContent>
-                        )}
-                        {contributionRequests.length > 0 && (
-                            <TabsContent value="contributions">
-                                <RequestsTable requests={contributionRequests} onUpdateRequest={handleUpdateRequest} />
-                            </TabsContent>
-                        )}
-                        {loanRequests.length > 0 && (
-                            <TabsContent value="loans">
-                                <RequestsTable requests={loanRequests} onUpdateRequest={handleUpdateRequest} />
-                            </TabsContent>
-                        )}
+                        <TabsContent value="withdrawals">
+                            <RequestsTable requests={withdrawalRequests} onUpdateRequest={handleUpdateRequest} />
+                        </TabsContent>
+                        <TabsContent value="contributions">
+                            <RequestsTable requests={contributionRequests} onUpdateRequest={handleUpdateRequest} />
+                        </TabsContent>
                     </CardContent>
                 </Card>
             </Tabs>
         </div>
     );
 }
-
-    
