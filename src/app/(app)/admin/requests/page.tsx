@@ -274,9 +274,9 @@ export default function UserRequestsPage() {
                         <TabsList>
                             <TabsTrigger value="all">All</TabsTrigger>
                             <TabsTrigger value="new-members">New Members</TabsTrigger>
-                            <TabsTrigger value="withdrawals">Withdrawals</TabsTrigger>
-                            <TabsTrigger value="contributions">Contributions</TabsTrigger>
-                            <TabsTrigger value="loans">Loans</TabsTrigger>
+                            {withdrawalRequests.length > 0 && <TabsTrigger value="withdrawals">Withdrawals</TabsTrigger>}
+                            {contributionRequests.length > 0 && <TabsTrigger value="contributions">Contributions</TabsTrigger>}
+                            {loanRequests.length > 0 && <TabsTrigger value="loans">Loans</TabsTrigger>}
                         </TabsList>
                         <div className="flex gap-2 shrink-0">
                             <Button variant="outline" onClick={() => handleBulkUpdate('Approved')}><CheckCheck /> Approve All</Button>
@@ -290,15 +290,21 @@ export default function UserRequestsPage() {
                         <TabsContent value="new-members">
                             <RequestsTable requests={newMemberRequests} onUpdateRequest={handleUpdateRequest} />
                         </TabsContent>
-                        <TabsContent value="withdrawals">
-                            <RequestsTable requests={withdrawalRequests} onUpdateRequest={handleUpdateRequest} />
-                        </TabsContent>
-                        <TabsContent value="contributions">
-                            <RequestsTable requests={contributionRequests} onUpdateRequest={handleUpdateRequest} />
-                        </TabsContent>
-                         <TabsContent value="loans">
-                            <RequestsTable requests={loanRequests} onUpdateRequest={handleUpdateRequest} />
-                        </TabsContent>
+                        {withdrawalRequests.length > 0 && (
+                            <TabsContent value="withdrawals">
+                                <RequestsTable requests={withdrawalRequests} onUpdateRequest={handleUpdateRequest} />
+                            </TabsContent>
+                        )}
+                        {contributionRequests.length > 0 && (
+                            <TabsContent value="contributions">
+                                <RequestsTable requests={contributionRequests} onUpdateRequest={handleUpdateRequest} />
+                            </TabsContent>
+                        )}
+                        {loanRequests.length > 0 && (
+                            <TabsContent value="loans">
+                                <RequestsTable requests={loanRequests} onUpdateRequest={handleUpdateRequest} />
+                            </TabsContent>
+                        )}
                     </CardContent>
                 </Card>
             </Tabs>
