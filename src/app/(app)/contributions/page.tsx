@@ -54,24 +54,24 @@ const contributionHistory = [
   { ref: "REF-003", amount: "GH₵250.00", status: "Processing", date: "August 15, 2024" },
 ];
 const allContributions = [
-    { desc: "Cycle Contribution for July", member: "Kofi Adu", type: "Contribution", amount: "GH₵250.00", date: "July 15, 2024" },
-    { desc: "Cycle Contribution for July", member: "Ama Badu", type: "Contribution", amount: "GH₵250.00", date: "July 14, 2024" },
-    { desc: "Initial Deposit", member: "Yaw Mensah", type: "Deposit", amount: "GH₵100.00", date: "July 1, 2024" },
+    { desc: "Cycle Contribution for July", member: "New User", type: "Contribution", amount: "GH₵250.00", date: "July 15, 2024" },
+    { desc: "Cycle Contribution for July", member: "First Timer", type: "Contribution", amount: "GH₵250.00", date: "July 14, 2024" },
+    { desc: "Initial Deposit", member: "Approved User", type: "Deposit", amount: "GH₵100.00", date: "July 1, 2024" },
 ];
 const groupsData = [
-    { 
-        id: 1, 
-        name: "Innovators", 
+    {
+        id: 1,
+        name: "Innovators",
         totalContributions: "1250.00",
         members: [
-            { id: "user-1", name: "Kofi Adu", avatar: "https://picsum.photos/100/100?random=1", contribution: "250.00" },
-            { id: "user-2", name: "Ama Badu", avatar: "https://picsum.photos/100/100?random=2", contribution: "250.00" },
-            { id: "user-3", name: "Yaw Mensah", avatar: "https://picsum.photos/100/100?random=3", contribution: "250.00" },
+            { id: "user-1", name: "New User", avatar: "https://picsum.photos/100/100?random=1", contribution: "250.00" },
+            { id: "user-2", name: "First Timer", avatar: "https://picsum.photos/100/100?random=2", contribution: "250.00" },
+            { id: "user-3", name: "Approved User", avatar: "https://picsum.photos/100/100?random=3", contribution: "250.00" },
         ]
     },
-    { 
-        id: 2, 
-        name: "Pioneers", 
+    {
+        id: 2,
+        name: "Pioneers",
         totalContributions: "800.00",
         members: [
             { id: "user-4", name: "Adwoa Fosu", avatar: "https://picsum.photos/100/100?random=4", contribution: "200.00" },
