@@ -4,7 +4,6 @@
 import { useEffect, useState } from 'react';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -22,32 +21,41 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import { mockUsers as initialMockUsers, User } from "@/lib/mock-users";
+import UserDashboard from './user-dashboard';
 
 export default function DashboardClient() {
   const [transactions, setTransactions] = useState<any[]>([]);
   const [requests, setRequests] = useState<any[]>([]);
   const [totalUsers, setTotalUsers] = useState(0);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // In a real app, this data would come from an API
+    // In a real app, this data would come from an API/auth context
     const storedUsers = localStorage.getItem('mockUsers');
     const users: User[] = storedUsers ? JSON.parse(storedUsers) : initialMockUsers;
+    
+    // Simulate a logged-in user. Change this to test different users.
+    const loggedInUserEmail = "approved@susu.bank"; // or "admin@susu.bank"
+    const user = users.find(u => u.email === loggedInUserEmail) || null;
+    setCurrentUser(user);
 
-    const registeredUsers = users.filter(u => u.status === 'approved' && u.email !== 'admin@susu.bank');
-    setTotalUsers(registeredUsers.length);
-    
-    const pendingRequests = users
-        .filter(user => user.status === 'pending')
-        .map((user, index) => ({
-            id: `REQ-00${index+1}`,
-            member: user.name,
-            type: 'New Member',
-            status: 'Pending',
-        }));
-    setRequests(pendingRequests);
-    
-    // For now, transactions are empty
-    setTransactions([]);
+    if (user?.email === 'admin@susu.bank') {
+      const registeredUsers = users.filter(u => u.status === 'approved' && u.email !== 'admin@susu.bank');
+      setTotalUsers(registeredUsers.length);
+      
+      const pendingRequests = users
+          .filter(user => user.status === 'pending')
+          .map((user, index) => ({
+              id: `REQ-00${index+1}`,
+              member: user.name,
+              type: 'New Member',
+              status: 'Pending',
+          }));
+      setRequests(pendingRequests);
+      
+      // For now, transactions are empty
+      setTransactions([]);
+    }
 
   }, []);
 
@@ -59,6 +67,15 @@ export default function DashboardClient() {
         default: return 'bg-gray-100 text-gray-800';
     }
   }
+  
+  if (!currentUser) {
+    return <div>Loading...</div>; // Or a proper loader
+  }
+  
+  if (currentUser.email !== 'admin@susu.bank') {
+    return <UserDashboard user={currentUser} />;
+  }
+
 
   return (
     <div className="flex flex-col gap-6">
