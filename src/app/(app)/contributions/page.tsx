@@ -48,9 +48,37 @@ import {
 } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const contributionHistory: any[] = [];
-const allContributions: any[] = [];
-const groupsData: any[] = [];
+const contributionHistory = [
+  { ref: "REF-001", amount: "GH₵250.00", status: "Completed", date: "July 15, 2024" },
+  { ref: "REF-002", amount: "GH₵250.00", status: "Completed", date: "June 15, 2024" },
+  { ref: "REF-003", amount: "GH₵250.00", status: "Processing", date: "August 15, 2024" },
+];
+const allContributions = [
+    { desc: "Cycle Contribution for July", member: "Kofi Adu", type: "Contribution", amount: "GH₵250.00", date: "July 15, 2024" },
+    { desc: "Cycle Contribution for July", member: "Ama Badu", type: "Contribution", amount: "GH₵250.00", date: "July 14, 2024" },
+    { desc: "Initial Deposit", member: "Yaw Mensah", type: "Deposit", amount: "GH₵100.00", date: "July 1, 2024" },
+];
+const groupsData = [
+    { 
+        id: 1, 
+        name: "Innovators", 
+        totalContributions: "1250.00",
+        members: [
+            { id: "user-1", name: "Kofi Adu", avatar: "https://picsum.photos/100/100?random=1", contribution: "250.00" },
+            { id: "user-2", name: "Ama Badu", avatar: "https://picsum.photos/100/100?random=2", contribution: "250.00" },
+            { id: "user-3", name: "Yaw Mensah", avatar: "https://picsum.photos/100/100?random=3", contribution: "250.00" },
+        ]
+    },
+    { 
+        id: 2, 
+        name: "Pioneers", 
+        totalContributions: "800.00",
+        members: [
+            { id: "user-4", name: "Adwoa Fosu", avatar: "https://picsum.photos/100/100?random=4", contribution: "200.00" },
+            { id: "user-5", name: "Kwame Nkrumah", avatar: "https://picsum.photos/100/100?random=5", contribution: "200.00" },
+        ]
+    },
+];
 
 export default function ContributionsPage() {
   const isAdmin = true; // This would be replaced with actual role-based logic
@@ -87,7 +115,7 @@ export default function ContributionsPage() {
             <CardTitle className="font-headline">This Cycle Total</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">GH₵0.00</p>
+            <p className="text-2xl font-bold">GH₵750.00</p>
             <p className="text-sm text-muted-foreground">July 1 - July 31, 2024</p>
           </CardContent>
         </Card>
@@ -96,8 +124,8 @@ export default function ContributionsPage() {
             <CardTitle className="font-headline">My Contributions</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">GH₵0.00</p>
-            <p className="text-sm text-muted-foreground">Cycle Total: GH₵0.00</p>
+            <p className="text-2xl font-bold">GH₵500.00</p>
+            <p className="text-sm text-muted-foreground">Cycle Total: GH₵250.00</p>
           </CardContent>
         </Card>
         {groupsData.slice(0, 2).map(group => (
