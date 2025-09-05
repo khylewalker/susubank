@@ -19,14 +19,7 @@ import { Logo } from "@/components/logo";
 import { ShieldCheck, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-
-// Mock user data for demonstration
-const mockUsers = [
-  { email: "admin@susu.bank", password: "mkisdeadmin", status: "approved", firstLogin: false, name: "Admin" },
-  { email: "new@susu.bank", password: "password123", status: "pending", firstLogin: true, name: "New User" },
-  { email: "first.timer@susu.bank", password: "password123", status: "approved", firstLogin: true, name: "First Timer" },
-  { email: "approved@susu.bank", password: "password123", status: "approved", firstLogin: false, name: "Approved User" },
-];
+import { mockUsers } from "@/lib/mock-users";
 
 export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -59,6 +52,8 @@ export default function SignInPage() {
 
     // Simulate API call
     setTimeout(() => {
+      console.log("Attempting login for:", email);
+      console.log("Current users:", mockUsers);
       const user = mockUsers.find(u => u.email === email);
       
       if (!user || user.password !== password) {

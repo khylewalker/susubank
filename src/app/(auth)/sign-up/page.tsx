@@ -1,5 +1,8 @@
 
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -20,8 +23,57 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Logo } from "@/components/logo";
+import { useToast } from "@/hooks/use-toast";
+import { addUser } from "@/lib/mock-users";
 
 export default function SignUpPage() {
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const fullName = formData.get("full-name") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirm-password") as string;
+    const terms = formData.get("terms") === "on";
+
+    if (password !== confirmPassword) {
+      toast({
+        variant: "destructive",
+        title: "Passwords do not match",
+        description: "Please make sure your passwords match.",
+      });
+      return;
+    }
+    
+    if (!terms) {
+         toast({
+            variant: "destructive",
+            title: "Terms and Conditions",
+            description: "You must agree to the terms and conditions.",
+        });
+        return;
+    }
+
+    // A real app would have more robust validation
+    addUser({
+      email,
+      password,
+      status: 'pending',
+      firstLogin: true,
+      name: fullName,
+    });
+
+    toast({
+      title: "Account Created!",
+      description: "Your account has been created. Please wait for admin approval.",
+    });
+
+    router.push("/sign-in");
+  };
+
   return (
     <Card className="w-full max-w-lg">
       <CardHeader className="text-center">
@@ -29,17 +81,38 @@ export default function SignUpPage() {
           <Logo />
         </div>
         <CardTitle className="font-headline text-2xl">Create your account</CardTitle>
-        <CardDescription>Personal details - Step 3 of 3</CardDescription>
+        <CardDescription>Enter your details to get started.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form className="space-y-4">
+        <form id="signup-form" onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="full-name">Full Name</Label>
             <Input
               id="full-name"
+              name="full-name"
               placeholder="As shown on your government ID"
               required
             />
+          </div>
+           <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" name="password" type="password" required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirm-password">Confirm Password</Label>
+              <Input id="confirm-password" name="confirm-password" type="password" required />
+            </div>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="space-y-2">
@@ -48,7 +121,7 @@ export default function SignUpPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="nationality">Nationality</Label>
-              <Select>
+              <Select name="nationality">
                 <SelectTrigger id="nationality">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
@@ -63,35 +136,25 @@ export default function SignUpPage() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="address">Residential Address</Label>
-            <Input id="address" placeholder="123 Main St, Anytown" required />
-            <p className="text-xs text-muted-foreground">
-              We use this to verify your identity and eligibility.
-            </p>
+            <Input id="address" name="address" placeholder="123 Main St, Anytown" required />
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="id-type">Government ID Type</Label>
               <Input
                 id="id-type"
+                name="id-type"
                 placeholder="Passport, Driver's license, etc."
                 required
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="id-number">ID Number</Label>
-              <Input id="id-number" placeholder="GHA-123456789-0" required />
+              <Input id="id-number" name="id-number" placeholder="GHA-123456789-0" required />
             </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="source-of-funds">Source of Funds</Label>
-            <Input
-              id="source-of-funds"
-              placeholder="Employment, Savings, Business, etc."
-              required
-            />
-          </div>
           <div className="flex items-start space-x-2 pt-2">
-            <Checkbox id="terms" required />
+            <Checkbox id="terms" name="terms" />
             <div className="grid gap-1.5 leading-none">
               <label
                 htmlFor="terms"
@@ -108,11 +171,8 @@ export default function SignUpPage() {
           <Button variant="outline" asChild>
             <Link href="/sign-in">Back</Link>
           </Button>
-          <Button asChild>
-            <Link href="/dashboard">Create Account</Link>
-          </Button>
+          <Button type="submit" form="signup-form">Create Account</Button>
         </div>
-         <p className="text-xs text-muted-foreground">Final step: Review & submit</p>
       </CardFooter>
     </Card>
   );
