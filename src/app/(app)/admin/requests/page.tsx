@@ -45,32 +45,7 @@ type UserRequest = {
   statusChangeDate?: Date;
 };
 
-const mockRequests: Omit<UserRequest, 'status' | 'statusChangeDate' | 'member' | 'email'>[] = [
-    {
-        id: 'REQ-0005',
-        group: 'Innovators',
-        type: 'Withdrawal',
-        details: 'GH₵500.00',
-        destination: 'Mobile Money',
-        date: new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
-    },
-    {
-        id: 'REQ-0006',
-        group: 'Pioneers',
-        type: 'Contribution',
-        details: 'GH₵250.00',
-        destination: 'Bank Transfer',
-        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
-    },
-    {
-        id: 'REQ-0007',
-        group: 'Innovators',
-        type: 'Loan',
-        details: 'GH₵1000.00',
-        destination: 'Bank Transfer',
-        date: new Date(new Date().setDate(new Date().getDate() - 2)).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
-    },
-];
+const mockRequests: Omit<UserRequest, 'status' | 'statusChangeDate' | 'member' | 'email'>[] = [];
 
 
 const RequestsTable = ({ requests, onUpdateRequest }: { requests: UserRequest[], onUpdateRequest: (id: string, email: string, status: 'Approved' | 'Rejected') => void }) => {
