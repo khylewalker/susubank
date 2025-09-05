@@ -20,28 +20,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const recentActivity = [
-    {
-        activity: 'Contribution',
-        details: 'Cycle Contribution for July',
-        amount: 'GH₵250.00',
-        date: 'July 15, 2024',
-        status: 'Completed',
-    },
-    {
-        activity: 'Withdrawal',
-        details: 'Emergency Withdrawal',
-        amount: 'GH₵100.00',
-        date: 'July 10, 2024',
-        status: 'Approved',
-    }
-];
+const recentActivity: any[] = [];
 
-const groupMembers = [
-    { name: 'Approved User', avatar: 'https://picsum.photos/seed/approved@susu.bank/100/100', status: 'Paid' },
-    { name: 'First Timer', avatar: 'https://picsum.photos/seed/first.timer@susu.bank/100/100', status: 'Paid' },
-    { name: 'Yaw Mensah', avatar: 'https://picsum.photos/seed/yaw.m@email.com/100/100', status: 'Pending' },
-];
+const groupMembers: any[] = [];
 
 export default function UserDashboard({ user }: { user: User }) {
   const getStatusColor = (status: string) => {
@@ -66,25 +47,25 @@ export default function UserDashboard({ user }: { user: User }) {
         <Card>
           <CardHeader>
             <CardDescription>My Total Contributions</CardDescription>
-            <CardTitle className="text-2xl font-bold">GH₵500.00</CardTitle>
+            <CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader>
             <CardDescription>Current Cycle Contribution</CardDescription>
-            <CardTitle className="text-2xl font-bold">GH₵250.00</CardTitle>
+            <CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader>
             <CardDescription>Group Pool Size</CardDescription>
-            <CardTitle className="text-2xl font-bold">GH₵1,250.00</CardTitle>
+            <CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader>
             <CardDescription>Next Payout</CardDescription>
-            <CardTitle className="text-2xl font-bold">Aug 1, 2024</CardTitle>
+            <CardTitle className="text-2xl font-bold">N/A</CardTitle>
           </CardHeader>
         </Card>
       </div>
@@ -106,7 +87,7 @@ export default function UserDashboard({ user }: { user: User }) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {recentActivity.map((item, index) => (
+                        {recentActivity.length > 0 ? recentActivity.map((item, index) => (
                             <TableRow key={index}>
                                 <TableCell className="font-medium">{item.activity}</TableCell>
                                 <TableCell>{item.details}</TableCell>
@@ -114,7 +95,11 @@ export default function UserDashboard({ user }: { user: User }) {
                                 <TableCell>{item.date}</TableCell>
                                 <TableCell><Badge className={getStatusColor(item.status)}>{item.status}</Badge></TableCell>
                             </TableRow>
-                        ))}
+                        )) : (
+                           <TableRow>
+                                <TableCell colSpan={5} className="text-center">No recent activity.</TableCell>
+                            </TableRow>
+                        )}
                     </TableBody>
                 </Table>
             </CardContent>
@@ -125,7 +110,7 @@ export default function UserDashboard({ user }: { user: User }) {
             </CardHeader>
             <CardContent>
                  <ul className="space-y-4">
-                    {groupMembers.map((member, index) => (
+                    {groupMembers.length > 0 ? groupMembers.map((member, index) => (
                         <li key={index} className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <Avatar className="h-9 w-9">
@@ -136,7 +121,9 @@ export default function UserDashboard({ user }: { user: User }) {
                             </div>
                             <Badge className={getStatusColor(member.status)}>{member.status}</Badge>
                         </li>
-                    ))}
+                    )) : (
+                        <li className="text-center text-muted-foreground">No group members to display.</li>
+                    )}
                  </ul>
             </CardContent>
         </Card>
