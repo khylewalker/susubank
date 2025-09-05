@@ -38,10 +38,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { mockUsers } from "@/lib/mock-users";
+import { mockUsers as initialMockUsers, type User } from "@/lib/mock-users";
+import { useState, useEffect } from "react";
 
-
-const pendingRequestsCount = mockUsers.filter(user => user.status === 'pending').length;
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -50,17 +49,38 @@ const navItems = [
   { href: "/transactions", label: "Transactions", icon: History },
 ];
 
-const adminNavItems = [
+
+export function AppSidebar() {
+  const pathname = usePathname();
+  const { isMobile, setOpenMobile } = useSidebar();
+  const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
+
+  useEffect(() => {
+    const getPendingCount = () => {
+      const storedUsers = localStorage.getItem('mockUsers');
+      const users: User[] = storedUsers ? JSON.parse(storedUsers) : initialMockUsers;
+      return users.filter(user => user.status === 'pending').length;
+    };
+    
+    setPendingRequestsCount(getPendingCount());
+
+    // Listen for storage changes to update the badge in real-time
+    const handleStorageChange = () => {
+      setPendingRequestsCount(getPendingCount());
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+
+  }, []);
+
+
+  const adminNavItems = [
     { href: "/admin/users", label: "Users", icon: Users },
     { href: "/admin/create-member", label: "Add New Member", icon: UserPlus },
     { href: "/admin/create-group", label: "Create Group", icon: PlusCircle },
     { href: "/admin/requests", label: "User Requests", icon: BellRing, badge: pendingRequestsCount > 0 ? String(pendingRequestsCount) : undefined },
     { href: "/admin/login-activity", label: "Login Activity", icon: ShieldCheck },
-];
-
-export function AppSidebar() {
-  const pathname = usePathname();
-  const { isMobile, setOpenMobile } = useSidebar();
+  ];
 
   const handleLinkClick = () => {
     if (isMobile) {
