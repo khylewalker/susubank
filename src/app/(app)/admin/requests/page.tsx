@@ -143,19 +143,8 @@ export default function UserRequestsPage() {
         if (storedRequests) {
             currentRequests = JSON.parse(storedRequests).map((r: UserRequest) => ({...r, statusChangeDate: r.statusChangeDate ? new Date(r.statusChangeDate) : undefined}));
         } else {
-             const newSignups = users.filter(user => user.status === 'pending').map((user, index) => ({
-                id: `REQ-000${index + 2}`,
-                member: user.name,
-                email: user.email,
-                group: 'Unassigned',
-                type: 'New Member' as 'New Member',
-                details: 'New account registration',
-                destination: '',
-                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                status: 'Pending' as 'Pending',
-            }));
-
-            currentRequests = newSignups;
+            // No longer auto-generating new member requests
+            currentRequests = [];
         }
 
         setUserRequests(currentRequests);
