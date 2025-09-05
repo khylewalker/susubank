@@ -26,7 +26,10 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const loginActivity: any[] = [
+const loginActivity = [
+    { id: 1, name: "First Timer", email: "first.timer@susu.bank", group: "Innovators", phone: "+233241234567", residence: "Accra, Ghana", timestamp: "2024-07-28 10:00 AM", status: "Active", avatar: "https://picsum.photos/100/100?random=1" },
+    { id: 2, name: "Approved User", email: "approved@susu.bank", group: "Pioneers", phone: "+233241234568", residence: "Kumasi, Ghana", timestamp: "2024-07-28 09:45 AM", status: "Logged Out", avatar: "https://picsum.photos/100/100?random=2" },
+    { id: 3, name: "New User", email: "new@susu.bank", group: "Innovators", phone: "+233241234569", residence: "Tema, Ghana", timestamp: "2024-07-28 09:30 AM", status: "Failed", avatar: "https://picsum.photos/100/100?random=3" },
 ];
 
 export default function LoginActivityPage() {

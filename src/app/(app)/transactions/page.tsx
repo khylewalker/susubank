@@ -38,16 +38,23 @@ import { Copy, Calendar } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from '@/components/ui/separator';
 
-const transactionsData: any[] = [
+const transactionsData = [
+    { ref: "TXN-001", member: "First Timer", email: "first.timer@susu.bank", avatar: "https://picsum.photos/100/100?random=1", type: "Contribution", amount: "GH₵250.00", date: "Jul 15, 2024", status: "Settled", method: "Mobile Money", category: "Monthly Dues", cycle: "July 2024" },
+    { ref: "TXN-002", member: "Approved User", email: "approved@susu.bank", avatar: "https://picsum.photos/100/100?random=2", type: "Contribution", amount: "GH₵500.00", date: "Jul 10, 2024", status: "Settled", method: "Bank Transfer", category: "Monthly Dues", cycle: "July 2024" },
+    { ref: "TXN-003", member: "First Timer", email: "first.timer@susu.bank", avatar: "https://picsum.photos/100/100?random=1", type: "Withdrawal", amount: "GH₵200.00", date: "May 15, 2024", status: "Settled", method: "Bank Transfer", category: "Personal", cycle: "May 2024" },
+    { ref: "TXN-004", member: "New User", email: "new@susu.bank", avatar: "https://picsum.photos/100/100?random=3", type: "Contribution", amount: "GH₵250.00", date: "Jun 01, 2024", status: "Pending", method: "Mobile Money", category: "Monthly Dues", cycle: "June 2024" },
 ];
 
-const historyData: any[] = [
+const historyData = [
+    { event: "Transaction created", time: "2024-07-15 10:00 AM" },
+    { event: "Payment processed", time: "2024-07-15 10:05 AM" },
+    { event: "Marked as settled", time: "2024-07-15 10:10 AM" },
 ]
 
 type Transaction = (typeof transactionsData)[0];
 
 export default function TransactionsPage() {
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(transactionsData[0]);
 
   const getStatusBadge = (status: string) => {
       switch(status) {
@@ -88,9 +95,9 @@ export default function TransactionsPage() {
       </header>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <Card><CardHeader><CardDescription>Total Volume</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
-        <Card><CardHeader><CardDescription>Contributions</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
-        <Card><CardHeader><CardDescription>Withdrawals</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
+        <Card><CardHeader><CardDescription>Total Volume</CardDescription><CardTitle className="text-2xl font-bold">GH₵1,200.00</CardTitle></CardHeader></Card>
+        <Card><CardHeader><CardDescription>Contributions</CardDescription><CardTitle className="text-2xl font-bold">GH₵1,000.00</CardTitle></CardHeader></Card>
+        <Card><CardHeader><CardDescription>Withdrawals</CardDescription><CardTitle className="text-2xl font-bold">GH₵200.00</CardTitle></CardHeader></Card>
         <Card><CardHeader><CardDescription>Fees & Adjustments</CardDescription><CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle></CardHeader></Card>
       </div>
 

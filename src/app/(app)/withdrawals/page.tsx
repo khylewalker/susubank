@@ -48,13 +48,29 @@ import {
 } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const pendingApprovals: any[] = [
+const pendingApprovals = [
+    { ref: "W-REF-0045", amount: "GH₵500.00", member: "Approved User", status: "2/3 Approvals" },
 ];
 
-const withdrawalHistory: any[] = [
+const withdrawalHistory = [
+    { desc: "Personal Withdrawal", member: "First Timer", type: "Withdrawal", amount: "GH₵200.00", date: "May 15, 2024" },
 ];
 
-const groupsData: any[] = [
+const groupsData = [
+    { 
+        id: 1, 
+        name: "Innovators", 
+        totalWithdrawals: "200.00",
+        members: [
+            { id: "user-1", name: "First Timer", avatar: "https://picsum.photos/100/100?random=1", withdrawal: "200.00" },
+        ]
+    },
+    { 
+        id: 2, 
+        name: "Pioneers", 
+        totalWithdrawals: "0.00",
+        members: []
+    },
 ];
 
 export default function WithdrawalsPage() {
@@ -91,7 +107,7 @@ export default function WithdrawalsPage() {
             <CardTitle className="font-headline">Available Pool</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">GH₵0.00</p>
+            <p className="text-2xl font-bold">GH₵4,300.00</p>
             <p className="text-sm text-muted-foreground">Total funds available for withdrawal</p>
           </CardContent>
         </Card>
@@ -100,8 +116,8 @@ export default function WithdrawalsPage() {
             <CardTitle className="font-headline">Pending Requests</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">0</p>
-            <p className="text-sm text-muted-foreground">Totaling GH₵0.00</p>
+            <p className="text-2xl font-bold">1</p>
+            <p className="text-sm text-muted-foreground">Totaling GH₵500.00</p>
           </CardContent>
         </Card>
          {groupsData.slice(0, 2).map(group => (

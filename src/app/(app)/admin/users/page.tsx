@@ -35,7 +35,56 @@ import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 
 
-const initialUsers: any[] = [
+const initialUsers = [
+    { 
+        id: "USR-001", 
+        name: "First Timer", 
+        email: "first.timer@susu.bank", 
+        avatar: "https://picsum.photos/100/100?random=1", 
+        status: "Member", 
+        previousStatus: "Member",
+        joinDate: "Jan 15, 2024", 
+        totalContributions: "GH₵1,500.00", 
+        withdrawals: "GH₵200.00", 
+        loanBalance: "GH₵0.00",
+        transactions: [
+            { date: "Jul 15, 2024", activity: "Contribution", amount: "GH₵250.00", status: "Approved" },
+            { date: "Jun 15, 2024", activity: "Contribution", amount: "GH₵250.00", status: "Approved" },
+            { date: "May 15, 2024", activity: "Withdrawal", amount: "GH₵200.00", status: "Approved" },
+        ]
+    },
+    { 
+        id: "USR-002", 
+        name: "Approved User", 
+        email: "approved@susu.bank", 
+        avatar: "https://picsum.photos/100/100?random=2", 
+        status: "Contributor", 
+        previousStatus: "Contributor",
+        joinDate: "Feb 20, 2024", 
+        totalContributions: "GH₵2,500.00", 
+        withdrawals: "GH₵0.00", 
+        loanBalance: "GH₵1,000.00",
+        transactions: [
+            { date: "Jul 10, 2024", activity: "Contribution", amount: "GH₵500.00", status: "Approved" },
+            { date: "Jun 10, 2024", activity: "Loan Disbursement", amount: "GH₵1,000.00", status: "Approved" },
+        ]
+    },
+    { 
+        id: "USR-003", 
+        name: "New User", 
+        email: "new@susu.bank", 
+        avatar: "https://picsum.photos/100/100?random=3", 
+        status: "Suspended", 
+        previousStatus: "Member",
+        joinDate: "Mar 01, 2024", 
+        totalContributions: "GH₵500.00", 
+        withdrawals: "GH₵0.00", 
+        loanBalance: "GH₵0.00",
+        transactions: [
+            { date: "Jul 01, 2024", activity: "Contribution", amount: "GH₵250.00", status: "Rejected" },
+            { date: "Jun 01, 2024", activity: "Contribution", amount: "GH₵250.00", status: "Approved" },
+        ]
+    },
 ];
 
 type User = (typeof initialUsers)[0];
@@ -43,7 +92,7 @@ type User = (typeof initialUsers)[0];
 export default function UsersPage() {
     const { toast } = useToast();
     const [users, setUsers] = useState<User[]>(initialUsers);
-    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const [selectedUser, setSelectedUser] = useState<User | null>(initialUsers[0]);
     const [suspensionDays, setSuspensionDays] = useState('');
 
     const getStatusColor = (status: string) => {
@@ -123,10 +172,10 @@ export default function UsersPage() {
             </header>
             
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <Card><CardHeader><CardDescription>Total Members</CardDescription><CardTitle className="text-2xl font-bold">0</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>Active Groups</CardDescription><CardTitle className="text-2xl font-bold">0</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>Monthly Deposits</CardDescription><CardTitle className="text-2xl font-bold">GH₵0</CardTitle></CardHeader></Card>
-                <Card><CardHeader><CardDescription>Loan Outstanding</CardDescription><CardTitle className="text-2xl font-bold">GH₵0</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Total Members</CardDescription><CardTitle className="text-2xl font-bold">3</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Active Groups</CardDescription><CardTitle className="text-2xl font-bold">2</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Monthly Deposits</CardDescription><CardTitle className="text-2xl font-bold">GH₵4,500</CardTitle></CardHeader></Card>
+                <Card><CardHeader><CardDescription>Loan Outstanding</CardDescription><CardTitle className="text-2xl font-bold">GH₵1,000</CardTitle></CardHeader></Card>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

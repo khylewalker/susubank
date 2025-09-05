@@ -20,8 +20,15 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 
-const transactions: any[] = [];
-const requests: any[] = [];
+const transactions = [
+    { id: 1, member: "First Timer", type: "Contribution", amount: "GH₵250.00" },
+    { id: 2, member: "Approved User", type: "Contribution", amount: "GH₵500.00" },
+    { id: 3, member: "First Timer", type: "Withdrawal", amount: "GH₵200.00" },
+    { id: 4, member: "New User", type: "Contribution", amount: "GH₵250.00" },
+];
+const requests = [
+    { id: 1, member: "New User", type: "New Member", status: "Pending" },
+];
 
 export default function DashboardClient() {
 
@@ -44,25 +51,25 @@ export default function DashboardClient() {
         <Card>
           <CardHeader>
             <CardDescription>Total Users</CardDescription>
-            <CardTitle className="text-2xl font-bold">0</CardTitle>
+            <CardTitle className="text-2xl font-bold">3</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader>
             <CardDescription>Total Groups Created</CardDescription>
-            <CardTitle className="text-2xl font-bold">0</CardTitle>
+            <CardTitle className="text-2xl font-bold">2</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader>
             <CardDescription>All Group Contributions</CardDescription>
-            <CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle>
+            <CardTitle className="text-2xl font-bold">GH₵4,500.00</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader>
             <CardDescription>All Group Withdrawals</CardDescription>
-            <CardTitle className="text-2xl font-bold">GH₵0.00</CardTitle>
+            <CardTitle className="text-2xl font-bold">GH₵200.00</CardTitle>
           </CardHeader>
         </Card>
       </div>

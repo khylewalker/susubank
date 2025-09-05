@@ -27,7 +27,10 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-const recentActivity: any[] = [
+const recentActivity = [
+    { activity: "Login", details: "Successful login from IP 192.168.1.1", time: "10 minutes ago" },
+    { activity: "Contribution", details: "GH₵250.00 contribution made", time: "1 day ago" },
+    { activity: "Profile Update", details: "Updated residential address", time: "3 days ago" },
 ];
 
 export default function MemberOverviewPage({ params }: { params: { id: string } }) {
@@ -39,7 +42,7 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
           <BreadcrumbSeparator />
           <BreadcrumbItem><BreadcrumbLink href="/admin/users">Users</BreadcrumbLink></BreadcrumbItem>
           <BreadcrumbSeparator />
-          <BreadcrumbItem><BreadcrumbPage>Kofi Adu</BreadcrumbPage></BreadcrumbItem>
+          <BreadcrumbItem><BreadcrumbPage>Approved User</BreadcrumbPage></BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       
@@ -47,11 +50,11 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
         <div className="flex items-center gap-4">
             <Avatar className="h-20 w-20">
                 <AvatarImage src="https://picsum.photos/100/100?random=2" data-ai-hint="member avatar" />
-                <AvatarFallback>KA</AvatarFallback>
+                <AvatarFallback>AU</AvatarFallback>
             </Avatar>
             <div>
-                <h1 className="text-3xl font-bold font-headline">Kofi Adu</h1>
-                <Badge>Member</Badge>
+                <h1 className="text-3xl font-bold font-headline">Approved User</h1>
+                <Badge>Contributor</Badge>
             </div>
         </div>
         <div className="flex items-center gap-2">
@@ -66,15 +69,15 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
                 <Card>
                     <CardHeader><CardTitle className="text-base font-medium">Member Details</CardTitle></CardHeader>
                     <CardContent className="space-y-2">
-                        <div><p className="text-sm text-muted-foreground">Phone</p><p className="font-medium">+233 24 123 4567</p></div>
-                        <div><p className="text-sm text-muted-foreground">Email</p><p className="font-medium">k.adu@email.com</p></div>
+                        <div><p className="text-sm text-muted-foreground">Phone</p><p className="font-medium">+233241234568</p></div>
+                        <div><p className="text-sm text-muted-foreground">Email</p><p className="font-medium">approved@susu.bank</p></div>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader><CardTitle className="text-base font-medium">Financial Snapshot</CardTitle></CardHeader>
                     <CardContent className="space-y-2">
-                        <div><p className="text-sm text-muted-foreground">Total Saved</p><p className="font-medium">GH₵0.00</p></div>
-                        <div><p className="text-sm text-muted-foreground">Loans Outstanding</p><p className="font-medium">GH₵0.00</p></div>
+                        <div><p className="text-sm text-muted-foreground">Total Saved</p><p className="font-medium">GH₵2,500.00</p></div>
+                        <div><p className="text-sm text-muted-foreground">Loans Outstanding</p><p className="font-medium">GH₵1,000.00</p></div>
                     </CardContent>
                 </Card>
             </div>
@@ -89,8 +92,8 @@ export default function MemberOverviewPage({ params }: { params: { id: string } 
             <Card>
                 <CardHeader><CardTitle className="text-base font-medium">Last Contribution</CardTitle></CardHeader>
                 <CardContent>
-                    <p className="text-2xl font-bold">GH₵0.00</p>
-                    <p className="text-sm text-muted-foreground">on July 15, 2024</p>
+                    <p className="text-2xl font-bold">GH₵500.00</p>
+                    <p className="text-sm text-muted-foreground">on July 10, 2024</p>
                 </CardContent>
             </Card>
              <Card>
